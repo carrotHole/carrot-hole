@@ -1,6 +1,8 @@
 package com.carrothole.carrot.entity;
 
+import com.carrothole.carrot.config.mf.MfConstant;
 import com.mybatisflex.annotation.Id;
+import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
 import java.io.Serializable;
 
@@ -32,7 +34,7 @@ public class AuUserRole implements Serializable {
     /**
      * 主键
      */
-    @Id
+    @Id(keyType = KeyType.Generator, value = MfConstant.ID_GENERATOR)
     @Schema(description = "主键")
     private String id;
 

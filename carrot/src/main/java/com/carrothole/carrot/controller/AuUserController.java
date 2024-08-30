@@ -24,7 +24,7 @@ import java.util.List;
  * @since 2024-08-29
  */
 @RestController
-@Tag(name = "接口")
+@Tag(name = "用户")
 @RequestMapping("/auUser")
 public class AuUserController {
 

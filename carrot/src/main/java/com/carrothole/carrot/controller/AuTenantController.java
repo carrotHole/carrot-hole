@@ -1,6 +1,8 @@
 package com.carrothole.carrot.controller;
 
+import com.carrothole.carrot.authorization.PreAuthorize;
 import com.mybatisflex.core.paginate.Page;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,7 +26,7 @@ import java.util.List;
  * @since 2024-08-29
  */
 @RestController
-@Tag(name = "接口")
+@Tag(name = "租户")
 @RequestMapping("/auTenant")
 public class AuTenantController {
 
@@ -34,12 +36,13 @@ public class AuTenantController {
     /**
      * 添加。
      *
-     * @param auTenant 
+     * @param auTenant {@link AuTenant}
      * @return {@code true} 添加成功，{@code false} 添加失败
      */
     @PostMapping("save")
     @Operation(description="保存")
-    public boolean save(@RequestBody @Parameter(description="")AuTenant auTenant) {
+    @PreAuthorize(menu = {"au:tenant:save"}, user = "carrot")
+    public boolean save(@RequestBody @Parameter(description="租户对象") @Valid AuTenant auTenant) {
         return auTenantService.save(auTenant);
     }
 
@@ -51,6 +54,7 @@ public class AuTenantController {
      */
     @DeleteMapping("remove/{id}")
     @Operation(description="根据主键")
+    @PreAuthorize(menu = {"au:tenant:remove"}, user = "carrot")
     public boolean remove(@PathVariable @Parameter(description="主键")String id) {
         return auTenantService.removeById(id);
     }
@@ -58,11 +62,12 @@ public class AuTenantController {
     /**
      * 根据主键更新。
      *
-     * @param auTenant 
+     * @param auTenant {@link AuTenant}
      * @return {@code true} 更新成功，{@code false} 更新失败
      */
     @PutMapping("update")
     @Operation(description="根据主键更新")
+    @PreAuthorize(menu = {"au:tenant:update"}, user = "carrot")
     public boolean update(@RequestBody @Parameter(description="主键")AuTenant auTenant) {
         return auTenantService.updateById(auTenant);
     }
@@ -74,6 +79,7 @@ public class AuTenantController {
      */
     @GetMapping("list")
     @Operation(description="查询所有")
+    @PreAuthorize(menu = {"au:tenant:list"}, user = "carrot")
     public List<AuTenant> list() {
         return auTenantService.list();
     }
@@ -86,20 +92,10 @@ public class AuTenantController {
      */
     @GetMapping("getInfo/{id}")
     @Operation(description="根据主键获取")
+    @PreAuthorize(menu = {"au:tenant:getInfo"}, user = "carrot")
     public AuTenant getInfo(@PathVariable String id) {
         return auTenantService.getById(id);
     }
 
-    /**
-     * 分页查询。
-     *
-     * @param page 分页对象
-     * @return 分页对象
-     */
-    @GetMapping("page")
-    @Operation(description="分页查询")
-    public Page<AuTenant> page(@Parameter(description="分页信息")Page<AuTenant> page) {
-        return auTenantService.page(page);
-    }
 
 }

@@ -1,13 +1,17 @@
 package com.carrothole.carrot.entity;
 
+import com.carrothole.carrot.config.mf.MfConstant;
+import com.carrothole.carrot.config.mf.MfDefaultInsertListener;
+import com.carrothole.carrot.config.mf.MfDefaultUpdateListener;
+import com.carrothole.carrot.config.validate.ValidateGroup;
 import com.mybatisflex.annotation.Id;
+import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
-import java.io.Serializable;
-import java.time.LocalDateTime;
 
 import java.io.Serial;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,9 +27,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "")
-@Table("au_tenant")
-public class AuTenant implements Serializable {
+@Schema(description = "租户对象")
+@Table(value = "au_tenant",onInsert = MfDefaultInsertListener.class, onUpdate = MfDefaultUpdateListener.class )
+public class AuTenant extends BaseUserTime {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -33,32 +37,23 @@ public class AuTenant implements Serializable {
     /**
      * 主键
      */
-    @Id
+    @Id(keyType = KeyType.Generator, value = MfConstant.ID_GENERATOR)
     @Schema(description = "主键")
+    @NotBlank(message = "主键不能为空", groups = ValidateGroup.UPDATE)
     private String id;
-
-    /**
-     * 创建人
-     */
-    @Schema(description = "创建人")
-    private String createdBy;
-
-    /**
-     * 创建时间
-     */
-    @Schema(description = "创建时间")
-    private LocalDateTime createdTime;
 
     /**
      * 租户标志
      */
     @Schema(description = "租户标志")
+    @NotBlank(message = "租户标志不能为空", groups = {ValidateGroup.UPDATE, ValidateGroup.SAVE})
     private String tenantMark;
 
     /**
      * 租户名
      */
     @Schema(description = "租户名")
+    @NotBlank(message = "租户标志不能为空", groups = {ValidateGroup.UPDATE, ValidateGroup.SAVE})
     private String tenantName;
 
     /**

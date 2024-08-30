@@ -24,7 +24,7 @@ import java.util.List;
  * @since 2024-08-29
  */
 @RestController
-@Tag(name = "接口")
+@Tag(name = "菜单")
 @RequestMapping("/auMenu")
 public class AuMenuController {
 

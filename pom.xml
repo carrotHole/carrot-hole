@@ -34,6 +34,7 @@
         <mysql.connector.j.version>9.0.0</mysql.connector.j.version>
         <hikariCP.version>5.1.0</hikariCP.version>
         <swagger.version>2.6.0</swagger.version>
+        <hutool.version>5.8.31</hutool.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -62,6 +63,12 @@
                 <groupId>org.springdoc</groupId>
                 <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
                 <version>${swagger.version}</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/cn.hutool/hutool-all -->
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
             </dependency>
 
         </dependencies>
