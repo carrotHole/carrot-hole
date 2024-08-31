@@ -24,7 +24,6 @@ import lombok.NoArgsConstructor;
  * @since 2024-08-29
  */
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "租户对象")
@@ -39,21 +38,21 @@ public class AuTenant extends BaseUserTime {
      */
     @Id(keyType = KeyType.Generator, value = MfConstant.ID_GENERATOR)
     @Schema(description = "主键")
-    @NotBlank(message = "主键不能为空", groups = ValidateGroup.UPDATE)
+    @NotBlank(message = "主键不能为空", groups = ValidateGroup.Update.class)
     private String id;
 
     /**
      * 租户标志
      */
     @Schema(description = "租户标志")
-    @NotBlank(message = "租户标志不能为空", groups = {ValidateGroup.UPDATE, ValidateGroup.SAVE})
+    @NotBlank(message = "租户标志不能为空", groups = {ValidateGroup.Update.class, ValidateGroup.Save.class})
     private String tenantMark;
 
     /**
      * 租户名
      */
     @Schema(description = "租户名")
-    @NotBlank(message = "租户标志不能为空", groups = {ValidateGroup.UPDATE, ValidateGroup.SAVE})
+    @NotBlank(message = "租户标志不能为空", groups = {ValidateGroup.Update.class, ValidateGroup.Save.class})
     private String tenantName;
 
     /**

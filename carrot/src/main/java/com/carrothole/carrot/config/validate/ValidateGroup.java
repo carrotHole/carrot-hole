@@ -9,13 +9,10 @@ package com.carrothole.carrot.config.validate;
  */
 public interface ValidateGroup {
 
-    Class<? extends GroupService> SAVE = ValidateSaveGroup.class;
-    Class<? extends GroupService> UPDATE =  ValidateUpdateGroup.class;
-    Class<?>[] SAVE_UPDATE = {ValidateSaveGroup.class, ValidateUpdateGroup.class};
+    interface Save {
+    }
 
-
-    interface GroupService {}
-    interface ValidateSaveGroup extends GroupService {}
-    interface ValidateUpdateGroup extends GroupService {}
+    interface Update {
+    }
 
 }
