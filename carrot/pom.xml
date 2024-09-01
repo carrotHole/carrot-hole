@@ -6,7 +6,6 @@
         <groupId>com.carrothole</groupId>
         <artifactId>carrot-hole</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <artifactId>carrot</artifactId>
     <name>carrot</name>
@@ -44,7 +43,10 @@
         <dependency>
             <groupId>com.mybatis-flex</groupId>
             <artifactId>mybatis-flex-codegen</artifactId>
-            <scope>optional</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.mybatis-flex</groupId>
+            <artifactId>mybatis-flex-processor</artifactId>
         </dependency>
         <dependency>
             <groupId>com.zaxxer</groupId>
@@ -91,6 +93,7 @@
                     </excludes>
                 </configuration>
             </plugin>
+
         </plugins>
     </build>
 

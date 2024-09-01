@@ -33,7 +33,6 @@
     <properties>
         <java.version>17</java.version>
         <mybatis.flex.version>1.9.6</mybatis.flex.version>
-        <mybatis.flex.codegen.version>1.9.6</mybatis.flex.codegen.version>
         <mysql.connector.j.version>9.0.0</mysql.connector.j.version>
         <hikariCP.version>5.1.0</hikariCP.version>
         <swagger.version>2.6.0</swagger.version>
@@ -49,7 +48,13 @@
             <dependency>
                 <groupId>com.mybatis-flex</groupId>
                 <artifactId>mybatis-flex-codegen</artifactId>
-                <version>${mybatis.flex.codegen.version}</version>
+                <version>${mybatis.flex.version}</version>
+                <scope>compile</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.mybatis-flex</groupId>
+                <artifactId>mybatis-flex-processor</artifactId>
+                <version>${mybatis.flex.version}</version>
                 <scope>compile</scope>
             </dependency>
             <dependency>
@@ -78,6 +83,23 @@
     </dependencyManagement>
 
     <build>
+<!--        <pluginManagement>-->
+<!--            <plugins>-->
+<!--                <plugin>-->
+<!--                    <groupId>org.apache.maven.plugins</groupId>-->
+<!--                    <artifactId>maven-compiler-plugin</artifactId>-->
+<!--                    <configuration>-->
+<!--                        <annotationProcessorPaths>-->
+<!--                            <path>-->
+<!--                                <groupId>com.mybatis-flex</groupId>-->
+<!--                                <artifactId>mybatis-flex-processor</artifactId>-->
+<!--                                <version>${mybatis.flex.version}</version>-->
+<!--                            </path>-->
+<!--                        </annotationProcessorPaths>-->
+<!--                    </configuration>-->
+<!--                </plugin>-->
+<!--            </plugins>-->
+<!--        </pluginManagement>-->
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
