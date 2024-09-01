@@ -4,6 +4,7 @@ import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.event.annotation.AfterTestMethod;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -17,16 +18,17 @@ import static org.mockito.Mockito.mockStatic;
  * @author moon
  * @since JDK 1.8
  */
-
+@SpringBootTest
 public class TokenUtilTest {
 
     @Test
     public void create_and_verify() {
         String tenantId = IdUtil.simpleUUID();
+        String deptId = IdUtil.simpleUUID();
         String username = RandomUtil.randomString(11);
         Long expireTime = 36000L;
 
-        String token = TokenUtil.create(tenantId, username, expireTime,false);
+        String token = TokenUtil.create(tenantId,deptId, username, expireTime,false);
         System.out.println(token);
         // 断言不为空
         assertTrue(StrUtil.isNotBlank(token));

@@ -5,12 +5,9 @@ import cn.hutool.json.JSONObject;
 import cn.hutool.jwt.JWT;
 import cn.hutool.jwt.JWTUtil;
 import com.carrothole.carrot.exception.AuthorizationException;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Description: token工具类 <br>
@@ -23,6 +20,7 @@ public class TokenUtil {
 
     private static final String tenantIdKey = "ti";
     private static final String usernameKey = "un";
+    private static final String deptIdKey = "di";
     private static final String expireTimeKey = "et";
     private static final String randomKey = "rk";
 
@@ -37,12 +35,12 @@ public class TokenUtil {
      * @param username 用户名
      * @return token
      */
-    public static String create(String tenantId, String username) {
-        return create(tenantId, username, 12 * 60 * 60 * 1000L);
+    public static String create(String tenantId,String deptId, String username) {
+        return create(tenantId,deptId, username, 12 * 60 * 60 * 1000L);
     }
 
-    public static String create(String tenantId, String username, long expireTime) {
-        return create(tenantId, username, expireTime, true);
+    public static String create(String tenantId, String deptId,  String username, long expireTime) {
+        return create(tenantId, deptId, username, expireTime, true);
     }
 
     /**
@@ -53,9 +51,9 @@ public class TokenUtil {
      * @param expireTime 过期时间
      * @return token
      */
-    public static String create(String tenantId, String username, long expireTime, boolean cache) {
+    public static String create(String tenantId, String deptId, String username, long expireTime, boolean cache) {
         // 生成一个随机的8位字符串,用于区分多端登录
-        final TokenPayLoad tokenPayLoad = new TokenPayLoad(tenantId, username, RandomUtil.randomString(8), System.currentTimeMillis()+expireTime);
+        final TokenPayLoad tokenPayLoad = new TokenPayLoad(tenantId, deptId, username, RandomUtil.randomString(8), System.currentTimeMillis()+expireTime);
         final String token = JWTUtil.createToken(tokenPayLoad, key);
         if (cache) {
             // todo cache
@@ -153,19 +151,27 @@ public class TokenUtil {
             // todo cache ,从缓存数据中获取用户信息
         }
 
-        return new TokenPayLoad(payloads.getStr(tenantIdKey), payloads.getStr(usernameKey), payloads.getStr(randomKey), expireTime);
+        return new TokenPayLoad(payloads.getStr(tenantIdKey), payloads.getStr(deptIdKey),payloads.getStr(usernameKey), payloads.getStr(randomKey), expireTime);
 
     }
 
-    static class TokenPayLoad extends HashMap<String, Object> {
-        public TokenPayLoad(String tenantId, String username, String randomStr, long expireTime) {
+    public static class TokenPayLoad extends HashMap<String, Object> {
+        public TokenPayLoad(String tenantId, String deptId, String username, String randomStr, long expireTime) {
             super();
             setTenantId(tenantId);
+            setDeptId(deptId);
             setUsername(username);
             setRandom(randomStr);
             setExpireTime(expireTime);
         }
 
+        private void setDeptId(String deptId) {
+            this.put(deptIdKey, deptId);
+        }
+
+        private String getDeptId() {
+            return (String) this.get(deptIdKey);
+        }
 
         public String getTenantId() {
             return (String) this.get(tenantIdKey);

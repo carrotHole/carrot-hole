@@ -16,19 +16,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class CarrotApplication {
 
     public static void main(String[] args) {
-        mybatisFlexConfig();
         SpringApplication.run(CarrotApplication.class, args);
     }
 
-    public static void mybatisFlexConfig(){
-        FlexGlobalConfig.getDefaultConfig().setTenantColumn("tenant_id");
-        KeyGeneratorFactory.register(MfConstant.ID_GENERATOR, new MfUUIDGenerator());
 
-        //开启审计功能
-        AuditManager.setAuditEnable(true);
-
-        //设置 SQL 审计收集器
-        MessageCollector collector = new ConsoleMessageCollector();
-        AuditManager.setMessageCollector(collector);
-    }
 }
