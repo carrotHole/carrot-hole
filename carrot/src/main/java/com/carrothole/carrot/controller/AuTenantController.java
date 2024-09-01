@@ -69,6 +69,7 @@ public class AuTenantController {
     @Operation(description="根据主键")
     @PreAuthorize(menu = {"au:tenant:remove"}, user = "carrot")
     public boolean remove(@PathVariable @Parameter(description="主键")String id) {
+        // todo 删除租户其他信息
         return auTenantService.removeById(id);
     }
 

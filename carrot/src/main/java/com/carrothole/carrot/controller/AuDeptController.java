@@ -1,6 +1,9 @@
 package com.carrothole.carrot.controller;
 
+import com.carrothole.carrot.authorization.PreAuthorize;
+import com.carrothole.carrot.property.CarrotProperty;
 import com.mybatisflex.core.paginate.Page;
+import com.mybatisflex.core.query.QueryWrapper;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,6 +34,8 @@ public class AuDeptController {
     @Autowired
     private AuDeptService auDeptService;
 
+    @Autowired
+    private CarrotProperty carrotProperty;
     /**
      * 添加。
      *
@@ -39,7 +44,8 @@ public class AuDeptController {
      */
     @PostMapping("save")
     @Operation(description="保存")
-    public boolean save(@RequestBody @Parameter(description="")AuDept auDept) {
+    @PreAuthorize(menu = {"au:dept:save"}, user = "carrot")
+    public boolean save(@RequestBody @Parameter(description="部门")AuDept auDept) {
         return auDeptService.save(auDept);
     }
 
@@ -51,6 +57,7 @@ public class AuDeptController {
      */
     @DeleteMapping("remove/{id}")
     @Operation(description="根据主键")
+    @PreAuthorize(menu = {"au:dept:remove"}, user = "carrot")
     public boolean remove(@PathVariable @Parameter(description="主键")String id) {
         return auDeptService.removeById(id);
     }
@@ -63,6 +70,7 @@ public class AuDeptController {
      */
     @PutMapping("update")
     @Operation(description="根据主键更新")
+    @PreAuthorize(menu = {"au:dept:update"}, user = "carrot")
     public boolean update(@RequestBody @Parameter(description="主键")AuDept auDept) {
         return auDeptService.updateById(auDept);
     }
@@ -74,8 +82,9 @@ public class AuDeptController {
      */
     @GetMapping("list")
     @Operation(description="查询所有")
+    @PreAuthorize(menu = {"au:dept:list"}, user = "carrot")
     public List<AuDept> list() {
-        return auDeptService.list();
+        return auDeptService.list(QueryWrapper.create().limit(carrotProperty.web.listSize));
     }
 
     /**
@@ -86,6 +95,7 @@ public class AuDeptController {
      */
     @GetMapping("getInfo/{id}")
     @Operation(description="根据主键获取")
+    @PreAuthorize(menu = {"au:dept:getInfo"}, user = "carrot")
     public AuDept getInfo(@PathVariable String id) {
         return auDeptService.getById(id);
     }
@@ -98,6 +108,7 @@ public class AuDeptController {
      */
     @GetMapping("page")
     @Operation(description="分页查询")
+    @PreAuthorize(menu = {"au:dept:page"}, user = "carrot")
     public Page<AuDept> page(@Parameter(description="分页信息")Page<AuDept> page) {
         return auDeptService.page(page);
     }
