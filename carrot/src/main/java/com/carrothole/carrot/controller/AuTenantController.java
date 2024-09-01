@@ -1,7 +1,10 @@
 package com.carrothole.carrot.controller;
 
+import cn.hutool.core.util.StrUtil;
 import com.carrothole.carrot.authorization.PreAuthorize;
-import com.mybatisflex.core.paginate.Page;
+import com.carrothole.carrot.exception.ParamException;
+import com.carrothole.carrot.util.SecurityUtil;
+import com.mybatisflex.core.query.QueryWrapper;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +20,11 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+
+import java.util.Date;
 import java.util.List;
+
+import static com.carrothole.carrot.entity.table.AuTenantTableDef.AU_TENANT;
 
 /**
  *  控制层。
@@ -43,6 +50,12 @@ public class AuTenantController {
     @Operation(description="保存")
     @PreAuthorize(menu = {"au:tenant:save"}, user = "carrot")
     public boolean save(@RequestBody @Parameter(description="租户对象") @Valid AuTenant auTenant) {
+        auTenant.setCreatedBy(SecurityUtil.getPayLoad().getUsername());
+        auTenant.setCreatedTime(new Date());
+        final boolean exists = auTenantService.exists(QueryWrapper.create().and(AU_TENANT.TENANT_MARK.eq(auTenant.getTenantMark())));
+        if (exists){
+            throw new ParamException("租户标识重复");
+        }
         return auTenantService.save(auTenant);
     }
 
@@ -69,6 +82,10 @@ public class AuTenantController {
     @Operation(description="根据主键更新")
     @PreAuthorize(menu = {"au:tenant:update"}, user = "carrot")
     public boolean update(@RequestBody @Parameter(description="主键")AuTenant auTenant) {
+        final AuTenant  tenant = auTenantService.getById(auTenant.getId());
+        if (!tenant.getTenantMark().equals(auTenant.getTenantMark())){
+            throw new ParamException("租户标识不能改变");
+        }
         return auTenantService.updateById(auTenant);
     }
 
@@ -80,8 +97,12 @@ public class AuTenantController {
     @GetMapping("list")
     @Operation(description="查询所有")
     @PreAuthorize(menu = {"au:tenant:list"}, user = "carrot")
-    public List<AuTenant> list() {
-        return auTenantService.list();
+    public List<AuTenant> list(AuTenant auTenant) {
+        return auTenantService.list(
+                QueryWrapper.create()
+                        .and(AU_TENANT.TENANT_MARK.like(auTenant.getTenantMark(), StrUtil.isNotBlank(auTenant.getTenantMark())))
+                        .and(AU_TENANT.TENANT_NAME.like(auTenant.getTenantName(), StrUtil.isNotBlank(auTenant.getTenantName())))
+        );
     }
 
     /**

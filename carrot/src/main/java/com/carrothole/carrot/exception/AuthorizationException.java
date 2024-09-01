@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
  * date: 2024-8-31 22:23
  *
  * @author moon
- * @since JDK 1.8
+ * @since 0.0.1
  */
 @Data
 @NoArgsConstructor
