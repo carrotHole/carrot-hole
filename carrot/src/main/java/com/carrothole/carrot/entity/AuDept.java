@@ -1,5 +1,6 @@
 package com.carrothole.carrot.entity;
 
+import cn.hutool.json.JSONUtil;
 import com.carrothole.carrot.config.mf.MfConstant;
 import com.carrothole.carrot.config.validate.ValidateGroup;
 import com.mybatisflex.annotation.Id;
@@ -8,6 +9,7 @@ import com.mybatisflex.annotation.Table;
 import java.io.Serializable;
 
 import java.util.Date;
+import java.util.List;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
@@ -96,4 +98,11 @@ public class AuDept implements Serializable {
     @Schema(description = "上级部门主键集合")
     private String parentIds;
 
+    public void setParentIdList(List<String> parentIdList){
+        this.parentIds = JSONUtil.toJsonStr(parentIdList);
+    }
+
+    public List<String>  getParentIdList(){
+        return JSONUtil.toList(this.parentIds,String.class);
+    }
 }

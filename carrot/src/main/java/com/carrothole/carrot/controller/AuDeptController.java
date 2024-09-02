@@ -1,6 +1,8 @@
 package com.carrothole.carrot.controller;
 
 import com.carrothole.carrot.authorization.PreAuthorize;
+import com.carrothole.carrot.entity.vo.PageVO;
+import com.carrothole.carrot.exception.ParamException;
 import com.carrothole.carrot.property.CarrotProperty;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
@@ -19,6 +21,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import java.util.List;
+
+import static com.carrothole.carrot.entity.table.AuDeptTableDef.AU_DEPT;
 
 /**
  *  控制层。
@@ -46,6 +50,10 @@ public class AuDeptController {
     @Operation(description="保存")
     @PreAuthorize(menu = {"au:dept:save"}, user = "carrot")
     public boolean save(@RequestBody @Parameter(description="部门")AuDept auDept) {
+        // 校验同级下是否有同名部门
+        if (auDeptService.exists(QueryWrapper.create().and(AU_DEPT.DEPT_NAME.eq(auDept.getDeptName())))) {
+            throw new ParamException("同级下已存在同名部门");
+        }
         return auDeptService.save(auDept);
     }
 
@@ -72,6 +80,10 @@ public class AuDeptController {
     @Operation(description="根据主键更新")
     @PreAuthorize(menu = {"au:dept:update"}, user = "carrot")
     public boolean update(@RequestBody @Parameter(description="主键")AuDept auDept) {
+        // 校验同级下是否有同名部门
+        if (auDeptService.exists(QueryWrapper.create().and(AU_DEPT.DEPT_NAME.eq(auDept.getDeptName())).and(AU_DEPT.ID.ne(auDept.getId())))) {
+            throw new ParamException("同级下已存在同名部门");
+        }
         return auDeptService.updateById(auDept);
     }
 
@@ -103,14 +115,15 @@ public class AuDeptController {
     /**
      * 分页查询。
      *
-     * @param page 分页对象
+     * @param vo 分页信息
+     * @param auDept 条件查询对象
      * @return 分页对象
      */
     @GetMapping("page")
     @Operation(description="分页查询")
     @PreAuthorize(menu = {"au:dept:page"}, user = "carrot")
-    public Page<AuDept> page(@Parameter(description="分页信息")Page<AuDept> page) {
-        return auDeptService.page(page);
+    public Page<AuDept> page(@Parameter(description="分页信息") PageVO vo,@Parameter(description="条件查询对象") AuDept auDept) {
+        return auDeptService.page(vo,auDept);
     }
 
 }
