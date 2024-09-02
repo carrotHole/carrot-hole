@@ -12,7 +12,7 @@ import java.io.Serializable;
  * Date: 2024/8/29 15:06 <br>
  *
  * @author moon
- * @since
+ * @since 0.0.1
  */
 @Data
 @Schema(description = "登录对象")

@@ -1,5 +1,6 @@
 package com.carrothole.carrot.controller;
 
+import com.carrothole.carrot.entity.vo.AuUserOperationVO;
 import com.mybatisflex.core.paginate.Page;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,13 +35,13 @@ public class AuUserController {
     /**
      * 添加。
      *
-     * @param auUser 
+     * @param operationVO
      * @return {@code true} 添加成功，{@code false} 添加失败
      */
     @PostMapping("save")
     @Operation(description="保存")
-    public boolean save(@RequestBody @Parameter(description="")AuUser auUser) {
-        return auUserService.save(auUser);
+    public boolean save(@RequestBody @Parameter(description="新增对象")AuUserOperationVO operationVO) {
+        return auUserService.save(operationVO);
     }
 
     /**
@@ -58,13 +59,13 @@ public class AuUserController {
     /**
      * 根据主键更新。
      *
-     * @param auUser 
+     * @param operationVO
      * @return {@code true} 更新成功，{@code false} 更新失败
      */
     @PutMapping("update")
     @Operation(description="根据主键更新")
-    public boolean update(@RequestBody @Parameter(description="主键")AuUser auUser) {
-        return auUserService.updateById(auUser);
+    public boolean update(@RequestBody @Parameter(description="更新对象") AuUserOperationVO operationVO) {
+        return auUserService.updateById(operationVO);
     }
 
     /**

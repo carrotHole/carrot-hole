@@ -29,9 +29,6 @@ import lombok.NoArgsConstructor;
 @Table("au_dept_user")
 public class AuDeptUser implements Serializable {
 
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     /**
      * 主键
      */
@@ -68,5 +65,11 @@ public class AuDeptUser implements Serializable {
      */
     @Schema(description = "用户主键")
     private String userId;
+
+    /**
+     * 是否为真实用户
+     */
+    @Schema(description = "是否为真实用户")
+    private Integer realUser;
 
 }
