@@ -1,7 +1,10 @@
 package com.carrothole.carrot.controller;
 
 import com.carrothole.carrot.entity.vo.AuUserOperationVO;
+import com.carrothole.carrot.exception.UnSupportOperationException;
 import com.mybatisflex.core.paginate.Page;
+import com.mybatisflex.core.query.QueryWrapper;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +20,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import java.util.List;
+
+import static com.carrothole.carrot.entity.table.AuUserTableDef.AU_USER;
 
 /**
  *  控制层。
@@ -40,7 +45,11 @@ public class AuUserController {
      */
     @PostMapping("save")
     @Operation(description="保存")
-    public boolean save(@RequestBody @Parameter(description="新增对象")AuUserOperationVO operationVO) {
+    public boolean save(@RequestBody @Parameter(description="新增对象")@Valid AuUserOperationVO operationVO) {
+        // 校验用户是否存在
+        if (auUserService.exists(QueryWrapper.create().and(AU_USER.USERNAME.eq(operationVO.getUsername())))) {
+            throw new UnSupportOperationException("用户已存在");
+        }
         return auUserService.save(operationVO);
     }
 

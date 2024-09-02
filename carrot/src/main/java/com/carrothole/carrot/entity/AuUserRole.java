@@ -15,16 +15,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- *  实体类。
+ *  用户角色绑定 实体类。
  *
  * @author Administrator
  * @since 2024-08-29
  */
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "")
+@Schema(description = "用户角色绑定")
 @Table("au_user_role")
 public class AuUserRole implements Serializable {
 

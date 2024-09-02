@@ -1,6 +1,8 @@
 package com.carrothole.carrot.config.mf;
 
 import com.carrothole.carrot.entity.BaseUserTime;
+import com.carrothole.carrot.entity.BaseUserTimeTenant;
+import com.carrothole.carrot.util.SecurityUtil;
 import com.mybatisflex.annotation.InsertListener;
 
 import java.util.Date;
@@ -15,11 +17,16 @@ import java.util.Date;
 public class MfDefaultInsertListener implements InsertListener {
     @Override
     public void onInsert(Object o) {
-        // todo 数据填充
+
         if (o instanceof BaseUserTime baseUserTime){
-            baseUserTime.setCreatedBy("");
+            baseUserTime.setCreatedBy(SecurityUtil.getPayLoad().getUsername());
             baseUserTime.setCreatedTime(new Date());
             return;
+        }
+        if (o instanceof BaseUserTimeTenant baseUserTimeTenant){
+            baseUserTimeTenant.setCreatedBy(SecurityUtil.getPayLoad().getUsername());
+            baseUserTimeTenant.setCreatedTime(new Date());
+
         }
     }
 }

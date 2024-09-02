@@ -32,8 +32,6 @@ public class AuDeptServiceImpl extends ServiceImpl<AuDeptMapper, AuDept> impleme
 
     @Override
     public boolean save(AuDept entity) {
-        entity.setCreatedBy(SecurityUtil.getPayLoad().getUsername());
-        entity.setCreatedTime(new Date());
         // 设置父主键部门集合
         entity.setParentIdList(buildParentIds(entity));
         return super.save(entity);

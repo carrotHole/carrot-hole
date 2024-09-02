@@ -2,10 +2,12 @@ package com.carrothole.carrot.controller;
 
 import cn.hutool.core.util.StrUtil;
 import com.carrothole.carrot.authorization.PreAuthorize;
+import com.carrothole.carrot.config.validate.ValidateGroup;
 import com.carrothole.carrot.exception.ParamException;
 import com.carrothole.carrot.util.SecurityUtil;
 import com.mybatisflex.core.query.QueryWrapper;
 import jakarta.validation.Valid;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -49,7 +51,7 @@ public class AuTenantController {
     @PostMapping("save")
     @Operation(description="保存")
     @PreAuthorize(menu = {"au:tenant:save"}, user = "carrot")
-    public boolean save(@RequestBody @Parameter(description="租户对象") @Valid AuTenant auTenant) {
+    public boolean save(@RequestBody @Parameter(description="租户对象") @Validated(value = {ValidateGroup.Save.class}) AuTenant auTenant) {
         auTenant.setCreatedBy(SecurityUtil.getPayLoad().getUsername());
         auTenant.setCreatedTime(new Date());
         final boolean exists = auTenantService.exists(QueryWrapper.create().and(AU_TENANT.TENANT_MARK.eq(auTenant.getTenantMark())));
@@ -82,7 +84,7 @@ public class AuTenantController {
     @PutMapping("update")
     @Operation(description="根据主键更新")
     @PreAuthorize(menu = {"au:tenant:update"}, user = "carrot")
-    public boolean update(@RequestBody @Parameter(description="主键")AuTenant auTenant) {
+    public boolean update(@RequestBody @Parameter(description="主键") @Validated(value = {ValidateGroup.Update.class}) AuTenant auTenant) {
         final AuTenant  tenant = auTenantService.getById(auTenant.getId());
         if (!tenant.getTenantMark().equals(auTenant.getTenantMark())){
             throw new ParamException("租户标识不能改变");

@@ -1,7 +1,9 @@
 package com.carrothole.carrot.service;
 
+import com.carrothole.carrot.entity.vo.AuUserOperationVO;
 import com.mybatisflex.core.service.IService;
 import com.carrothole.carrot.entity.AuUser;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *  服务层。
@@ -11,4 +13,6 @@ import com.carrothole.carrot.entity.AuUser;
  */
 public interface AuUserService extends IService<AuUser> {
 
+    @Transactional
+    boolean save(AuUserOperationVO vo);
 }

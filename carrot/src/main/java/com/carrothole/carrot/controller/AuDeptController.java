@@ -1,6 +1,7 @@
 package com.carrothole.carrot.controller;
 
 import com.carrothole.carrot.authorization.PreAuthorize;
+import com.carrothole.carrot.config.validate.ValidateGroup;
 import com.carrothole.carrot.entity.vo.PageVO;
 import com.carrothole.carrot.exception.ParamException;
 import com.carrothole.carrot.exception.UnSupportOperationException;
@@ -8,6 +9,8 @@ import com.carrothole.carrot.property.CarrotProperty;
 import com.carrothole.carrot.service.AuDeptUserService;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
+import jakarta.validation.Valid;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -56,7 +59,7 @@ public class AuDeptController {
     @PostMapping("save")
     @Operation(description="保存")
     @PreAuthorize(menu = {"au:dept:save"}, user = "carrot")
-    public boolean save(@RequestBody @Parameter(description="部门")AuDept auDept) {
+    public boolean save(@RequestBody @Parameter(description="部门") @Validated(value = {ValidateGroup.Save.class}) AuDept auDept) {
         // 校验同级下是否有同名部门
         if (auDeptService.exists(QueryWrapper.create().and(AU_DEPT.DEPT_NAME.eq(auDept.getDeptName())))) {
             throw new ParamException("同级下已存在同名部门");
@@ -90,7 +93,7 @@ public class AuDeptController {
     @PutMapping("update")
     @Operation(description="根据主键更新")
     @PreAuthorize(menu = {"au:dept:update"}, user = "carrot")
-    public boolean update(@RequestBody @Parameter(description="主键")AuDept auDept) {
+    public boolean update(@RequestBody @Parameter(description="主键") @Validated(value = {ValidateGroup.Update.class}) AuDept auDept) {
         // 校验同级下是否有同名部门
         if (auDeptService.exists(QueryWrapper.create().and(AU_DEPT.DEPT_NAME.eq(auDept.getDeptName())).and(AU_DEPT.ID.ne(auDept.getId())))) {
             throw new UnSupportOperationException("创建失败：同级下已存在同名部门");

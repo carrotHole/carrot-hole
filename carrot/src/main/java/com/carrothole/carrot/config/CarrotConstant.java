@@ -14,4 +14,9 @@ public interface CarrotConstant {
      */
     public static final String DEPT_ANCESTRY_ID = "0";
 
+    /**
+     * 密码加密盐
+     */
+    public static final String PASSWORD_SALT = "geigeigei";
+
 }
