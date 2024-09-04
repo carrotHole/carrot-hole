@@ -8,7 +8,7 @@
         <version>3.3.3</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.carrothole</groupId>
+    <groupId>io.github.carrothole</groupId>
     <artifactId>carrot-hole</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>carrot-hole</name>
