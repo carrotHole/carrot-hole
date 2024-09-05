@@ -9,6 +9,8 @@ import com.mybatisflex.annotation.Table;
 
 import java.util.List;
 
+import io.github.carrothole.processor.generateo.anno.GenQueryVO;
+import io.github.carrothole.processor.generateo.anno.GenResultVO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -26,6 +28,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Schema(description = "部门")
 @Table("au_dept")
+@GenQueryVO(describe = "部门查询对象")
+@GenResultVO(describe = "部门返回对象")
 public class AuDept extends BaseUserTimeTenant{
 
     /**
@@ -42,6 +46,8 @@ public class AuDept extends BaseUserTimeTenant{
      */
     @Schema(description = "部门名称")
     @NotBlank(message = "部门名称不能为空", groups = {ValidateGroup.Update.class, ValidateGroup.Save.class})
+    @GenResultVOField(describe = "部门名称")
+    @GenQueryVOField(describe = "部门名称")
     private String deptName;
 
     /**
