@@ -13,6 +13,8 @@ import io.github.carrothole.carrot.entity.AuDept;
 import io.github.carrothole.carrot.mapper.AuDeptMapper;
 import io.github.carrothole.carrot.service.AuDeptService;
 import org.springframework.stereotype.Service;
+import io.github.carrothole.carrot.entity.qo.AuDeptQueryVO;
+import io.github.carrothole.carrot.entity.ro.AuDeptResultVO;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -85,19 +87,21 @@ public class AuDeptServiceImpl extends ServiceImpl<AuDeptMapper, AuDept> impleme
     }
 
     @Override
-    public Page<AuDept> page(PageVO vo, AuDept auDept) {
-        return super.page(
+    public Page<AuDeptResultVO> page(PageVO vo, AuDeptQueryVO queryVO) {
+        // todo 字段映射
+        return super.pageAs(
                 vo.buildPage(),
                 vo.appendOrderBy(
                         QueryWrapper.create()
                                 .select(AU_DEPT.ALL_COLUMNS)
                                 .from(AU_DEPT)
-                                .and(AU_DEPT.PARENT_ID.eq(auDept.getParentId()))
-                                .and(AU_DEPT.DEPT_TYPE.eq(auDept.getDeptType()))
-                                .and(AU_DEPT.STATUS.eq(auDept.getStatus()))
-                                .and(AU_DEPT.DEPT_NAME.like(auDept.getDeptName(), StrUtil.isNotBlank(auDept.getDeptName()))),
+                                .and(AU_DEPT.PARENT_ID.eq(queryVO.getParentId()))
+                                .and(AU_DEPT.DEPT_TYPE.eq(queryVO.getDeptType()))
+                                .and(AU_DEPT.STATUS.eq(queryVO.getStatus()))
+                                .and(AU_DEPT.DEPT_NAME.like(queryVO.getDeptName(), StrUtil.isNotBlank(queryVO.getDeptName()))),
                         AU_DEPT.SORT.asc(),AU_DEPT.CREATED_TIME.desc()
-                )
+                ),
+                AuDeptResultVO.class
         );
     }
 }

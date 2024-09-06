@@ -25,6 +25,9 @@ public class LoginVO implements Serializable {
     @Schema(description = "密码")
     private String password;
 
+    /**
+     * 密码加密 todo 实现
+     */
     @Schema(description = "密码加密")
     private String passwordEnc;
 

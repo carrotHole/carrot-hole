@@ -15,4 +15,7 @@ public interface ValidateGroup {
     interface Update {
     }
 
+    interface Simple {
+    }
+
 }

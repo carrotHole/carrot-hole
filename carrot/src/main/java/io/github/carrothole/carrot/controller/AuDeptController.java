@@ -6,9 +6,9 @@ import io.github.carrothole.carrot.entity.vo.PageVO;
 import io.github.carrothole.carrot.exception.ParamException;
 import io.github.carrothole.carrot.exception.UnSupportOperationException;
 import io.github.carrothole.carrot.property.CarrotProperty;
-import io.github.carrothole.carrot.service.AuDeptUserService;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
+import io.github.carrothole.carrot.service.AuUserService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,10 +24,12 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.github.carrothole.carrot.entity.qo.AuDeptQueryVO;
 import java.util.List;
 
 import static io.github.carrothole.carrot.entity.table.AuDeptTableDef.AU_DEPT;
-import static io.github.carrothole.carrot.entity.table.AuDeptUserTableDef.AU_DEPT_USER;
+import static io.github.carrothole.carrot.entity.table.AuUserTableDef.AU_USER;
+
 
 /**
  *  控制层。
@@ -44,7 +46,7 @@ public class AuDeptController {
     private AuDeptService auDeptService;
 
     @Autowired
-    private AuDeptUserService auDeptUserService;
+    private AuUserService auUserService;
 
     @Autowired
     private CarrotProperty carrotProperty;
@@ -76,7 +78,7 @@ public class AuDeptController {
     @PreAuthorize(menu = {"au:dept:remove"}, user = "carrot")
     public boolean remove(@PathVariable @Parameter(description="主键")String id) {
         // 校验部门下是否有用户
-        if (auDeptUserService.exists(QueryWrapper.create().and(AU_DEPT_USER.USER_ID.eq(id)))){
+        if (auUserService.exists(QueryWrapper.create().and(AU_USER.DEPT_ID.eq(id)))){
             throw new UnSupportOperationException("删除失败：部门下存在用户");
         }
         return auDeptService.removeById(id);
@@ -134,7 +136,7 @@ public class AuDeptController {
     @GetMapping("page")
     @Operation(description="分页查询")
     @PreAuthorize(menu = {"au:dept:page"}, user = "carrot")
-    public Page<AuDept> page(@Parameter(description="分页信息") PageVO vo,@Parameter(description="条件查询对象") AuDept auDept) {
+    public Page<io.github.carrothole.carrot.entity.ro.AuDeptResultVO> page(@Parameter(description="分页信息") PageVO vo, @Parameter(description="条件查询对象") AuDeptQueryVO auDept) {
         return auDeptService.page(vo,auDept);
     }
 

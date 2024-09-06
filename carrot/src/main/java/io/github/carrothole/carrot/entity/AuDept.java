@@ -9,8 +9,7 @@ import com.mybatisflex.annotation.Table;
 
 import java.util.List;
 
-import io.github.carrothole.processor.generateo.anno.GenQueryVO;
-import io.github.carrothole.processor.generateo.anno.GenResultVO;
+import io.github.carrothole.processor.generateo.anno.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -18,7 +17,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- *  实体类。
+ * 实体类。
  *
  * @author Administrator
  * @since 2024-08-29
@@ -29,8 +28,13 @@ import lombok.NoArgsConstructor;
 @Schema(description = "部门")
 @Table("au_dept")
 @GenQueryVO(describe = "部门查询对象")
-@GenResultVO(describe = "部门返回对象")
-public class AuDept extends BaseUserTimeTenant{
+@GenResultVO(describe = "部门返回对象",
+        append = {
+                @AppendField(name = "deptTypeValue", typeName = "java.lang.String", describe = "部门类型值")
+                , @AppendField(name = "statusValue", typeName = "java.lang.String", describe = "状态值")
+        }
+)
+public class AuDept extends BaseUserTimeTenant {
 
     /**
      * 主键
@@ -38,6 +42,7 @@ public class AuDept extends BaseUserTimeTenant{
     @Id(keyType = KeyType.Generator, value = MfConstant.ID_GENERATOR)
     @Schema(description = "主键")
     @NotBlank(message = "主键不能为空", groups = {ValidateGroup.Update.class})
+    @GenResultVOField(describe = "主键")
     private String id;
 
 
@@ -61,6 +66,8 @@ public class AuDept extends BaseUserTimeTenant{
      */
     @Schema(description = "部门类型")
     @NotBlank(message = "部门类型不能为空", groups = {ValidateGroup.Update.class, ValidateGroup.Save.class})
+    @GenResultVOField(describe = "部门类型")
+    @GenQueryVOField(describe = "部门类型")
     private Integer deptType;
 
     /**
@@ -68,6 +75,8 @@ public class AuDept extends BaseUserTimeTenant{
      */
     @Schema(description = "状态")
     @NotBlank(message = "状态不能为空", groups = {ValidateGroup.Update.class, ValidateGroup.Save.class})
+    @GenResultVOField(describe = "状态")
+    @GenQueryVOField(describe = "状态")
     private Integer status;
 
     /**
@@ -75,6 +84,8 @@ public class AuDept extends BaseUserTimeTenant{
      */
     @Schema(description = "父主键")
     @NotBlank(message = "父主键不能为空", groups = {ValidateGroup.Update.class, ValidateGroup.Save.class})
+    @GenResultVOField(describe = "父主键")
+    @GenQueryVOField(describe = "父主键")
     private String parentId;
 
     /**
@@ -83,11 +94,11 @@ public class AuDept extends BaseUserTimeTenant{
     @Schema(description = "上级部门主键集合")
     private String parentIds;
 
-    public void setParentIdList(List<String> parentIdList){
+    public void setParentIdList(List<String> parentIdList) {
         this.parentIds = JSONUtil.toJsonStr(parentIdList);
     }
 
-    public List<String>  getParentIdList(){
-        return JSONUtil.toList(this.parentIds,String.class);
+    public List<String> getParentIdList() {
+        return JSONUtil.toList(this.parentIds, String.class);
     }
 }
