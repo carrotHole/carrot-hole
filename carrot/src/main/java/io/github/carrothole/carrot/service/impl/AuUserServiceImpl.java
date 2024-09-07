@@ -75,10 +75,9 @@ public class AuUserServiceImpl extends ServiceImpl<AuUserMapper, AuUser> impleme
 
     @Override
     public boolean updatePassword(ChangePasswordVO vo) {
-        // todo 未完
-        UpdateChain.of(AuUser.class)
-                .set(AU_USER);
-
-        return false;
+        return UpdateChain.of(AuUser.class)
+                .eq(AU_USER.USERNAME.getName(), vo.getUsername())
+                .set(AU_USER.PASSWORD,PassUtil.encrypt(vo.getPassword(),CarrotConstant.PASSWORD_SALT))
+                .update();
     }
 }
