@@ -1,2 +1,2 @@
 org.springframework.context.ApplicationContextInitializer=\
-io.github.carrothole.carrot.config.mf.MfConfig
+io.github.carrothole.carrot.config.mf.MfContextInitializer

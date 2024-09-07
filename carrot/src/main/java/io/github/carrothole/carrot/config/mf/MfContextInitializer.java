@@ -9,15 +9,14 @@ import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 
 /**
- * ClassName: MfConfig
- * Description:
+ * Description: 项目启动前加载需要加载的mf配置
  * date: 2024-9-1 16:31
  *
  * @author moon
  * @since JDK 1.8
  */
 
-public class MfConfig implements ApplicationContextInitializer<ConfigurableApplicationContext> {
+public class MfContextInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
 
     @Override
