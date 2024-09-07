@@ -131,15 +131,16 @@ public class AuUserController {
     }
 
     /**
-     * 修改密码。
-     * @param auUser 修改密 码对象
+     * 修改密码。<br/>
+     * 注意修改密码是根据username进行的,会将真实用户和虚拟用户密码同时修改
+     * @param vo {@link ChangePasswordVO}
      * @return 结果
      */
     @PostMapping("updatePassword")
     @Operation(description="修改密码")
     @PreAuthorize(menu = {"au:user:updatePassword"}, user = "carrot")
     public boolean updatePassword(@RequestBody ChangePasswordVO vo) {
-        // todo 其他方式校验
+        // todo 校验码
         if (StrUtil.isBlank(vo.getPassword()) && StrUtil.isBlank(vo.getPasswordEnc())){
             throw new UnSupportOperationException("密码不能为空");
         }

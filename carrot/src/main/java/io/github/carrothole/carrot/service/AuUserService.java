@@ -18,7 +18,8 @@ public interface AuUserService extends IService<AuUser> {
     Page<AuUserResultVO> page(PageVO page, io.github.carrothole.carrot.entity.qo.AuUserQueryVO queryVO);
 
     /**
-     * 修改密码
+     * 修改密码<br/>
+     * 注意修改密码是根据username进行的,会将真实用户和虚拟用户密码同时修改
      * @param vo {@link ChangePasswordVO}
      * @return boolean
      */
