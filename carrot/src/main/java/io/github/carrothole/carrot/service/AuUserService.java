@@ -6,6 +6,7 @@ import com.mybatisflex.core.service.*;
 import io.github.carrothole.carrot.entity.*;
 import io.github.carrothole.carrot.entity.vo.*;
 import io.github.carrothole.carrot.entity.ro.AuUserResultVO;
+import jakarta.validation.Valid;
 
 /**
  *  服务层。
@@ -24,4 +25,11 @@ public interface AuUserService extends IService<AuUser> {
      * @return boolean
      */
     boolean updatePassword(ChangePasswordVO vo);
+
+    /**
+     * 修改状态
+     * @param vo {@link ChangeStatusVO}
+     * @return boolean
+     */
+    boolean updateStatus(@Valid ChangeStatusVO vo);
 }

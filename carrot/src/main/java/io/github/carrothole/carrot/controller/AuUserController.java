@@ -4,6 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import io.github.carrothole.carrot.authorization.PreAuthorize;
 import io.github.carrothole.carrot.config.validate.ValidateGroup;
 import io.github.carrothole.carrot.entity.vo.ChangePasswordVO;
+import io.github.carrothole.carrot.entity.vo.ChangeStatusVO;
 import io.github.carrothole.carrot.entity.vo.PageVO;
 import io.github.carrothole.carrot.exception.UnSupportOperationException;
 import io.github.carrothole.carrot.entity.ro.AuUserResultVO;
@@ -136,10 +137,10 @@ public class AuUserController {
      * @param vo {@link ChangePasswordVO}
      * @return 结果
      */
-    @PostMapping("updatePassword")
+    @PutMapping("updatePassword")
     @Operation(description="修改密码")
     @PreAuthorize(menu = {"au:user:updatePassword"}, user = "carrot")
-    public boolean updatePassword(@RequestBody ChangePasswordVO vo) {
+    public boolean updatePassword(@RequestBody @Valid ChangePasswordVO vo) {
         // todo 校验码
         if (StrUtil.isBlank(vo.getPassword()) && StrUtil.isBlank(vo.getPasswordEnc())){
             throw new UnSupportOperationException("密码不能为空");
@@ -147,6 +148,17 @@ public class AuUserController {
         return auUserService.updatePassword(vo);
     }
 
+    /**
+     * 修改状态。
+     * @param vo {@link ChangeStatusVO}
+     * @return boolean
+     */
+    @PutMapping("updateStatus")
+    @Operation(description="修改状态")
+    @PreAuthorize(menu = {"au:user:updateStatus"}, user = "carrot")
+    public boolean updateStatus(@RequestBody @Valid  ChangeStatusVO vo) {
+        return auUserService.updateStatus(vo);
+    }
 
 
     private void checkDeptUser(AuUser auUser) {
