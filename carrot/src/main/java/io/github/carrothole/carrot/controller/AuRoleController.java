@@ -3,11 +3,18 @@ package io.github.carrothole.carrot.controller;
 import com.mybatisflex.core.paginate.Page;
 import io.github.carrothole.carrot.authorization.PreAuthorize;
 import io.github.carrothole.carrot.config.validate.ValidateGroup;
+import io.github.carrothole.carrot.entity.AuRoleMenu;
+import io.github.carrothole.carrot.entity.AuRoleMenuRange;
 import io.github.carrothole.carrot.entity.qo.AuRoleQueryVO;
 import io.github.carrothole.carrot.entity.ro.AuRoleResultVO;
 import io.github.carrothole.carrot.entity.vo.PageVO;
+import io.github.carrothole.carrot.entity.vo.RoleMenuRangeVO;
+import io.github.carrothole.carrot.service.AuRoleMenuRangeService;
+import io.github.carrothole.carrot.service.AuRoleMenuService;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,6 +46,11 @@ public class AuRoleController {
     @Autowired
     private AuRoleService auRoleService;
 
+    @Autowired
+    private AuRoleMenuService auRoleMenuService;
+
+    @Autowired
+    private AuRoleMenuRangeService auRoleMenuRangeService;
     /**
      * 添加。
      *
@@ -104,4 +116,52 @@ public class AuRoleController {
         return auRoleService.page(page,vo);
     }
 
+
+    /**
+     * 绑定菜单。
+     * @param roleMenu 角色菜单对象
+     * @return boolean
+     */
+    @PostMapping("bindMenu")
+    @Operation(description="绑定菜单")
+    @PreAuthorize(menu = {"au:role:bindMenu"}, user = {"carrot"})
+    public AuRoleMenu bindMenu(@RequestBody @Schema(description="角色菜单对象") @Valid AuRoleMenu roleMenu) {
+        return auRoleMenuService.bindMenu(roleMenu);
+    }
+
+    /**
+     * 解绑菜单。
+     * @param roleMenuId 角色菜单主键
+     * @return boolean
+     */
+    @DeleteMapping("unbindMenu/{roleMenuId}")
+    @Operation(description="解绑菜单")
+    @PreAuthorize(menu = {"au:role:unbindMenu"}, user = {"carrot"})
+    public boolean unbindMenu(@PathVariable @Schema(description="角色菜单主键") @Valid String roleMenuId) {
+        return auRoleMenuService.unbindMenu(roleMenuId);
+    }
+
+    /**
+     * 缩小权限范围。
+     * @param roleMenuRangeId 权限范围主键
+     * @return boolean
+     */
+    @DeleteMapping("rangeReduce/{roleMenuRangeId}}")
+    @Operation(description="缩小权限范围")
+    @PreAuthorize(menu = {"au:role:rangeReduce"}, user = {"carrot"})
+    public boolean rangeReduce(@PathVariable @Schema(description="权限范围主键") @Valid @NotBlank(message = "主键不能为空") String roleMenuRangeId) {
+        return auRoleMenuRangeService.rangeReduce(roleMenuRangeId);
+    }
+
+    /**
+     * 扩展权限部门。
+     * @param vo 扩展对象
+     * @return boolean
+     */
+    @PostMapping("rangeExpand")
+    @Operation(description="扩展权限范围")
+    @PreAuthorize(menu = {"au:role:rangeExpand"}, user = {"carrot"})
+    public List<AuRoleMenuRange> rangeExpand(@RequestBody @Schema(description="权限范围扩展对象") @Valid @NotNull(message = "权限范围扩展对象") RoleMenuRangeVO vo) {
+        return auRoleMenuRangeService.rangeExpand(vo);
+    }
 }

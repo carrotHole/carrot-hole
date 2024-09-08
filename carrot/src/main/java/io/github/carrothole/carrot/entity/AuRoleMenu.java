@@ -9,14 +9,17 @@ import java.time.LocalDateTime;
 
 import java.io.Serial;
 
+import io.github.carrothole.carrot.config.validate.ValidateGroup;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- *  实体类。
+ *  角色菜单实体类。
  *
  * @author Administrator
  * @since 2024-08-29
@@ -25,54 +28,37 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "")
+@Schema(description = "角色菜单")
 @Table("au_role_menu")
-public class AuRoleMenu implements Serializable {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
+public class AuRoleMenu extends BaseUserTimeTenant {
 
     /**
      * 主键
      */
     @Id(keyType = KeyType.Generator, value = MfConstant.ID_GENERATOR)
     @Schema(description = "主键")
+    @NotBlank(message = "主键不能为空", groups = {ValidateGroup.Update.class})
     private String id;
-
-    /**
-     * 租户主键
-     */
-    @Schema(description = "租户主键")
-    private String tenantId;
-
-    /**
-     * 创建人
-     */
-    @Schema(description = "创建人")
-    private String createdBy;
-
-    /**
-     * 创建时间
-     */
-    @Schema(description = "创建时间")
-    private LocalDateTime createdTime;
 
     /**
      * 角色主键
      */
     @Schema(description = "角色主键")
+    @NotBlank(message = "角色主键不能为空", groups = {ValidateGroup.Save.class, ValidateGroup.Update.class})
     private String roleId;
 
     /**
      * 角色主键
      */
-    @Schema(description = "角色主键")
+    @Schema(description = "菜单主键")
+    @NotBlank(message = "菜单主键不能为空", groups = {ValidateGroup.Save.class, ValidateGroup.Update.class})
     private String menuId;
 
     /**
      * 权限范围
      */
     @Schema(description = "权限范围")
+    @NotNull(message = "权限范围不能为空", groups = {ValidateGroup.Save.class, ValidateGroup.Update.class})
     private Integer auRange;
 
 }

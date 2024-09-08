@@ -1,7 +1,7 @@
 package io.github.carrothole.carrot.mapper;
 
 import com.mybatisflex.core.BaseMapper;
-import io.github.carrothole.carrot.entity.AuRoleMenuPermission;
+import io.github.carrothole.carrot.entity.AuRoleMenuRange;
 
 /**
  *  映射层。
@@ -9,6 +9,6 @@ import io.github.carrothole.carrot.entity.AuRoleMenuPermission;
  * @author Administrator
  * @since 2024-08-29
  */
-public interface AuRoleMenuPermissionMapper extends BaseMapper<AuRoleMenuPermission> {
+public interface AuRoleMenuRangeMapper extends BaseMapper<AuRoleMenuRange> {
 
 }
