@@ -1,6 +1,14 @@
 package io.github.carrothole.carrot.controller;
 
 import com.mybatisflex.core.paginate.Page;
+import io.github.carrothole.carrot.authorization.PreAuthorize;
+import io.github.carrothole.carrot.config.validate.ValidateGroup;
+import io.github.carrothole.carrot.entity.qo.AuRoleQueryVO;
+import io.github.carrothole.carrot.entity.ro.AuRoleResultVO;
+import io.github.carrothole.carrot.entity.vo.PageVO;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,7 +47,8 @@ public class AuRoleController {
      */
     @PostMapping("save")
     @Operation(description="保存")
-    public boolean save(@RequestBody @Parameter(description="")AuRole auRole) {
+    @PreAuthorize(menu = {"au:role:save"}, user = {"carrot"})
+    public boolean save(@RequestBody @Parameter(description="角色对象") @Valid @Validated(value = {ValidateGroup.Save.class}) AuRole auRole) {
         return auRoleService.save(auRole);
     }
 
@@ -51,7 +60,8 @@ public class AuRoleController {
      */
     @DeleteMapping("remove/{id}")
     @Operation(description="根据主键")
-    public boolean remove(@PathVariable @Parameter(description="主键")String id) {
+    @PreAuthorize(menu = {"au:role:remove"}, user = {"carrot"})
+    public boolean remove(@PathVariable @Parameter(description="主键") @Valid @NotBlank(message = "主键不能为空") String id) {
         return auRoleService.removeById(id);
     }
 
@@ -63,19 +73,9 @@ public class AuRoleController {
      */
     @PutMapping("update")
     @Operation(description="根据主键更新")
-    public boolean update(@RequestBody @Parameter(description="主键")AuRole auRole) {
+    @PreAuthorize(menu = {"au:role:update"}, user = {"carrot"})
+    public boolean update(@RequestBody @Parameter(description="主键") @Valid @Validated(value = {ValidateGroup.Update.class}) AuRole auRole) {
         return auRoleService.updateById(auRole);
-    }
-
-    /**
-     * 查询所有。
-     *
-     * @return 所有数据
-     */
-    @GetMapping("list")
-    @Operation(description="查询所有")
-    public List<AuRole> list() {
-        return auRoleService.list();
     }
 
     /**
@@ -86,7 +86,8 @@ public class AuRoleController {
      */
     @GetMapping("getInfo/{id}")
     @Operation(description="根据主键获取")
-    public AuRole getInfo(@PathVariable String id) {
+    @PreAuthorize(menu = {"au:role:getInfo"}, user = {"carrot"})
+    public AuRole getInfo(@PathVariable @Valid @NotBlank(message = "主键不能为空") String id) {
         return auRoleService.getById(id);
     }
 
@@ -98,8 +99,9 @@ public class AuRoleController {
      */
     @GetMapping("page")
     @Operation(description="分页查询")
-    public Page<AuRole> page(@Parameter(description="分页信息")Page<AuRole> page) {
-        return auRoleService.page(page);
+    @PreAuthorize(menu = {"au:role:page"}, user = {"carrot"})
+    public Page<AuRoleResultVO> page(@Parameter(description="分页信息") PageVO page, AuRoleQueryVO vo) {
+        return auRoleService.page(page,vo);
     }
 
 }

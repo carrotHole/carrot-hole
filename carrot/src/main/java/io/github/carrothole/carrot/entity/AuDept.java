@@ -59,6 +59,7 @@ public class AuDept extends BaseUserTimeTenant {
      * 排序
      */
     @Schema(description = "排序")
+    @GenResultVOField(describe = "排序")
     private Integer sort;
 
     /**
