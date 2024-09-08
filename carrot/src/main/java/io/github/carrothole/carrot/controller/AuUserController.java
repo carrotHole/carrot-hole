@@ -3,16 +3,20 @@ package io.github.carrothole.carrot.controller;
 import cn.hutool.core.util.StrUtil;
 import io.github.carrothole.carrot.authorization.PreAuthorize;
 import io.github.carrothole.carrot.config.validate.ValidateGroup;
+import io.github.carrothole.carrot.entity.ro.AuRoleResultVO;
 import io.github.carrothole.carrot.entity.vo.ChangePasswordVO;
 import io.github.carrothole.carrot.entity.vo.ChangeStatusVO;
 import io.github.carrothole.carrot.entity.vo.PageVO;
+import io.github.carrothole.carrot.entity.vo.UserRoleVO;
 import io.github.carrothole.carrot.exception.UnSupportOperationException;
 import io.github.carrothole.carrot.entity.ro.AuUserResultVO;
 import io.github.carrothole.carrot.entity.qo.AuUserQueryVO;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
+import io.github.carrothole.carrot.service.AuUserRoleService;
 import io.github.carrothole.carrot.util.BoolUtil;
 import io.github.carrothole.carrot.util.CheckUtil;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -31,6 +35,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 
 
+import java.util.List;
+
 import static io.github.carrothole.carrot.entity.table.AuUserTableDef.AU_USER;
 
 /**
@@ -47,6 +53,8 @@ public class AuUserController {
     @Autowired
     private AuUserService auUserService;
 
+    @Autowired
+    private AuUserRoleService auUserRoleService;
     /**
      * 添加。
      *
@@ -130,6 +138,39 @@ public class AuUserController {
     public Page<AuUserResultVO> page(@Parameter(description="分页信息") PageVO page, AuUserQueryVO queryVO) {
         return auUserService.page(page,queryVO);
     }
+
+    /**
+     * 绑定角色
+     * @param vo {@link UserRoleVO}
+     * @return boolean
+     */
+    @PutMapping("bindRole")
+    @Operation(description="绑定角色")
+    @PreAuthorize(menu = {"au:user:bindRole"}, user = "carrot")
+    public boolean bindRole(@RequestBody @Valid UserRoleVO vo) {
+        return auUserRoleService.bindRole(vo);
+    }
+
+    /**
+     * 解绑角色
+     * @param vo {@link UserRoleVO}
+     * @return boolean
+     */
+    @PutMapping("unbindRole")
+    @Operation(description="解绑角色")
+    @PreAuthorize(menu = {"au:user:unbindRole"}, user = "carrot")
+    public boolean unbindRole(@RequestBody @Valid UserRoleVO vo) {
+        return auUserRoleService.unbindRole(vo);
+    }
+
+    // 获取用户下角色
+    @GetMapping("getRole/{id}")
+    @Operation(description="获取用户下角色")
+    @PreAuthorize(menu = {"au:user:getRole"}, user = "carrot")
+    public List<AuRoleResultVO> getRole(@PathVariable @Schema(description = "用户主键") String id) {
+        return auUserRoleService.getRoleByUserId(id);
+    }
+
 
     /**
      * 修改密码。<br/>

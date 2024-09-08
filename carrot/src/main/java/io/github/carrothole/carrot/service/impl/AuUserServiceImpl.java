@@ -48,7 +48,7 @@ public class AuUserServiceImpl extends ServiceImpl<AuUserMapper, AuUser> impleme
     @Transactional
     public boolean removeById(AuUser entity) {
         // 删除用户角色绑定
-        auUserRoleService.remove(entity.getId(),entity.getDeptId());
+        auUserRoleService.remove(entity.getId());
         return super.removeById(entity);
     }
 

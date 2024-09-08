@@ -24,10 +24,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Schema(description = "用户角色绑定")
 @Table("au_user_role")
-public class AuUserRole implements Serializable {
+public class AuUserRole extends BaseUserTimeTenant {
 
-    @Serial
-    private static final long serialVersionUID = 1L;
+    public AuUserRole(String userId, String roleId,  String projectId) {
+        this.roleId = roleId;
+        this.userId = userId;
+        this.projectId = projectId;
+    }
 
     /**
      * 主键
@@ -35,12 +38,6 @@ public class AuUserRole implements Serializable {
     @Id(keyType = KeyType.Generator, value = MfConstant.ID_GENERATOR)
     @Schema(description = "主键")
     private String id;
-
-    /**
-     * 租户主键
-     */
-    @Schema(description = "租户主键")
-    private String tenantId;
 
     /**
      * 角色主键
@@ -54,11 +51,6 @@ public class AuUserRole implements Serializable {
     @Schema(description = "用户主键")
     private String userId;
 
-    /**
-     * 部门主键
-     */
-    @Schema(description = "部门主键")
-    private String deptId;
 
     /**
      * 项目主键
