@@ -19,4 +19,5 @@ public interface CarrotConstant {
      */
     public static final String PASSWORD_SALT = "geigeigei";
 
+    public static final String DEFAULT_TOKEN_KEY = "Authorization";
 }

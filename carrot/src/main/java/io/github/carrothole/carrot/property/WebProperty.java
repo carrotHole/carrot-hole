@@ -5,6 +5,8 @@ import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
+import static io.github.carrothole.carrot.config.CarrotConstant.DEFAULT_TOKEN_KEY;
+
 /**
  * ClassName: WebProperty
  * Description:
@@ -20,4 +22,5 @@ public class WebProperty {
 
     public Integer listSize = 4000;
 
+    public String tokenKey = DEFAULT_TOKEN_KEY;
 }
