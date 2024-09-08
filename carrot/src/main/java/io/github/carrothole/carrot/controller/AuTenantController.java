@@ -2,7 +2,7 @@ package io.github.carrothole.carrot.controller;
 
 import cn.hutool.core.util.StrUtil;
 import io.github.carrothole.carrot.authorization.PreAuthorize;
-import io.github.carrothole.carrot.config.validate.ValidateGroup;
+import io.github.carrothole.carrot.config.ValidateGroup;
 import io.github.carrothole.carrot.exception.ParamException;
 import io.github.carrothole.carrot.util.SecurityUtil;
 import com.mybatisflex.core.query.QueryWrapper;

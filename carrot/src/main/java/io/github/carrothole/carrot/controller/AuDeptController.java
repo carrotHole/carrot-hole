@@ -1,7 +1,7 @@
 package io.github.carrothole.carrot.controller;
 
 import io.github.carrothole.carrot.authorization.PreAuthorize;
-import io.github.carrothole.carrot.config.validate.ValidateGroup;
+import io.github.carrothole.carrot.config.ValidateGroup;
 import io.github.carrothole.carrot.entity.vo.PageVO;
 import io.github.carrothole.carrot.exception.ParamException;
 import io.github.carrothole.carrot.exception.UnSupportOperationException;

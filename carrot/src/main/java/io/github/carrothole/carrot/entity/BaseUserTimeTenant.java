@@ -19,7 +19,6 @@ import java.util.Date;
  * @since 0.0.1
  */
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class BaseUserTimeTenant implements Serializable {

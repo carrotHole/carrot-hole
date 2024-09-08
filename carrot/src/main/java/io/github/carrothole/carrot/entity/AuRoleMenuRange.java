@@ -17,6 +17,7 @@ import lombok.NoArgsConstructor;
  * @since 2024-08-29
  */
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "权限范围")

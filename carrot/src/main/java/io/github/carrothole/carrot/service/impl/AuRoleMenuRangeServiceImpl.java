@@ -38,7 +38,7 @@ public class AuRoleMenuRangeServiceImpl extends ServiceImpl<AuRoleMenuRangeMappe
         final List<AuRoleMenuRange> list = vo.getDeptIds()
                 .stream()
                 .distinct()
-                .map(deptId -> new AuRoleMenuRange(vo.getRoleMenuId(), deptId))
+                .map(deptId -> AuRoleMenuRange.builder().roleMendId(vo.getRoleMenuId()).deptId(deptId).build())
                 .collect(Collectors.toList());
         this.saveBatch(list);
         return list;

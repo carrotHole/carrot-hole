@@ -2,7 +2,7 @@ package io.github.carrothole.carrot.controller;
 
 import com.mybatisflex.core.paginate.Page;
 import io.github.carrothole.carrot.authorization.PreAuthorize;
-import io.github.carrothole.carrot.config.validate.ValidateGroup;
+import io.github.carrothole.carrot.config.ValidateGroup;
 import io.github.carrothole.carrot.entity.AuRoleMenu;
 import io.github.carrothole.carrot.entity.AuRoleMenuRange;
 import io.github.carrothole.carrot.entity.qo.AuRoleQueryVO;

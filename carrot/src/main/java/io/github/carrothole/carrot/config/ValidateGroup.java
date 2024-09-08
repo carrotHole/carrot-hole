@@ -1,4 +1,4 @@
-package io.github.carrothole.carrot.config.validate;
+package io.github.carrothole.carrot.config;
 
 /**
  * Description: 参数校验分组 <br>

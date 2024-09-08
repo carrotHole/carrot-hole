@@ -4,12 +4,8 @@ import io.github.carrothole.carrot.config.mf.MfConstant;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
-import java.io.Serializable;
-import java.time.LocalDateTime;
 
-import java.io.Serial;
-
-import io.github.carrothole.carrot.config.validate.ValidateGroup;
+import io.github.carrothole.carrot.config.ValidateGroup;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

@@ -3,7 +3,7 @@ package io.github.carrothole.carrot.entity;
 import io.github.carrothole.carrot.config.mf.MfConstant;
 import io.github.carrothole.carrot.config.mf.MfDefaultInsertListener;
 import io.github.carrothole.carrot.config.mf.MfDefaultUpdateListener;
-import io.github.carrothole.carrot.config.validate.ValidateGroup;
+import io.github.carrothole.carrot.config.ValidateGroup;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;

@@ -44,7 +44,7 @@ public class AuUserRoleServiceImpl extends ServiceImpl<AuUserRoleMapper, AuUserR
                 .stream()
                 .distinct()
                 .map(roleId -> auRoleService.getById(roleId))
-                .map(role -> new AuUserRole(vo.getUserId(), role.getId(), role.getProjectId()))
+                .map(role ->  AuUserRole.builder().userId(vo.getUserId()).roleId(role.getId()).projectId(role.getProjectId()).build())
                 .collect(Collectors.toList());
         return this.saveBatch(auUserRoles);
     }

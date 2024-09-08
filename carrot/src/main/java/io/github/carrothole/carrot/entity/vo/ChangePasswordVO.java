@@ -1,6 +1,5 @@
 package io.github.carrothole.carrot.entity.vo;
 
-import io.github.carrothole.carrot.config.validate.ValidateGroup;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
