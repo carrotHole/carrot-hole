@@ -16,10 +16,14 @@ import com.mybatisflex.spring.service.impl.ServiceImpl;
 import io.github.carrothole.carrot.entity.AuUser;
 import io.github.carrothole.carrot.mapper.AuUserMapper;
 import io.github.carrothole.carrot.service.AuUserService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import io.github.carrothole.carrot.entity.ro.AuUserResultVO;
+
+import java.util.List;
 
 import static io.github.carrothole.carrot.entity.table.AuUserTableDef.AU_USER;
 
@@ -91,7 +95,10 @@ public class AuUserServiceImpl extends ServiceImpl<AuUserMapper, AuUser> impleme
     }
 
     @Override
-    public AuUser ListUserByUserName(String username) {
-        return null;
+    public List<AuUser> ListUserByUserName(@Valid @NotBlank(message = "用户名不能为空") String username) {
+        return this.list(
+                QueryWrapper.create()
+                .where(AU_USER.USERNAME.eq(username))
+        );
     }
 }

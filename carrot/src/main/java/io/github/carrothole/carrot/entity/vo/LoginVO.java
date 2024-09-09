@@ -38,7 +38,7 @@ public class LoginVO implements Serializable {
     private String captchaKey;
 
     @Schema(description = "是否记住我")
-    private Boolean rememberMe;
+    private Integer rememberMe;
 
     @Schema(description = "登录类型")
     private Integer loginType;

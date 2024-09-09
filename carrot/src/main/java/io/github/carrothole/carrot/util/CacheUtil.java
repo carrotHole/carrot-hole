@@ -31,10 +31,20 @@ public class CacheUtil {
      * 获取缓存
      *
      * @param key 缓存key
-     * @return 缓存值
+     * @return {@link CacheValue}
      */
     public static CacheValue getCache(String key){
       return CACHE_MAP.get(key);
+    }
+
+
+    /**
+     * 删除缓存
+     * @param key 缓存key
+     * @return {@link CacheValue}
+     */
+    public static CacheValue removeCache(String key){
+        return CACHE_MAP.remove(key);
     }
 
     @Data

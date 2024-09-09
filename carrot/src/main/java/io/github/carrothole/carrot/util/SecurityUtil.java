@@ -27,7 +27,7 @@ public class SecurityUtil {
      * 1. servlet
      * 2. dubbo
      * 3. ws
-     * @return
+     * @return token
      */
     public static String getToken(){
         String token = tokenLocal.get();

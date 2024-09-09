@@ -21,7 +21,6 @@ public class TokenUtil {
     private static final String tenantIdKey = "ti";
     private static final String usernameKey = "un";
     private static final String deptIdKey = "di";
-    private static final String expireTimeKey = "et";
     private static final String randomKey = "rk";
 
     // todo 做成可配置
@@ -35,28 +34,34 @@ public class TokenUtil {
      * @param username 用户名
      * @return token
      */
-    public static String create(String tenantId,String deptId, String username) {
-        return create(tenantId,deptId, username, 12 * 60 * 60 * 1000L);
+    public static String create(String tenantId, String deptId, String username) {
+        return create(tenantId, deptId, username, 12 * 60 * 60 * 1000L);
     }
 
-    public static String create(String tenantId, String deptId,  String username, long expireTime) {
-        return create(tenantId, deptId, username, expireTime, true);
+    public static String create(String tenantId, String deptId, String username, long keepTime) {
+        return create(tenantId, deptId, username, keepTime, true);
     }
+
+    public static void remove(String tenantId, String username, String randomStr) {
+        CacheUtil.removeCache(CacheKeyUtil.getTokenKey(tenantId, username, randomStr));
+    }
+
 
     /**
      * 创建token
      *
-     * @param tenantId   租户主键
-     * @param username   用户名
-     * @param expireTime 过期时间
+     * @param tenantId 租户主键
+     * @param username 用户名
+     * @param keepTime 保持时长(ms)
      * @return token
      */
-    public static String create(String tenantId, String deptId, String username, long expireTime, boolean cache) {
+    public static String create(String tenantId, String deptId, String username, long keepTime, boolean cache) {
         // 生成一个随机的8位字符串,用于区分多端登录
-        final TokenPayLoad tokenPayLoad = new TokenPayLoad(tenantId, deptId, username, RandomUtil.randomString(8), System.currentTimeMillis()+expireTime);
+        String randomStr = RandomUtil.randomString(8);
+        final TokenPayLoad tokenPayLoad = new TokenPayLoad(tenantId, deptId, username, randomStr);
         final String token = JWTUtil.createToken(tokenPayLoad, key);
         if (cache) {
-            // todo cache
+            CacheUtil.addCache(CacheKeyUtil.getTokenKey(tenantId, username, randomStr), token, keepTime);
         }
         return token;
     }
@@ -89,25 +94,11 @@ public class TokenUtil {
         ii:
         if (verify) {
             final JSONObject payloads = jwt.getPayloads();
-            final Long expireTime = payloads.getLong(expireTimeKey);
-            if (expireTime == null) {
-                verify = false;
-                errMsg = "token解析出错";
-                break ii;
-            }
-
-            if (expireTime < System.currentTimeMillis()) {
-                verify = false;
-                errMsg = "token已过期";
-                break ii;
-            }
 
             if (cache) {
                 // todo cache
             }
-        }
-
-        if (!verify && throwE) {
+        } else if (throwE) {
             throw new AuthorizationException(errMsg);
         }
 
@@ -116,6 +107,7 @@ public class TokenUtil {
 
     /**
      * 获取token中的数据
+     *
      * @param token token
      * @return {@link TokenPayLoad}
      */
@@ -125,6 +117,7 @@ public class TokenUtil {
 
     /**
      * 获取token中的数据
+     *
      * @param token token
      * @param cache 是否缓存校验
      * @return {@link TokenPayLoad}
@@ -138,31 +131,22 @@ public class TokenUtil {
             throw new AuthorizationException("token校验失败");
         }
         final JSONObject payloads = jwt.getPayloads();
-        final Long expireTime = payloads.getLong(expireTimeKey);
-        if (expireTime == null) {
-            throw new AuthorizationException("token解析出错");
-        }
 
-        if (expireTime < System.currentTimeMillis()) {
-            throw new AuthorizationException("token已过期");
-        }
-
-        if (cache){
+        if (cache) {
             // todo cache ,从缓存数据中获取用户信息
         }
 
-        return new TokenPayLoad(payloads.getStr(tenantIdKey), payloads.getStr(deptIdKey),payloads.getStr(usernameKey), payloads.getStr(randomKey), expireTime);
+        return new TokenPayLoad(payloads.getStr(tenantIdKey), payloads.getStr(deptIdKey), payloads.getStr(usernameKey), payloads.getStr(randomKey));
 
     }
 
     public static class TokenPayLoad extends HashMap<String, Object> {
-        public TokenPayLoad(String tenantId, String deptId, String username, String randomStr, long expireTime) {
+        public TokenPayLoad(String tenantId, String deptId, String username, String randomStr) {
             super();
             setTenantId(tenantId);
             setDeptId(deptId);
             setUsername(username);
             setRandom(randomStr);
-            setExpireTime(expireTime);
         }
 
         private void setDeptId(String deptId) {
@@ -197,13 +181,6 @@ public class TokenUtil {
             this.put(randomKey, random);
         }
 
-        public Long getExpireTime() {
-            return (Long) this.get(expireTimeKey);
-        }
-
-        public void setExpireTime(Long expireTime) {
-            this.put(expireTimeKey, expireTime);
-        }
     }
 
 }

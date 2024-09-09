@@ -63,6 +63,7 @@ public class AuUser extends BaseUserTimeTenant {
     @GenQueryVOField(describe = "用户名")
     private String username;
 
+
     /**
      * 密码
      */
@@ -70,6 +71,14 @@ public class AuUser extends BaseUserTimeTenant {
     @Schema(description = "密码")
     @NotBlank(message = "密码不能为空", groups = {ValidateGroup.Save.class})
     private String password;
+
+    /**
+     * 昵称
+     */
+    @Schema(description = "昵称")
+    @GenResultVOField(describe = "昵称")
+    @GenQueryVOField(describe = "昵称")
+    private String nickname;
 
     /**
      * 排序

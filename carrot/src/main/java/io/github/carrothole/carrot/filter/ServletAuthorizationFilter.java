@@ -36,6 +36,10 @@ public class ServletAuthorizationFilter extends OncePerRequestFilter {
         TokenUtil.verify(token);
         // 设置token
         SecurityUtil.setToken(token);
-        filterChain.doFilter(request, response);
+        try {
+            filterChain.doFilter(request, response);
+        }finally {
+            SecurityUtil.tokenLocal.remove();
+        }
     }
 }
