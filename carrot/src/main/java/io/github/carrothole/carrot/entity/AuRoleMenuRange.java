@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
  * 权限范围实体类。
  *
  * @author Administrator
- * @since 2024-08-29
+ * @since 0.0.1
  */
 @Data
 @Builder

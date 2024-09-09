@@ -7,7 +7,7 @@ import io.github.carrothole.carrot.entity.AuProject;
  *  服务层。
  *
  * @author Administrator
- * @since 2024-08-29
+ * @since 0.0.1
  */
 public interface AuProjectService extends IService<AuProject> {
 

@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
  *  角色菜单实体类。
  *
  * @author Administrator
- * @since 2024-08-29
+ * @since 0.0.1
  */
 @Data
 @Builder

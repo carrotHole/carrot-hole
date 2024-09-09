@@ -13,7 +13,7 @@ import org.springframework.context.ConfigurableApplicationContext;
  * date: 2024-9-1 16:31
  *
  * @author moon
- * @since JDK 1.8
+ * @since 0.0.1
  */
 
 public class MfContextInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {

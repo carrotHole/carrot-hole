@@ -43,7 +43,7 @@ import static io.github.carrothole.carrot.entity.table.AuUserTableDef.AU_USER;
  *  控制层。
  *
  * @author Administrator
- * @since 2024-08-29
+ * @since 0.0.1
  */
 @RestController
 @Tag(name = "用户")

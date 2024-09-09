@@ -9,8 +9,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
 /**
- * Description: 鉴权过滤器 <br>
- * Date: 2024/9/2 13:42 <br>
+ * 鉴权过滤器
  *
  * @author moon
  * @since 0.0.1

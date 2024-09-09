@@ -1,8 +1,7 @@
 package io.github.carrothole.carrot.config;
 
 /**
- * Description: 常量 <br>
- * Date: 2024/9/2 11:28 <br>
+ * 常量
  *
  * @author moon
  * @since 0.0.1

@@ -7,11 +7,10 @@ import com.mybatisflex.codegen.config.GlobalConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
 /**
- * Description:  <br>
- * Date: 2024/8/29 9:47 <br>
+ * 密码工具
  *
  * @author moon
- * @since
+ * @since 0.0.1
  */
 public class CodeGen {
 

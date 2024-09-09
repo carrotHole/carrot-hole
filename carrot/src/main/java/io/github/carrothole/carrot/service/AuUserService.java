@@ -8,11 +8,13 @@ import io.github.carrothole.carrot.entity.vo.*;
 import io.github.carrothole.carrot.entity.ro.AuUserResultVO;
 import jakarta.validation.Valid;
 
+import java.util.List;
+
 /**
  *  服务层。
  *
  * @author Administrator
- * @since 2024-08-29
+ * @since 0.0.1
  */
 public interface AuUserService extends IService<AuUser> {
 
@@ -32,4 +34,6 @@ public interface AuUserService extends IService<AuUser> {
      * @return boolean
      */
     boolean updateStatus(@Valid ChangeStatusVO vo);
+
+    List<AuUser> ListUserByUserName(String username);
 }

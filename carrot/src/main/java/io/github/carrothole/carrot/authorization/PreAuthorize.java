@@ -6,8 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Description: 接口前置鉴权注解 <br>
- * Date: 2024/8/30 15:03 <br>
+ * 接口前置鉴权注解
  *
  * @author moon
  * @since 0.0.1

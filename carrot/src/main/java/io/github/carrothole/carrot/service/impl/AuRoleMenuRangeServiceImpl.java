@@ -20,7 +20,7 @@ import static io.github.carrothole.carrot.entity.table.AuRoleMenuRangeTableDef.A
  * 服务层实现。
  *
  * @author Administrator
- * @since 2024-08-29
+ * @since 0.0.1
  */
 @Service
 public class AuRoleMenuRangeServiceImpl extends ServiceImpl<AuRoleMenuRangeMapper, AuRoleMenuRange> implements AuRoleMenuRangeService {

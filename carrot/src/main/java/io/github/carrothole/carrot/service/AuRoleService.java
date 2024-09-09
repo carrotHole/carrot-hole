@@ -11,7 +11,7 @@ import io.github.carrothole.carrot.entity.vo.PageVO;
  *  服务层。
  *
  * @author Administrator
- * @since 2024-08-29
+ * @since 0.0.1
  */
 public interface AuRoleService extends IService<AuRole> {
 

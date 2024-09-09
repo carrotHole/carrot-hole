@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
  *  服务层实现。
  *
  * @author Administrator
- * @since 2024-08-29
+ * @since 0.0.1
  */
 @Service
 public class AuMenuServiceImpl extends ServiceImpl<AuMenuMapper, AuMenu> implements AuMenuService {

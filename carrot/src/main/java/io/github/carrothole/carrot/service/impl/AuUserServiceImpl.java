@@ -27,7 +27,7 @@ import static io.github.carrothole.carrot.entity.table.AuUserTableDef.AU_USER;
  *  服务层实现。
  *
  * @author Administrator
- * @since 2024-08-29
+ * @since 0.0.1
  */
 @Service
 public class AuUserServiceImpl extends ServiceImpl<AuUserMapper, AuUser> implements AuUserService {
@@ -88,5 +88,10 @@ public class AuUserServiceImpl extends ServiceImpl<AuUserMapper, AuUser> impleme
                 .eq(AU_USER.ID.getName(), vo.getId())
                 .set(AU_USER.STATUS, vo.getStatus())
                 .update();
+    }
+
+    @Override
+    public AuUser ListUserByUserName(String username) {
+        return null;
     }
 }

@@ -12,7 +12,7 @@ import java.util.Date;
  * Date: 2024/8/30 15:33 <br>
  *
  * @author moon
- * @since
+ * @since 0.0.1
  */
 public class MfDefaultInsertListener implements InsertListener {
     @Override

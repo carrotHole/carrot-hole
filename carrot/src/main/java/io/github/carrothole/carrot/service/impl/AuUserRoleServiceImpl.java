@@ -22,7 +22,7 @@ import static io.github.carrothole.carrot.entity.table.AuUserRoleTableDef.AU_USE
  * 服务层实现。
  *
  * @author Administrator
- * @since 2024-08-29
+ * @since 0.0.1
  */
 @Service
 public class AuUserRoleServiceImpl extends ServiceImpl<AuUserRoleMapper, AuUserRole> implements AuUserRoleService {

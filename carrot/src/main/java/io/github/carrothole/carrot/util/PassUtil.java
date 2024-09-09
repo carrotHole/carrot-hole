@@ -3,8 +3,7 @@ package io.github.carrothole.carrot.util;
 import cn.hutool.crypto.digest.BCrypt;
 
 /**
- * Description: 密码工具
- * date: 2024-9-2 21:01
+ * 密码工具
  *
  * @author moon
  * @since 0.0.1

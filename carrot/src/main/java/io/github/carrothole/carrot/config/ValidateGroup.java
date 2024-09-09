@@ -1,8 +1,7 @@
 package io.github.carrothole.carrot.config;
 
 /**
- * Description: 参数校验分组 <br>
- * Date: 2024/8/30 13:31 <br>
+ * 参数校验分组
  *
  * @author moon
  * @since 0.0.1

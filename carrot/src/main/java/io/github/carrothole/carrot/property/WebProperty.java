@@ -13,7 +13,7 @@ import static io.github.carrothole.carrot.config.CarrotConstant.DEFAULT_TOKEN_KE
  * date: 2024-9-1 17:30
  *
  * @author moon
- * @since JDK 1.8
+ * @since 0.0.1
  */
 @Setter
 @Configuration

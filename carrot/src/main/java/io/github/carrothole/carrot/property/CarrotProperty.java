@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
  * date: 2024-9-1 17:28
  *
  * @author moon
- * @since JDK 1.8
+ * @since 0.0.1
  */
 @Setter
 @Configuration

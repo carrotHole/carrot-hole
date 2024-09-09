@@ -15,7 +15,7 @@ import static org.mockito.Mockito.mockStatic;
  * date: 2024-8-31 20:38
  *
  * @author moon
- * @since JDK 1.8
+ * @since 0.0.1
  */
 @SpringBootTest
 public class TokenUtilTest {

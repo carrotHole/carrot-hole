@@ -18,7 +18,7 @@ import static io.github.carrothole.carrot.entity.table.AuRoleTableDef.AU_ROLE;
  * 服务层实现。
  *
  * @author Administrator
- * @since 2024-08-29
+ * @since 0.0.1
  */
 @Service
 public class AuRoleServiceImpl extends ServiceImpl<AuRoleMapper, AuRole> implements AuRoleService {

@@ -27,7 +27,7 @@ import static io.github.carrothole.carrot.entity.table.AuDeptTableDef.AU_DEPT;
  *  服务层实现。
  *
  * @author Administrator
- * @since 2024-08-29
+ * @since 0.0.1
  */
 @Service
 public class AuDeptServiceImpl extends ServiceImpl<AuDeptMapper, AuDept> implements AuDeptService {

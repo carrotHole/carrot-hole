@@ -6,11 +6,10 @@ import io.swagger.v3.oas.models.info.Info;
 import org.springframework.context.annotation.Bean;
 
 /**
- * Description:  <br>
- * Date: 2024/8/30 9:40 <br>
+ *
  *
  * @author moon
- * @since
+ * @since 0.0.1
  */
 public class SwaggerConfig {
 
