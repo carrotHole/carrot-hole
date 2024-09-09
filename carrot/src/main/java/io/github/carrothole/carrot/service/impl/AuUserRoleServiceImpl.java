@@ -1,14 +1,17 @@
 package io.github.carrothole.carrot.service.impl;
 
-import com.mybatisflex.core.query.QueryCondition;
+import cn.hutool.core.util.StrUtil;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
 import io.github.carrothole.carrot.entity.AuUserRole;
+import io.github.carrothole.carrot.entity.qo.AuRoleQueryVO;
 import io.github.carrothole.carrot.entity.ro.AuRoleResultVO;
 import io.github.carrothole.carrot.entity.vo.UserRoleVO;
 import io.github.carrothole.carrot.mapper.AuUserRoleMapper;
 import io.github.carrothole.carrot.service.AuRoleService;
 import io.github.carrothole.carrot.service.AuUserRoleService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -59,7 +62,7 @@ public class AuUserRoleServiceImpl extends ServiceImpl<AuUserRoleMapper, AuUserR
     }
 
     @Override
-    public List<AuRoleResultVO> getRoleByUserId(String userId) {
+    public List<AuRoleResultVO> getRoleByUserId(@Valid @NotBlank(message = "用户主键不能为空") String userId, AuRoleQueryVO vo) {
         return this
                 .listAs(
                         QueryWrapper.create()
@@ -67,6 +70,18 @@ public class AuUserRoleServiceImpl extends ServiceImpl<AuUserRoleMapper, AuUserR
                                 .from(AU_ROLE)
                                 .join(AU_USER_ROLE).on(AU_USER_ROLE.ROLE_ID.eq(AU_ROLE.ID))
                                 .and(AU_USER_ROLE.USER_ID.eq(userId))
+
+                                .and(AU_ROLE.PROJECT_ID.eq(vo.getProjectId(), StrUtil.isNotBlank(vo.getProjectId())))
+                                .and(AU_ROLE.STATUS.eq(vo.getStatus(), vo.getStatus() != null))
+                                .and(AU_ROLE.ROLE_TYPE.eq(vo.getRoleType(), StrUtil.isNotBlank(vo.getRoleType())))
+                                .and(AU_ROLE.TENANT_ID.eq(vo.getTenantId(), StrUtil.isNotBlank(vo.getTenantId())))
+                                .and(AU_ROLE.LEVEL.eq(vo.getLevel(), vo.getLevel() != null))
+
+                                .and(AU_ROLE.REMARK.like(vo.getRemark(), StrUtil.isNotBlank(vo.getRemark())))
+                                .and(AU_ROLE.ROLE_NAME.like(vo.getRoleName(), StrUtil.isNotBlank(vo.getRoleName())))
+
+
+
                         , AuRoleResultVO.class);
     }
 }

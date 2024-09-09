@@ -2,6 +2,7 @@ package io.github.carrothole.carrot.service;
 
 import com.mybatisflex.core.service.IService;
 import io.github.carrothole.carrot.entity.AuUserRole;
+import io.github.carrothole.carrot.entity.qo.AuRoleQueryVO;
 import io.github.carrothole.carrot.entity.ro.AuRoleResultVO;
 import io.github.carrothole.carrot.entity.vo.UserRoleVO;
 import jakarta.validation.Valid;
@@ -40,8 +41,10 @@ public interface AuUserRoleService extends IService<AuUserRole> {
 
     /**
      * 根据用户主键获取角色列表
+     *
      * @param userId 用户主键
+     * @param vo
      * @return 角色列表
      */
-    List<AuRoleResultVO> getRoleByUserId(String userId);
+    List<AuRoleResultVO> getRoleByUserId(String userId, AuRoleQueryVO vo);
 }

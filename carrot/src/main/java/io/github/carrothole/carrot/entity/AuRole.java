@@ -106,6 +106,15 @@ public class AuRole extends BaseUserTimeTenant {
     private String remark;
 
     /**
+     * 菜单范围
+     */
+    @Schema(description = "菜单范围")
+    @GenQueryVOField(describe = "菜单范围")
+    @GenResultVOField(describe = "菜单范围")
+    @NotNull(message = "菜单范围不能为空", groups = {ValidateGroup.Update.class, ValidateGroup.Save.class})
+    private Integer menuRange;
+
+    /**
      * 排序
      */
     @Schema(description = "排序")

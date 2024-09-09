@@ -18,6 +18,7 @@ import io.github.carrothole.carrot.util.BoolUtil;
 import io.github.carrothole.carrot.util.CheckUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,6 +36,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 
 
+import io.github.carrothole.carrot.entity.qo.AuRoleQueryVO;
 import java.util.List;
 
 import static io.github.carrothole.carrot.entity.table.AuUserTableDef.AU_USER;
@@ -167,8 +169,8 @@ public class AuUserController {
     @GetMapping("getRole/{id}")
     @Operation(description="获取用户下角色")
     @PreAuthorize(menu = {"au:user:getRole"}, user = "carrot")
-    public List<AuRoleResultVO> getRole(@PathVariable @Schema(description = "用户主键") String id) {
-        return auUserRoleService.getRoleByUserId(id);
+    public List<AuRoleResultVO> getRole(@PathVariable @Schema(description = "用户主键") @Valid @NotBlank(message = "用户主键不能为空")  String id, @Schema(description = "角色查询条件") AuRoleQueryVO vo) {
+        return auUserRoleService.getRoleByUserId(id, vo);
     }
 
 

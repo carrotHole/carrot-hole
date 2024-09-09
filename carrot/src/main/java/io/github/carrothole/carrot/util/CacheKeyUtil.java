@@ -10,9 +10,14 @@ public class CacheKeyUtil {
 
     private static final String PREFIX = "carrot:";
 
-    public static String getTokenKey(String tenantId, String userId, String randomKey) {
-        return PREFIX + "token:" + tenantId + ":" + userId + ":" + randomKey;
+    public static String getTokenKey(String tenantId, String username, String randomKey) {
+        return PREFIX  + tenantId + ":" + username + ":" + randomKey + ":token";
     }
+
+    public static String getUserKey(String tenantId, String userId, String randomKey) {
+        return PREFIX  + tenantId + ":" + userId + ":" + randomKey + ":user";
+    }
+
     public static String getIdentifierKey(String identifierKey) {
         return PREFIX + "identifierKey:" + identifierKey;
     }

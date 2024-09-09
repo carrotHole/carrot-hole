@@ -1,10 +1,15 @@
 package io.github.carrothole.carrot.controller;
 
 import cn.hutool.core.util.StrUtil;
+import com.mybatisflex.core.query.QueryWrapper;
+import io.github.carrothole.carrot.entity.ro.AuUserResultVO;
 import io.github.carrothole.carrot.entity.vo.LoginResultVO;
 import io.github.carrothole.carrot.entity.vo.LoginVO;
 import io.github.carrothole.carrot.exception.ParamException;
 import io.github.carrothole.carrot.service.AuLoginService;
+import io.github.carrothole.carrot.service.AuUserService;
+import io.github.carrothole.carrot.util.SecurityUtil;
+import io.github.carrothole.carrot.util.TokenUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
@@ -18,6 +23,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+import static io.github.carrothole.carrot.entity.table.AuUserTableDef.AU_USER;
 
 /**
  * Description:  <br>
@@ -33,14 +42,18 @@ public class AuLoginController extends DefaultClientCodecConfigurer {
 
     @Autowired
     private AuLoginService auLoginService;
+
+    @Autowired
+    private AuUserService auUserService;
+
     @PostMapping("username")
-    @Operation(description="用户名密码登录")
-    public LoginResultVO login(@RequestBody @Validated LoginVO vo){
-        if (StrUtil.isNotBlank(vo.getPasswordEnc())){
+    @Operation(description = "用户名密码登录")
+    public LoginResultVO login(@RequestBody @Validated LoginVO vo) {
+        if (StrUtil.isNotBlank(vo.getPasswordEnc())) {
             // todo 解密并赋值给password
             // vo.setPassword();
         }
-        if (StrUtil.isBlank(vo.getCaptcha())){
+        if (StrUtil.isBlank(vo.getCaptcha())) {
             throw new ParamException("密码不能为空");
         }
 
@@ -52,16 +65,27 @@ public class AuLoginController extends DefaultClientCodecConfigurer {
     }
 
     @GetMapping("token")
-    @Operation(description="生成token")
-    public String createToken(@Schema(description = "identifyKey")@Valid @NotBlank(message = "identifyKey不能为空") String identifyKey,@Schema(description = "部门主键") @Valid @NotBlank(message = "部门主键不能为空") String deptId){
-       return auLoginService.createToken(identifyKey,deptId);
+    @Operation(description = "生成token")
+    public String createToken(@Schema(description = "identifyKey") @Valid @NotBlank(message = "identifyKey不能为空") String identifyKey, @Schema(description = "部门主键") @Valid @NotBlank(message = "部门主键不能为空") String deptId) {
+        return auLoginService.createToken(identifyKey, deptId);
     }
-
-
 
     @PostMapping("logout")
-    @Operation(description="退出登录")
-    public boolean logout(){
-       return auLoginService.logout();
+    @Operation(description = "退出登录")
+    public boolean logout() {
+        return auLoginService.logout();
     }
+
+    @GetMapping("user")
+    @Operation(description = "获取用户信息")
+    public AuUserResultVO getUser() {
+        return SecurityUtil.getUser();
+    }
+
+    @GetMapping("menu")
+    @Operation(description = "获取菜单")
+    public List<io.github.carrothole.carrot.entity.ro.AuMenuResultVO> getMenu(@Schema(description = "应用主键") @Valid @NotBlank(message = "应用主键不能为空") String projectId){
+        return SecurityUtil.getMenuList(projectId);
+    }
+
 }

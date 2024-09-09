@@ -14,6 +14,7 @@ import io.github.carrothole.carrot.service.AuUserService;
 import io.github.carrothole.carrot.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import io.github.carrothole.carrot.entity.ro.AuUserResultVO;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -73,7 +74,9 @@ public class AuLoginServiceImpl implements AuLoginService {
             throw new AuthorizationException("登录已过期");
         }
         LoginVO vo = (LoginVO) cacheValue.getValue();
-        AuUser auUser = CheckUtil.checkNotNull(userService.getOne(QueryWrapper.create().and(AU_USER.USERNAME.eq(vo.getUsername())).and(AU_USER.DEPT_ID.eq(deptId))), "登录token异常");
+        AuUserResultVO auUser = CheckUtil.checkNotNull(userService.getOneAs(QueryWrapper.create().and(AU_USER.USERNAME.eq(vo.getUsername())).and(AU_USER.DEPT_ID.eq(deptId)), io.github.carrothole.carrot.entity.ro.AuUserResultVO.class), "登录token异常");
+
+        // 创建token
         return TokenUtil.create(auUser.getTenantId(), auUser.getDeptId(), auUser.getUsername(), BoolUtil.isTrue(vo.getRememberMe()) ? 30 * 24 * 60 * 60 * 1000L : 10 * 60 * 60 * 1000L);
     }
 
@@ -81,6 +84,7 @@ public class AuLoginServiceImpl implements AuLoginService {
     public boolean logout() {
         TokenUtil.TokenPayLoad payLoad = SecurityUtil.getPayLoad();
         TokenUtil.remove(payLoad.getTenantId(), payLoad.getUsername(), payLoad.getRandom());
+        CacheUtil.removeCache(CacheKeyUtil.getUserKey(payLoad.getTenantId(),payLoad.getUsername(), payLoad.getRandom()));
         // todo 清空当前用户相关的缓存信息
         return true;
     }

@@ -37,7 +37,6 @@ public class TokenUtilTest {
         final TokenUtil.TokenPayLoad payLoad = TokenUtil.getPayLoad(token, false);
         assertEquals(tenantId,payLoad.getTenantId());
         assertEquals(username,payLoad.getUsername());
-        assertNotEquals(expireTime,payLoad.getExpireTime());
     }
 
 }

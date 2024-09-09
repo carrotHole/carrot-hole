@@ -20,7 +20,7 @@ public class TokenUtil {
 
     private static final String tenantIdKey = "ti";
     private static final String usernameKey = "un";
-    private static final String deptIdKey = "di";
+    private static final String userIdKey = "ui";
     private static final String randomKey = "rk";
 
     // todo 做成可配置
@@ -136,25 +136,25 @@ public class TokenUtil {
             // todo cache ,从缓存数据中获取用户信息
         }
 
-        return new TokenPayLoad(payloads.getStr(tenantIdKey), payloads.getStr(deptIdKey), payloads.getStr(usernameKey), payloads.getStr(randomKey));
+        return new TokenPayLoad(payloads.getStr(tenantIdKey), payloads.getStr(userIdKey), payloads.getStr(usernameKey), payloads.getStr(randomKey));
 
     }
 
     public static class TokenPayLoad extends HashMap<String, Object> {
-        public TokenPayLoad(String tenantId, String deptId, String username, String randomStr) {
+        public TokenPayLoad(String tenantId, String userId, String username, String randomStr) {
             super();
             setTenantId(tenantId);
-            setDeptId(deptId);
+            setUserId(userId);
             setUsername(username);
             setRandom(randomStr);
         }
 
-        private void setDeptId(String deptId) {
-            this.put(deptIdKey, deptId);
+        private void setUserId(String deptId) {
+            this.put(userIdKey, deptId);
         }
 
-        private String getDeptId() {
-            return (String) this.get(deptIdKey);
+        public String getUserId() {
+            return (String) this.get(userIdKey);
         }
 
         public String getTenantId() {
