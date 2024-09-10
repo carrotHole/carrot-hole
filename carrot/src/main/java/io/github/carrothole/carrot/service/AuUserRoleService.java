@@ -46,5 +46,5 @@ public interface AuUserRoleService extends IService<AuUserRole> {
      * @param vo
      * @return 角色列表
      */
-    List<AuRoleResultVO> getRoleByUserId(String userId, AuRoleQueryVO vo);
+    List<AuRoleResultVO> listRoleByUserId(String userId, AuRoleQueryVO vo);
 }

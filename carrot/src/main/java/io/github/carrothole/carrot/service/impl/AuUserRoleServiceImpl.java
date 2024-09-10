@@ -62,7 +62,7 @@ public class AuUserRoleServiceImpl extends ServiceImpl<AuUserRoleMapper, AuUserR
     }
 
     @Override
-    public List<AuRoleResultVO> getRoleByUserId(@Valid @NotBlank(message = "用户主键不能为空") String userId, AuRoleQueryVO vo) {
+    public List<AuRoleResultVO> listRoleByUserId(@Valid @NotBlank(message = "用户主键不能为空") String userId, AuRoleQueryVO vo) {
         return this
                 .listAs(
                         QueryWrapper.create()

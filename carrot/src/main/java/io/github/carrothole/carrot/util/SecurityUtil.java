@@ -1,8 +1,11 @@
 package io.github.carrothole.carrot.util;
 
 import com.mybatisflex.core.query.QueryWrapper;
+import io.github.carrothole.carrot.entity.AuRole;
 import io.github.carrothole.carrot.entity.qo.AuRoleQueryVO;
 import io.github.carrothole.carrot.enums.MenuRangeEnum;
+import io.github.carrothole.carrot.service.AuMenuService;
+import io.github.carrothole.carrot.service.AuRoleMenuService;
 import io.github.carrothole.carrot.service.AuUserRoleService;
 import io.github.carrothole.carrot.service.AuUserService;
 import jakarta.annotation.PostConstruct;
@@ -14,7 +17,9 @@ import io.github.carrothole.carrot.entity.ro.AuMenuResultVO;
 import io.github.carrothole.carrot.entity.ro.AuRoleResultVO;
 
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static io.github.carrothole.carrot.entity.table.AuUserTableDef.AU_USER;
 
@@ -66,9 +71,19 @@ public class SecurityUtil {
     }
 
     public static List<AuMenuResultVO> getMenuList(String project, TokenUtil.TokenPayLoad payLoad){
+        // todo 添加缓存
         List<AuRoleResultVO> roleList = getRoleList(project, payLoad);
-        roleList.stream().filter(role->role.getMenuRange() == MenuRangeEnum.ALL.ordinal()).findFirst().isPresent();
-        return null;
+
+        final Set<String> roleIdSet = new HashSet<>();
+        for (AuRoleResultVO auRoleResultVO : roleList) {
+            if (auRoleResultVO.getMenuRange() == MenuRangeEnum.ALL.ordinal()){
+                // 如果有一个角色指定了全部菜单，则直接返回全部菜单
+                return auMenuService.listByProjectId(project);
+            }
+
+            roleIdSet.add(auRoleResultVO.getId());
+        }
+        return auRoleMenuService.listMenuByRoleIds(roleIdSet);
     }
 
     public static List<AuMenuResultVO> getMenuList(String project){
@@ -78,7 +93,7 @@ public class SecurityUtil {
     public static List<AuRoleResultVO> getRoleList(String project, TokenUtil.TokenPayLoad payLoad){
         AuRoleQueryVO auRoleQueryVO = new AuRoleQueryVO();
         auRoleQueryVO.setProjectId(project);
-        return auUserRoleService.getRoleByUserId(payLoad.getUserId(), auRoleQueryVO);
+        return auUserRoleService.listRoleByUserId(payLoad.getUserId(), auRoleQueryVO);
     }
 
     public static List<AuRoleResultVO> getRoleList(String project){
@@ -90,18 +105,25 @@ public class SecurityUtil {
         SecurityUtil.request = request_;
         SecurityUtil.auUserService = auUserService_;
         SecurityUtil.auUserRoleService = auUserRoleService_;
+        SecurityUtil.auRoleMenuService = auRoleMenuService_;
+        SecurityUtil.auMenuService = auMenuService_;
     }
 
 
     private static HttpServletRequest request;
     private static AuUserService auUserService;
     private static AuUserRoleService auUserRoleService;
+    private static AuRoleMenuService auRoleMenuService;
+    private static AuMenuService auMenuService;
 
     @Autowired
     private AuUserService auUserService_;
     @Autowired
     private AuUserRoleService auUserRoleService_;
-
+    @Autowired
+    private AuRoleMenuService auRoleMenuService_;
+    @Autowired
+    private AuMenuService auMenuService_;
     @Autowired
     public HttpServletRequest request_;
 }

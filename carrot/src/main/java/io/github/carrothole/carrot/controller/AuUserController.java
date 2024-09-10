@@ -170,7 +170,7 @@ public class AuUserController {
     @Operation(description="获取用户下角色")
     @PreAuthorize(menu = {"au:user:getRole"}, user = "carrot")
     public List<AuRoleResultVO> getRole(@PathVariable @Schema(description = "用户主键") @Valid @NotBlank(message = "用户主键不能为空")  String id, @Schema(description = "角色查询条件") AuRoleQueryVO vo) {
-        return auUserRoleService.getRoleByUserId(id, vo);
+        return auUserRoleService.listRoleByUserId(id, vo);
     }
 
 
