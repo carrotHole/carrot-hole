@@ -1,7 +1,7 @@
 package io.github.carrothole.carrot.entity;
 
-import io.github.carrothole.processor.generateo.anno.GenQueryVOField;
-import io.github.carrothole.processor.generateo.anno.GenResultVOField;
+import io.github.carrothole.processor.generateo.anno.GenVOField;
+import io.github.carrothole.processor.generateo.enums.VOTypeEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,22 +27,20 @@ public class BaseUserTimeTenant implements Serializable {
      * 创建人
      */
     @Schema(description = "创建人")
-    @GenResultVOField(describe = "创建人")
+    @GenVOField(describe = "创建人", type = VOTypeEnum.RESULT)
     private String createdBy;
 
     /**
      * 创建时间
      */
     @Schema(description = "创建时间")
-    @GenResultVOField(describe = "创建时间")
-    @GenQueryVOField(describe = "创建时间", between = true)
+    @GenVOField(describe = "创建时间", between = true)
     private Date createdTime;
 
     /**
      * 租户主键
      */
     @Schema(description = "租户主键")
-    @GenResultVOField(describe = "租户主键")
-    @GenQueryVOField(describe = "租户主键")
+    @GenVOField(describe = "租户主键")
     private String tenantId;
 }

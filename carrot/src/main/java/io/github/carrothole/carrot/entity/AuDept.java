@@ -10,6 +10,7 @@ import com.mybatisflex.annotation.Table;
 import java.util.List;
 
 import io.github.carrothole.processor.generateo.anno.*;
+import io.github.carrothole.processor.generateo.enums.VOTypeEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -27,12 +28,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Schema(description = "部门")
 @Table("au_dept")
-@GenQueryVO(describe = "部门查询对象")
-@GenResultVO(describe = "部门返回对象",
+@GenVO(describe = "部门返回对象",
         append = {
-                @AppendField(name = "deptTypeValue", typeName = "java.lang.String", describe = "部门类型值")
-                , @AppendField(name = "statusValue", typeName = "java.lang.String", describe = "状态值")
-        }
+                @AppendField(name = "deptTypeValue", typeName = "java.lang.String", describe = "部门类型值", type = VOTypeEnum.RESULT)
+                , @AppendField(name = "statusValue", typeName = "java.lang.String", describe = "状态值", type = VOTypeEnum.RESULT)
+        },
+        type = {VOTypeEnum.QUERY,VOTypeEnum.RESULT}
 )
 public class AuDept extends BaseUserTimeTenant {
 
@@ -42,7 +43,7 @@ public class AuDept extends BaseUserTimeTenant {
     @Id(keyType = KeyType.Generator, value = MfConstant.ID_GENERATOR)
     @Schema(description = "主键")
     @NotBlank(message = "主键不能为空", groups = {ValidateGroup.Update.class})
-    @GenResultVOField(describe = "主键")
+    @GenVOField(describe = "主键", type = VOTypeEnum.RESULT)
     private String id;
 
 
@@ -51,15 +52,14 @@ public class AuDept extends BaseUserTimeTenant {
      */
     @Schema(description = "部门名称")
     @NotBlank(message = "部门名称不能为空", groups = {ValidateGroup.Update.class, ValidateGroup.Save.class})
-    @GenResultVOField(describe = "部门名称")
-    @GenQueryVOField(describe = "部门名称")
+    @GenVOField(describe = "部门名称")
     private String deptName;
 
     /**
      * 排序
      */
     @Schema(description = "排序")
-    @GenResultVOField(describe = "排序")
+    @GenVOField(describe = "排序", type = VOTypeEnum.RESULT)
     private Integer sort;
 
     /**
@@ -67,8 +67,7 @@ public class AuDept extends BaseUserTimeTenant {
      */
     @Schema(description = "部门类型")
     @NotBlank(message = "部门类型不能为空", groups = {ValidateGroup.Update.class, ValidateGroup.Save.class})
-    @GenResultVOField(describe = "部门类型")
-    @GenQueryVOField(describe = "部门类型")
+    @GenVOField(describe = "部门类型")
     private Integer deptType;
 
     /**
@@ -76,8 +75,7 @@ public class AuDept extends BaseUserTimeTenant {
      */
     @Schema(description = "状态")
     @NotBlank(message = "状态不能为空", groups = {ValidateGroup.Update.class, ValidateGroup.Save.class})
-    @GenResultVOField(describe = "状态")
-    @GenQueryVOField(describe = "状态")
+    @GenVOField(describe = "状态")
     private Integer status;
 
     /**
@@ -85,8 +83,7 @@ public class AuDept extends BaseUserTimeTenant {
      */
     @Schema(description = "父主键")
     @NotBlank(message = "父主键不能为空", groups = {ValidateGroup.Update.class, ValidateGroup.Save.class})
-    @GenResultVOField(describe = "父主键")
-    @GenQueryVOField(describe = "父主键")
+    @GenVOField(describe = "父主键")
     private String parentId;
 
     /**

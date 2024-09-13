@@ -7,6 +7,7 @@ import com.mybatisflex.annotation.Table;
 
 import io.github.carrothole.carrot.config.ValidateGroup;
 import io.github.carrothole.processor.generateo.anno.*;
+import io.github.carrothole.processor.generateo.enums.VOTypeEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -15,7 +16,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- *  实体类。
+ * 实体类。
  *
  * @author Administrator
  * @since 0.0.1
@@ -25,12 +26,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Schema(description = "角色")
 @Table("au_role")
-@GenQueryVO(describe = "角色查询对象")
-@GenResultVO(describe = "角色返回对象",
-append = {
-        @AppendField(name = "statusValue", typeName = "java.lang.String", describe = "状态值"),
-        @AppendField(name = "roleTypeValue", typeName = "java.lang.String", describe = "角色类型值")
-})
+@GenVO(describe = "角色返回对象",
+        append = {
+                @AppendField(name = "statusValue", typeName = "java.lang.String", describe = "状态值", type = VOTypeEnum.RESULT),
+                @AppendField(name = "roleTypeValue", typeName = "java.lang.String", describe = "角色类型值", type = VOTypeEnum.RESULT)
+        },
+        type = {VOTypeEnum.QUERY, VOTypeEnum.RESULT})
 public class AuRole extends BaseUserTimeTenant {
 
     /**
@@ -38,7 +39,7 @@ public class AuRole extends BaseUserTimeTenant {
      */
     @Id(keyType = KeyType.Generator, value = MfConstant.ID_GENERATOR)
     @Schema(description = "主键")
-    @GenResultVOField(describe = "主键")
+    @GenVOField(describe = "主键", type = VOTypeEnum.RESULT)
     @NotBlank(message = "主键不能为空", groups = {ValidateGroup.Update.class})
     private String id;
 
@@ -47,8 +48,7 @@ public class AuRole extends BaseUserTimeTenant {
      * 角色名
      */
     @Schema(description = "角色名")
-    @GenQueryVOField(describe = "角色名")
-    @GenResultVOField(describe = "角色名")
+    @GenVOField(describe = "角色名")
     @NotBlank(message = "角色名不能为空", groups = {ValidateGroup.Update.class, ValidateGroup.Save.class})
     private String roleName;
 
@@ -56,8 +56,7 @@ public class AuRole extends BaseUserTimeTenant {
      * 角色类型
      */
     @Schema(description = "角色类型")
-    @GenQueryVOField(describe = "角色类型")
-    @GenResultVOField(describe = "角色类型")
+    @GenVOField(describe = "角色类型")
     @NotBlank(message = "角色类型不能为空", groups = {ValidateGroup.Update.class, ValidateGroup.Save.class})
     private String roleType;
 
@@ -65,8 +64,7 @@ public class AuRole extends BaseUserTimeTenant {
      * 应用主键
      */
     @Schema(description = "应用主键")
-    @GenQueryVOField(describe = "应用主键")
-    @GenResultVOField(describe = "应用主键")
+    @GenVOField(describe = "应用主键")
     @NotBlank(message = "应用主键不能为空", groups = {ValidateGroup.Update.class, ValidateGroup.Save.class})
     private String projectId;
 
@@ -74,8 +72,7 @@ public class AuRole extends BaseUserTimeTenant {
      * 部门主键
      */
     @Schema(description = "部门主键")
-    @GenQueryVOField(describe = "部门主键")
-    @GenResultVOField(describe = "部门主键")
+    @GenVOField(describe = "部门主键")
     @NotBlank(message = "部门主键不能为空", groups = {ValidateGroup.Update.class, ValidateGroup.Save.class})
     private String deptId;
 
@@ -83,8 +80,7 @@ public class AuRole extends BaseUserTimeTenant {
      * 级别
      */
     @Schema(description = "级别")
-    @GenQueryVOField(describe = "级别")
-    @GenResultVOField(describe = "级别")
+    @GenVOField(describe = "级别")
     @NotNull(message = "级别不能为空", groups = {ValidateGroup.Update.class, ValidateGroup.Save.class})
     private Integer level;
 
@@ -92,8 +88,7 @@ public class AuRole extends BaseUserTimeTenant {
      * 状态
      */
     @Schema(description = "状态")
-    @GenQueryVOField(describe = "状态")
-    @GenResultVOField(describe = "状态")
+    @GenVOField(describe = "状态")
     @NotBlank(message = "状态不能为空", groups = {ValidateGroup.Update.class, ValidateGroup.Save.class})
     private Integer status;
 
@@ -101,16 +96,14 @@ public class AuRole extends BaseUserTimeTenant {
      * 备注
      */
     @Schema(description = "备注")
-    @GenQueryVOField(describe = "备注")
-    @GenResultVOField(describe = "备注")
+    @GenVOField(describe = "备注")
     private String remark;
 
     /**
      * 菜单范围
      */
     @Schema(description = "菜单范围")
-    @GenQueryVOField(describe = "菜单范围")
-    @GenResultVOField(describe = "菜单范围")
+    @GenVOField(describe = "菜单范围")
     @NotNull(message = "菜单范围不能为空", groups = {ValidateGroup.Update.class, ValidateGroup.Save.class})
     private Integer menuRange;
 
@@ -118,7 +111,7 @@ public class AuRole extends BaseUserTimeTenant {
      * 排序
      */
     @Schema(description = "排序")
-    @GenResultVOField(describe = "排序")
+    @GenVOField(describe = "排序", type = VOTypeEnum.RESULT)
     private Integer sort;
 
 }

@@ -146,7 +146,7 @@ public class AuRoleController {
      * @param roleMenuRangeId 权限范围主键
      * @return boolean
      */
-    @DeleteMapping("rangeReduce/{roleMenuRangeId}}")
+    @DeleteMapping("rangeReduce/{roleMenuRangeId}")
     @Operation(description="缩小权限范围")
     @PreAuthorize(menu = {"au:role:rangeReduce"}, user = {"carrot"})
     public boolean rangeReduce(@PathVariable @Schema(description="权限范围主键") @Valid @NotBlank(message = "主键不能为空") String roleMenuRangeId) {

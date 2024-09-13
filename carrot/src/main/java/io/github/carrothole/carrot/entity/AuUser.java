@@ -8,6 +8,7 @@ import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
 
 import io.github.carrothole.processor.generateo.anno.*;
+import io.github.carrothole.processor.generateo.enums.VOTypeEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -26,12 +27,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Schema(description = "")
 @Table("au_user")
-@GenQueryVO(describe = "用户查询对象")
-@GenResultVO(describe = "用户返回对象",
+@GenVO(describe = "用户返回对象",
         append = {
-            @AppendField(name = "statusValue", typeName = "java.lang.String", describe = "状态值"),
-            @AppendField(name = "realUserValue", typeName = "java.lang.String", describe = "是否真实用户值"),
-        }
+            @AppendField(name = "statusValue", typeName = "java.lang.String", describe = "状态值", type = VOTypeEnum.RESULT),
+            @AppendField(name = "realUserValue", typeName = "java.lang.String", describe = "是否真实用户值", type = VOTypeEnum.RESULT),
+        },
+        type = {VOTypeEnum.QUERY, VOTypeEnum.RESULT}
 )
 public class AuUser extends BaseUserTimeTenant {
 
@@ -41,7 +42,7 @@ public class AuUser extends BaseUserTimeTenant {
     @Id(keyType = KeyType.Generator, value = MfConstant.ID_GENERATOR)
     @Schema(description = "主键")
     @NotBlank(message = "主键不能为空", groups = {ValidateGroup.Update.class})
-    @GenResultVOField(describe = "主键")
+    @GenVOField(describe = "主键", type = VOTypeEnum.RESULT)
     private String id;
 
 
@@ -50,8 +51,7 @@ public class AuUser extends BaseUserTimeTenant {
      */
     @Schema(description = "创建方式")
     @NotNull(message = "创建类型不能为空", groups = {ValidateGroup.Update.class})
-    @GenResultVOField(describe = "创建方式")
-    @GenQueryVOField(describe = "创建方式")
+    @GenVOField(describe = "创建方式")
     private Integer createdType;
 
     /**
@@ -59,8 +59,7 @@ public class AuUser extends BaseUserTimeTenant {
      */
     @Schema(description = "用户名")
     @NotBlank(message = "用户名不能为空", groups = {ValidateGroup.Update.class, ValidateGroup.Save.class})
-    @GenResultVOField(describe = "用户名")
-    @GenQueryVOField(describe = "用户名")
+    @GenVOField(describe = "用户名")
     private String username;
 
 
@@ -76,15 +75,14 @@ public class AuUser extends BaseUserTimeTenant {
      * 昵称
      */
     @Schema(description = "昵称")
-    @GenResultVOField(describe = "昵称")
-    @GenQueryVOField(describe = "昵称")
+    @GenVOField(describe = "昵称")
     private String nickname;
 
     /**
      * 排序
      */
     @Schema(description = "排序")
-    @GenResultVOField(describe = "排序")
+    @GenVOField(describe = "排序", type = VOTypeEnum.RESULT)
     private Integer sort;
 
     /**
@@ -92,8 +90,7 @@ public class AuUser extends BaseUserTimeTenant {
      */
     @Schema(description = "状态")
     @NotNull(message = "状态不能为空", groups = {ValidateGroup.Update.class, ValidateGroup.Save.class})
-    @GenResultVOField(describe = "状态")
-    @GenQueryVOField(describe = "状态")
+    @GenVOField(describe = "状态")
     private Integer status;
 
     /**
@@ -101,8 +98,7 @@ public class AuUser extends BaseUserTimeTenant {
      */
     @Schema(description = "部门主键")
     @NotNull(message = "部门主键不能为空", groups = {ValidateGroup.Update.class, ValidateGroup.Save.class})
-    @GenResultVOField(describe = "部门主键")
-    @GenQueryVOField(describe = "部门主键")
+    @GenVOField(describe = "部门主键")
     private String deptId;
 
     /**
@@ -110,8 +106,7 @@ public class AuUser extends BaseUserTimeTenant {
      */
     @Schema(description = "是否为真实用户")
     @NotNull(message = "指定用户是否为真实用户", groups = {ValidateGroup.Update.class, ValidateGroup.Save.class})
-    @GenResultVOField(describe = "是否为真实用户")
-    @GenQueryVOField(describe = "是否为真实用户")
+    @GenVOField(describe = "是否为真实用户")
     private Integer realUser;
 
 }

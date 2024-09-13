@@ -6,11 +6,13 @@ import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
 
 import io.github.carrothole.processor.generateo.anno.*;
+import io.github.carrothole.processor.generateo.enums.VOTypeEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 
 /**
  *  实体类。
@@ -24,22 +26,22 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Schema(description = "")
 @Table("au_menu")
-@GenQueryVO(describe = "菜单查询对象")
-@GenResultVO(describe = "菜单返回对象",
+@GenVO(describe = "菜单返回对象",
     append = {
-            @AppendField(name = "statusValue", typeName = "java.lang.String", describe = "状态值"),
-            @AppendField(name = "menuTypeValue", typeName = "java.lang.String", describe = "菜单类型值")
-    }
+            @AppendField(name = "statusValue", typeName = "java.lang.String", describe = "状态值", type = VOTypeEnum.RESULT),
+            @AppendField(name = "menuTypeValue", typeName = "java.lang.String", describe = "菜单类型值", type = VOTypeEnum.RESULT),
+            @AppendField(name = "children", typeName = "java.util.List", describe = "子菜单集合", type = VOTypeEnum.RESULT)
+    },
+        type = {VOTypeEnum.QUERY,VOTypeEnum.RESULT}
 )
 public class AuMenu extends BaseUserTimeTenant {
-
 
     /**
      * 主键
      */
     @Id(keyType = KeyType.Generator, value = MfConstant.ID_GENERATOR)
     @Schema(description = "主键")
-    @GenResultVOField(describe = "主键")
+    @GenVOField(describe = "主键", type = VOTypeEnum.RESULT)
     private String id;
 
 
@@ -47,78 +49,77 @@ public class AuMenu extends BaseUserTimeTenant {
      * 父主键
      */
     @Schema(description = "父主键")
-    @GenQueryVOField(describe = "父主键")
-    @GenResultVOField(describe = "父主键")
+    @GenVOField(describe = "父主键")
     private String parentId;
 
     /**
      * 菜单名称
      */
     @Schema(description = "菜单名称")
-    @GenQueryVOField(describe = "菜单名称")
-    @GenResultVOField(describe = "菜单名称")
+    @GenVOField(describe = "菜单名称")
     private String menuName;
 
     /**
      * 菜单类型
      */
     @Schema(description = "菜单类型")
-    @GenQueryVOField(describe = "菜单类型")
-    @GenResultVOField(describe = "菜单类型")
+    @GenVOField(describe = "菜单类型")
     private String menuType;
 
     /**
      * 菜单地址
      */
     @Schema(description = "菜单地址")
-    @GenQueryVOField(describe = "菜单地址")
-    @GenResultVOField(describe = "菜单地址")
+    @GenVOField(describe = "菜单地址")
     private String menuUrl;
+
+    /**
+     * 组件地址
+     */
+    @Schema(description = "组件地址")
+    @GenVOField(describe = "组件地址")
+    private String componentPath;
 
     /**
      * 权限编码
      */
     @Schema(description = "权限编码")
-    @GenQueryVOField(describe = "权限编码")
-    @GenResultVOField(describe = "权限编码")
+    @GenVOField(describe = "权限编码")
     private String permissionCode;
 
     /**
      * 应用主键
      */
     @Schema(description = "应用主键")
-    @GenQueryVOField(describe = "应用主键")
-    @GenResultVOField(describe = "应用主键")
+    @GenVOField(describe = "应用主键")
     private String projectId;
 
     /**
      * 状态
      */
     @Schema(description = "状态")
-    @GenQueryVOField(describe = "状态")
-    @GenResultVOField(describe = "状态")
+    @GenVOField(describe = "状态")
     private Integer status;
 
     /**
      * 排序
      */
     @Schema(description = "排序")
-    @GenResultVOField(describe = "排序")
+    @GenVOField(describe = "排序", type = VOTypeEnum.RESULT)
     private Integer sort;
 
     /**
      * 图标
      */
     @Schema(description = "图标")
-    @GenResultVOField(describe = "图标")
+    @GenVOField(describe = "图标", type = VOTypeEnum.RESULT)
     private String icon;
 
     /**
      * 级别
      */
     @Schema(description = "级别")
-    @GenResultVOField(describe = "级别")
-    @GenQueryVOField(describe = "级别")
+    @GenVOField(describe = "级别")
     private Integer level;
 
 }

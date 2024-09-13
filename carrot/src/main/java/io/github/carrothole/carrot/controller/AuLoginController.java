@@ -38,7 +38,7 @@ import static io.github.carrothole.carrot.entity.table.AuUserTableDef.AU_USER;
 @RestController
 @Tag(name = "登录")
 @RequestMapping("/login")
-public class AuLoginController extends DefaultClientCodecConfigurer {
+public class AuLoginController{
 
     @Autowired
     private AuLoginService auLoginService;
