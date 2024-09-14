@@ -9,10 +9,7 @@ import io.github.carrothole.carrot.config.ValidateGroup;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 /**
  *  角色菜单实体类。
@@ -21,6 +18,7 @@ import lombok.NoArgsConstructor;
  * @since 0.0.1
  */
 @Data
+@EqualsAndHashCode(callSuper=true)
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

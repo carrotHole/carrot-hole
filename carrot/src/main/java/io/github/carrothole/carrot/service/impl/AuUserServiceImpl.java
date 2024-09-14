@@ -25,10 +25,12 @@ import io.github.carrothole.carrot.entity.ro.AuUserResultVO;
 
 import java.util.List;
 
+import static com.mybatisflex.core.tenant.TenantManager.ignoreTenantCondition;
+import static com.mybatisflex.core.tenant.TenantManager.restoreTenantCondition;
 import static io.github.carrothole.carrot.entity.table.AuUserTableDef.AU_USER;
 
 /**
- *  服务层实现。
+ * 服务层实现。
  *
  * @author Administrator
  * @since 0.0.1
@@ -41,9 +43,9 @@ public class AuUserServiceImpl extends ServiceImpl<AuUserMapper, AuUser> impleme
 
     @Override
     @Transactional
-    public boolean save(AuUser auUser){
+    public boolean save(AuUser auUser) {
         // 密码加密
-        auUser.setPassword(PassUtil.encrypt(auUser.getPassword(), CarrotConstant.PASSWORD_SALT));
+        auUser.setPassword(PassUtil.encrypt(auUser.getPassword()));
         // 保存用户信息
         return super.save(auUser);
     }
@@ -72,7 +74,7 @@ public class AuUserServiceImpl extends ServiceImpl<AuUserMapper, AuUser> impleme
                 page.buildPage(),
                 page.appendOrderBy(
                         QueryWrapper.create(),
-                        AU_USER.SORT.asc(),AU_USER.CREATED_TIME.desc()
+                        AU_USER.SORT.asc(), AU_USER.CREATED_TIME.desc()
                 ),
                 AuUserResultVO.class
         );
@@ -82,7 +84,7 @@ public class AuUserServiceImpl extends ServiceImpl<AuUserMapper, AuUser> impleme
     public boolean updatePassword(ChangePasswordVO vo) {
         return UpdateChain.of(AuUser.class)
                 .eq(AU_USER.USERNAME.getName(), vo.getUsername())
-                .set(AU_USER.PASSWORD,PassUtil.encrypt(vo.getPassword(),CarrotConstant.PASSWORD_SALT))
+                .set(AU_USER.PASSWORD, PassUtil.encrypt(vo.getPassword()))
                 .update();
     }
 
@@ -95,10 +97,33 @@ public class AuUserServiceImpl extends ServiceImpl<AuUserMapper, AuUser> impleme
     }
 
     @Override
-    public List<AuUser> ListUserByUserName(@Valid @NotBlank(message = "用户名不能为空") String username) {
-        return this.list(
-                QueryWrapper.create()
-                .where(AU_USER.USERNAME.eq(username))
-        );
+    public List<AuUser> ListUserByUserName(@Valid @NotBlank(message = "用户名不能为空") String username, String tenantId) {
+        try {
+            ignoreTenantCondition();
+            return this.list(
+                    QueryWrapper.create()
+                            .where(AU_USER.USERNAME.eq(username))
+                            .and(AU_USER.TENANT_ID.eq(tenantId))
+            );
+        } finally {
+            restoreTenantCondition();
+        }
+
+    }
+
+    @Override
+    public AuUserResultVO getOneByUsernameDeptAs(String username, String deptId, String tenantId) {
+        try {
+            ignoreTenantCondition();
+            return super.getOneAs(
+                    QueryWrapper.create()
+                            .and(AU_USER.USERNAME.eq(username))
+                            .and(AU_USER.DEPT_ID.eq(deptId))
+                            .and(AU_USER.TENANT_ID.eq(tenantId)),
+                    AuUserResultVO.class
+            );
+        } finally {
+            restoreTenantCondition();
+        }
     }
 }

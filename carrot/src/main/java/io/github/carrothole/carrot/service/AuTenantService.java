@@ -11,4 +11,5 @@ import io.github.carrothole.carrot.entity.AuTenant;
  */
 public interface AuTenantService extends IService<AuTenant> {
 
+    AuTenant getByTenantMark(String tenantMark);
 }

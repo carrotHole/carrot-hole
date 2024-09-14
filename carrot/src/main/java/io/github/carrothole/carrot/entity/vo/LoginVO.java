@@ -44,6 +44,9 @@ public class LoginVO implements Serializable {
     private Integer loginType;
 
     @Schema(description = "租户标志")
-    private Integer tenantMark;
+    private String tenantMark;
+
+    @Schema(description = "租户id", hidden = true)
+    private String tenantId;
 
 }

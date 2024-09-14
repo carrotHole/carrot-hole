@@ -17,9 +17,12 @@ import io.github.carrothole.carrot.entity.qo.AuDeptQueryVO;
 import io.github.carrothole.carrot.entity.ro.AuDeptResultVO;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import static com.mybatisflex.core.tenant.TenantManager.ignoreTenantCondition;
+import static com.mybatisflex.core.tenant.TenantManager.restoreTenantCondition;
 import static io.github.carrothole.carrot.config.CarrotConstant.DEPT_ANCESTRY_ID;
 import static io.github.carrothole.carrot.entity.table.AuDeptTableDef.AU_DEPT;
 
@@ -104,4 +107,15 @@ public class AuDeptServiceImpl extends ServiceImpl<AuDeptMapper, AuDept> impleme
                 AuDeptResultVO.class
         );
     }
+
+    @Override
+    public List<AuDept> listByIds(Collection<? extends Serializable> ids, String tenantId){
+        try {
+            ignoreTenantCondition();
+            return this.list(QueryWrapper.create().and(AU_DEPT.ID.in(ids)).and(AU_DEPT.TENANT_ID.eq(tenantId)));
+        }finally {
+            restoreTenantCondition();
+        }
+    }
+
 }

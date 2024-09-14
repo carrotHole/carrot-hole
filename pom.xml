@@ -31,6 +31,8 @@
         <url/>
     </scm>
     <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <java.version>17</java.version>
         <mybatis.flex.version>1.9.6</mybatis.flex.version>
         <mysql.connector.j.version>9.0.0</mysql.connector.j.version>

@@ -14,11 +14,10 @@ public class PassUtil {
     /**
      * 加密
      * @param password 明文明码
-     * @param salt 盐
      * @return 密文密码
      */
-    public static String encrypt(String password, String salt) {
-        return BCrypt.hashpw(password,salt);
+    public static String encrypt(String password) {
+        return BCrypt.hashpw(password,BCrypt.gensalt());
     }
 
     /**

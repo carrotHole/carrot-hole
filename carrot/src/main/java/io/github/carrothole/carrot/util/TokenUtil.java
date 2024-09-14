@@ -86,7 +86,11 @@ public class TokenUtil {
      * @return 是否有效
      */
     public static boolean verify(String token, boolean cache, boolean throwE) {
+
         String errMsg = "token校验失败";
+        if(token == null){
+            throw new AuthorizationException("请登录后重试");
+        }
 
         final JWT jwt = JWT.of(token);
         boolean verify = jwt.setKey(key).verify();

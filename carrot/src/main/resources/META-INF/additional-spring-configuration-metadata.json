@@ -1,0 +1,14 @@
+{
+  "properties": [
+    {
+      "name": "carrot.web.ignoreUris",
+      "type": "java.lang.String",
+      "description": "Description for carrot.web.ignoreUris."
+    },
+
+    {
+      "name": "carrot.web.listSize",
+      "type": "java.lang.String",
+      "description": "Description for carrot.web.listSize."
+    }
+  ] }

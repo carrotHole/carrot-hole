@@ -8,10 +8,7 @@ import com.mybatisflex.annotation.Table;
 import io.github.carrothole.processor.generateo.anno.*;
 import io.github.carrothole.processor.generateo.enums.VOTypeEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 
 /**
@@ -21,6 +18,7 @@ import lombok.NoArgsConstructor;
  * @since 0.0.1
  */
 @Data
+@EqualsAndHashCode(callSuper=true)
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

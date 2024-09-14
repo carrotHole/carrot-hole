@@ -12,9 +12,7 @@ import io.github.carrothole.processor.generateo.enums.VOTypeEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 /**
  * 实体类。
@@ -23,9 +21,11 @@ import lombok.NoArgsConstructor;
  * @since 0.0.1
  */
 @Data
+@Builder
+@EqualsAndHashCode(callSuper=true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "")
+@Schema(description = "用户")
 @Table("au_user")
 @GenVO(describe = "用户返回对象",
         append = {

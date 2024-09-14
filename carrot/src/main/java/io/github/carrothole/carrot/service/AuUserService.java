@@ -35,5 +35,7 @@ public interface AuUserService extends IService<AuUser> {
      */
     boolean updateStatus(@Valid ChangeStatusVO vo);
 
-    List<AuUser> ListUserByUserName(String username);
+    List<AuUser> ListUserByUserName(String username, String tenantId);
+
+    AuUserResultVO getOneByUsernameDeptAs(String username, String deptId, String tenantId);
 }

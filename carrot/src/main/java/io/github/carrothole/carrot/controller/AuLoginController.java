@@ -1,7 +1,6 @@
 package io.github.carrothole.carrot.controller;
 
 import cn.hutool.core.util.StrUtil;
-import com.mybatisflex.core.query.QueryWrapper;
 import io.github.carrothole.carrot.entity.ro.AuUserResultVO;
 import io.github.carrothole.carrot.entity.vo.LoginResultVO;
 import io.github.carrothole.carrot.entity.vo.LoginVO;
@@ -9,31 +8,23 @@ import io.github.carrothole.carrot.exception.ParamException;
 import io.github.carrothole.carrot.service.AuLoginService;
 import io.github.carrothole.carrot.service.AuUserService;
 import io.github.carrothole.carrot.util.SecurityUtil;
-import io.github.carrothole.carrot.util.TokenUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.codec.support.DefaultClientCodecConfigurer;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static io.github.carrothole.carrot.entity.table.AuUserTableDef.AU_USER;
 
 /**
  * Description:  <br>
  * Date: 2024/8/29 13:44 <br>
  *
  * @author moon
- * @since
+ * @since 0.0.1
  */
 @RestController
 @Tag(name = "登录")
@@ -46,14 +37,14 @@ public class AuLoginController{
     @Autowired
     private AuUserService auUserService;
 
-    @PostMapping("username")
+    @PostMapping("/username")
     @Operation(description = "用户名密码登录")
-    public LoginResultVO login(@RequestBody @Validated LoginVO vo) {
+    public LoginResultVO login(@RequestBody @Valid LoginVO vo) {
         if (StrUtil.isNotBlank(vo.getPasswordEnc())) {
             // todo 解密并赋值给password
             // vo.setPassword();
         }
-        if (StrUtil.isBlank(vo.getCaptcha())) {
+        if (StrUtil.isBlank(vo.getPassword())) {
             throw new ParamException("密码不能为空");
         }
 
@@ -66,7 +57,7 @@ public class AuLoginController{
 
     @GetMapping("token")
     @Operation(description = "生成token")
-    public String createToken(@Schema(description = "identifyKey") @Valid @NotBlank(message = "identifyKey不能为空") String identifyKey, @Schema(description = "部门主键") @Valid @NotBlank(message = "部门主键不能为空") String deptId) {
+    public String createToken(@Schema(description = "identifyKey") String identifyKey, @Schema(description = "部门主键")  String deptId) {
         return auLoginService.createToken(identifyKey, deptId);
     }
 

@@ -5,6 +5,9 @@ import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static io.github.carrothole.carrot.config.CarrotConstant.DEFAULT_TOKEN_KEY;
 
 /**
@@ -23,4 +26,7 @@ public class WebProperty {
     public Integer listSize = 4000;
 
     public String tokenKey = DEFAULT_TOKEN_KEY;
+
+    public List<String> ignoreUris = new ArrayList<>();
+
 }

@@ -5,6 +5,11 @@ import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.service.IService;
 import io.github.carrothole.carrot.entity.AuDept;
 import io.github.carrothole.carrot.entity.qo.AuDeptQueryVO;
+import io.github.carrothole.carrot.entity.ro.AuDeptResultVO;
+
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.List;
 
 /**
  *  服务层。
@@ -20,5 +25,7 @@ public interface AuDeptService extends IService<AuDept> {
      * @param auDept 分页查询参数
      * @return Page<AuDept>
      */
-    Page<io.github.carrothole.carrot.entity.ro.AuDeptResultVO> page(PageVO vo, AuDeptQueryVO auDept);
+    Page<AuDeptResultVO> page(PageVO vo, AuDeptQueryVO auDept);
+
+    List<AuDept> listByIds(Collection<? extends Serializable> ids, String tenantId);
 }
