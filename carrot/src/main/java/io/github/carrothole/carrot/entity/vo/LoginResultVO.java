@@ -22,8 +22,8 @@ import java.util.List;
 @Schema(description = "登录返回对象")
 public class LoginResultVO implements Serializable {
 
-    @Schema(description = "identity key")
-    private String identityKey;
+    @Schema(description = "identifyKey key")
+    private String identifyKey;
 
     @Schema(description = "用户信息")
     private List<LoginResultUserVO> users;

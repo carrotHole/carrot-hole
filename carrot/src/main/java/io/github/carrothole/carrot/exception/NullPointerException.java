@@ -15,15 +15,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class NullPointerException extends CarrotException {
 
-    /**
-     * 错误码
-     */
-    private int code;
-    /**
-     * 错误信息
-     */
-    private String msg;
-
     public NullPointerException(String msg) {
         super(1003,msg);
     }

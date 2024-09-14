@@ -2,6 +2,7 @@ package io.github.carrothole.carrot.exception;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 /**
  * ClassName: AuthorizationException
@@ -13,6 +14,7 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
+@ToString(callSuper = true)
 public class AuthorizationException extends CarrotException {
 
     public AuthorizationException(String message) {

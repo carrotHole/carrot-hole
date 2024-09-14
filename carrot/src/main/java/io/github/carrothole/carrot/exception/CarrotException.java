@@ -2,6 +2,7 @@ package io.github.carrothole.carrot.exception;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 /**
  * ClassName: BaseException
@@ -13,6 +14,7 @@ import lombok.NoArgsConstructor;
  */
 @NoArgsConstructor
 @Data
+@ToString(callSuper = true)
 public class CarrotException extends RuntimeException {
 
     /**
@@ -35,5 +37,6 @@ public class CarrotException extends RuntimeException {
         this.code = 500;
         this.msg = "服务器异常，请联系管理员";
     }
+
 
 }

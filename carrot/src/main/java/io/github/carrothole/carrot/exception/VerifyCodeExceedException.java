@@ -2,6 +2,7 @@ package io.github.carrothole.carrot.exception;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 /**
  * 验证码过期异常
@@ -10,6 +11,7 @@ import lombok.NoArgsConstructor;
  * @since 0.0.1
  */
 @Data
+@ToString(callSuper = true)
 @NoArgsConstructor
 public class VerifyCodeExceedException extends CarrotException {
 

@@ -72,7 +72,7 @@ public class AuLoginServiceImpl implements AuLoginService {
         String identityKey = IdUtil.simpleUUID();
         vo.setTenantId(tenant.getId());
         CacheUtil.addCache(CacheKeyUtil.getIdentifierKey(identityKey), vo, 30 * 60 * 1000L);
-        return LoginResultVO.builder().identityKey(identityKey).users(resultUsers).build();
+        return LoginResultVO.builder().identifyKey(identityKey).users(resultUsers).build();
     }
 
     @Override
