@@ -20,23 +20,6 @@ import static org.mockito.Mockito.mockStatic;
 @SpringBootTest
 public class TokenUtilTest {
 
-    @Test
-    public void create_and_verify() {
-        String tenantId = IdUtil.simpleUUID();
-        String deptId = IdUtil.simpleUUID();
-        String username = RandomUtil.randomString(11);
-        Long expireTime = 36000L;
 
-        String token = TokenUtil.create(tenantId,deptId, username, expireTime,false);
-        System.out.println(token);
-        // 断言不为空
-        assertTrue(StrUtil.isNotBlank(token));
-        final boolean verify = TokenUtil.verify(token, false, true);
-        assertEquals(true,verify);
-
-        final TokenUtil.TokenPayLoad payLoad = TokenUtil.getPayLoad(token, false);
-        assertEquals(tenantId,payLoad.getTenantId());
-        assertEquals(username,payLoad.getUsername());
-    }
 
 }

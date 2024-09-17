@@ -3,8 +3,9 @@ package io.github.carrothole.carrot;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration;
 
-@SpringBootApplication
+@SpringBootApplication(exclude = {ErrorMvcAutoConfiguration.class})
 @MapperScan(basePackages = "io.github.carrothole.carrot.mapper")
 public class CarrotApplication {
 
