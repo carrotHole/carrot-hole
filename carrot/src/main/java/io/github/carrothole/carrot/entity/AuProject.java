@@ -9,6 +9,8 @@ import java.time.LocalDateTime;
 
 import java.io.Serial;
 
+import io.github.carrothole.carrot.config.mf.MfDefaultInsertListener;
+import io.github.carrothole.carrot.config.mf.MfDefaultUpdateListener;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
@@ -23,7 +25,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "")
-@Table("au_project")
+@Table(value = "au_project",  onInsert = MfDefaultInsertListener.class, onUpdate = MfDefaultUpdateListener.class)
 public class AuProject implements Serializable {
 
     @Serial

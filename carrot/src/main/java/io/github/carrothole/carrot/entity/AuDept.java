@@ -9,6 +9,8 @@ import com.mybatisflex.annotation.Table;
 
 import java.util.List;
 
+import io.github.carrothole.carrot.config.mf.MfDefaultInsertListener;
+import io.github.carrothole.carrot.config.mf.MfDefaultUpdateListener;
 import io.github.carrothole.processor.generateo.anno.*;
 import io.github.carrothole.processor.generateo.enums.VOTypeEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -29,7 +31,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "部门")
-@Table("au_dept")
+@Table(value = "au_dept",  onInsert = MfDefaultInsertListener.class, onUpdate = MfDefaultUpdateListener.class)
 @GenVO(describe = "部门返回对象",
         append = {
                 @AppendField(name = "deptTypeValue", typeName = "java.lang.String", describe = "部门类型值", type = VOTypeEnum.RESULT)

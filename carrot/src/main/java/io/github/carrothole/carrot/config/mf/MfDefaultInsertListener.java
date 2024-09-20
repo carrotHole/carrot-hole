@@ -4,6 +4,7 @@ import io.github.carrothole.carrot.entity.BaseUserTime;
 import io.github.carrothole.carrot.entity.BaseUserTimeTenant;
 import io.github.carrothole.carrot.util.SecurityUtil;
 import com.mybatisflex.annotation.InsertListener;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
@@ -14,6 +15,7 @@ import java.util.Date;
  * @author moon
  * @since 0.0.1
  */
+@Component
 public class MfDefaultInsertListener implements InsertListener {
     @Override
     public void onInsert(Object o) {

@@ -5,6 +5,8 @@ import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
 
+import io.github.carrothole.carrot.config.mf.MfDefaultInsertListener;
+import io.github.carrothole.carrot.config.mf.MfDefaultUpdateListener;
 import io.github.carrothole.processor.generateo.anno.*;
 import io.github.carrothole.processor.generateo.enums.VOTypeEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -23,7 +25,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "")
-@Table("au_menu")
+@Table(value = "au_menu",  onInsert = MfDefaultInsertListener.class, onUpdate = MfDefaultUpdateListener.class)
 @GenVO(describe = "菜单返回对象",
     append = {
             @AppendField(name = "statusValue", typeName = "java.lang.String", describe = "状态值", type = VOTypeEnum.RESULT),
