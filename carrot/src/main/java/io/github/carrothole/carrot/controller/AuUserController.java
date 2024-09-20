@@ -93,7 +93,7 @@ public class AuUserController {
         AuUser auUser = CheckUtil.checkNotNull(auUserService.getById(id), "用户不存在");
         // 如果删除的是真实用户，则校验是否有虚拟用户,如果存在虚拟用户则不能删除
         if (BoolUtil.isTrue(auUser.getRealUser())){
-            if (auUserService.exists(QueryWrapper.create().and(AU_USER.USERNAME.eq(auUser.getRealUser())).and(AU_USER.REAL_USER.eq(BoolUtil.trueInt)))){
+            if (auUserService.exists(QueryWrapper.create().and(AU_USER.USERNAME.eq(auUser.getRealUser())).and(AU_USER.REAL_USER.eq(BoolUtil.falseInt)))){
                 throw new UnSupportOperationException("存在虚拟用户，不能删除真实用户");
             }
         }
@@ -111,7 +111,6 @@ public class AuUserController {
     @PreAuthorize(menu = {"au:user:update"}, user = "carrot")
     public boolean update(@RequestBody @Parameter(description="更新对象") @Valid @Validated(value = {ValidateGroup.Update.class}) AuUser auUser) {
         // 校验当前部门下是否用户名重复
-        checkDeptUser(auUser);
         return auUserService.updateById(auUser);
     }
 

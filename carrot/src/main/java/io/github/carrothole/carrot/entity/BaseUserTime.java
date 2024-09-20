@@ -1,10 +1,10 @@
 package io.github.carrothole.carrot.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.github.carrothole.processor.generateo.anno.GenVOField;
 import io.github.carrothole.processor.generateo.enums.VOTypeEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -34,7 +34,8 @@ public class BaseUserTime implements Serializable {
      * 创建时间
      */
     @Schema(description = "创建时间")
-    @GenVOField(describe = "创建时间", between = true)
+    @GenVOField(describe = "创建时间", between = true, annotations = {"com.fasterxml.jackson.annotation.JsonFormat(pattern = \"yyyy-MM-dd HH:mm\")"})
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private Date createdTime;
 
 }
