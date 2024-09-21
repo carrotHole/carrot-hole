@@ -26,12 +26,15 @@ public class ChangePasswordVO {
      * 密码
      */
     @Schema(description = "密码")
-    private String password;
+    private String newPassword;
+
+
+    private String oldPassword;
 
     /**
      * 密码加密 todo 实现
      */
     @Schema(description = "密码加密")
-    private String passwordEnc;
+    private String oldPasswordEnc;
 
 }

@@ -17,6 +17,7 @@ import io.github.carrothole.carrot.entity.ro.AuMenuResultVO;
 import io.github.carrothole.carrot.entity.ro.AuRoleResultVO;
 
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -39,6 +40,9 @@ public class SecurityUtil {
         SecurityUtil.tokenLocal.set(token);
     }
 
+    public static boolean isAdmin(){
+        return Arrays.asList("admin", "superman").contains(getUser().getUsername());
+    }
     /**
      * 获取token<br>
      * 当前方法应该可以通过各种环境获取token

@@ -3,6 +3,7 @@ package io.github.carrothole.carrot.controller;
 import cn.hutool.core.util.StrUtil;
 import io.github.carrothole.carrot.authorization.PreAuthorize;
 import io.github.carrothole.carrot.config.ValidateGroup;
+import io.github.carrothole.carrot.constant.CarrotConst;
 import io.github.carrothole.carrot.entity.ro.AuRoleResultVO;
 import io.github.carrothole.carrot.entity.vo.ChangePasswordVO;
 import io.github.carrothole.carrot.entity.vo.ChangeStatusVO;
@@ -91,6 +92,9 @@ public class AuUserController {
     @PreAuthorize(menu = {"au:user:remove"}, user = "carrot")
     public boolean remove(@PathVariable @Parameter(description="主键")String id) {
         AuUser auUser = CheckUtil.checkNotNull(auUserService.getById(id), "用户不存在");
+        if (CarrotConst.ADMIN_USERNAME.contains(auUser.getUsername())){
+            throw new UnSupportOperationException("管理员用户不能删除");
+        }
         // 如果删除的是真实用户，则校验是否有虚拟用户,如果存在虚拟用户则不能删除
         if (BoolUtil.isTrue(auUser.getRealUser())){
             if (auUserService.exists(QueryWrapper.create().and(AU_USER.USERNAME.eq(auUser.getRealUser())).and(AU_USER.REAL_USER.eq(BoolUtil.falseInt)))){
@@ -110,6 +114,10 @@ public class AuUserController {
     @Operation(description="根据主键更新")
     @PreAuthorize(menu = {"au:user:update"}, user = "carrot")
     public boolean update(@RequestBody @Parameter(description="更新对象") @Valid @Validated(value = {ValidateGroup.Update.class}) AuUser auUser) {
+        AuUser auUserDb = CheckUtil.checkNotNull(auUserService.getById(auUser.getId()), "用户不存在");
+        if (CarrotConst.ADMIN_USERNAME.contains(auUserDb.getUsername())){
+            throw new UnSupportOperationException("管理员用户不能删除");
+        }
         // 校验当前部门下是否用户名重复
         return auUserService.updateById(auUser);
     }
@@ -183,8 +191,8 @@ public class AuUserController {
     @Operation(description="修改密码")
     @PreAuthorize(menu = {"au:user:updatePassword"}, user = "carrot")
     public boolean updatePassword(@RequestBody @Valid ChangePasswordVO vo) {
-        // todo 校验码
-        if (StrUtil.isBlank(vo.getPassword()) && StrUtil.isBlank(vo.getPasswordEnc())){
+        // todo 校验码 验证旧密码
+        if (StrUtil.isBlank(vo.getNewPassword()) && StrUtil.isBlank(vo.getOldPasswordEnc())){
             throw new UnSupportOperationException("密码不能为空");
         }
         return auUserService.updatePassword(vo);

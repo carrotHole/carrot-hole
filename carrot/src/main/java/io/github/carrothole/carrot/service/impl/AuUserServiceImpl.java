@@ -3,9 +3,6 @@ package io.github.carrothole.carrot.service.impl;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.core.update.UpdateChain;
-import com.mybatisflex.core.update.UpdateWrapper;
-import com.mybatisflex.core.util.UpdateEntity;
-import io.github.carrothole.carrot.config.CarrotConstant;
 import io.github.carrothole.carrot.entity.qo.AuUserQueryVO;
 import io.github.carrothole.carrot.entity.vo.ChangePasswordVO;
 import io.github.carrothole.carrot.entity.vo.ChangeStatusVO;
@@ -84,7 +81,7 @@ public class AuUserServiceImpl extends ServiceImpl<AuUserMapper, AuUser> impleme
     public boolean updatePassword(ChangePasswordVO vo) {
         return UpdateChain.of(AuUser.class)
                 .eq(AU_USER.USERNAME.getName(), vo.getUsername())
-                .set(AU_USER.PASSWORD, PassUtil.encrypt(vo.getPassword()))
+                .set(AU_USER.PASSWORD, PassUtil.encrypt(vo.getNewPassword()))
                 .update();
     }
 
