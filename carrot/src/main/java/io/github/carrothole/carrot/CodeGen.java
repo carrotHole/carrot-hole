@@ -14,7 +14,7 @@ import com.zaxxer.hikari.HikariDataSource;
  */
 public class CodeGen {
 
-    private static final String[] DB_NAME_LIST = {"your-database"};
+    private static final String[] DB_NAME_LIST = {"dict_sys", "dict_content_sys"};
 
     public static void main(String[] args) {
         //配置数据源
@@ -42,8 +42,9 @@ public class CodeGen {
         globalConfig.setBasePackage("io.github.carrothole.carrot");
 
         //设置表前缀和只生成哪些表
-        globalConfig.setTablePrefix("tb_");
-//        globalConfig.setGenerateTable(DB_NAME_LIST);
+//        globalConfig.setTablePrefix("tb_");
+        globalConfig.setGenerateTable(DB_NAME_LIST);
+
 
         //设置生成 entity 并启用 Lombok
         globalConfig.setEntityGenerateEnable(true);
