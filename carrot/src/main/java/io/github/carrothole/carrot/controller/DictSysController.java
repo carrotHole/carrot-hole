@@ -87,7 +87,7 @@ public class DictSysController {
     @GetMapping("list")
     @Operation(description="查询所有字典类型")
     public List<DictSys> list(String queryStr) {
-        final QueryWrapper queryWrapper = QueryWrapper.create().orderBy(DICT_SYS.TYPE.desc());
+        final QueryWrapper queryWrapper = QueryWrapper.create().orderBy(DICT_SYS.TYPE.desc()).orderBy(DICT_SYS.ID.desc());
         if (StrUtil.isNotBlank(queryStr)){
             queryWrapper
                     .or(DICT_SYS.TYPE.like(queryStr))
@@ -98,28 +98,28 @@ public class DictSysController {
     }
 
     /**
-     * 根据字典主键分页查询字典内容
+     * 根据字典主键查询字典内容
      * @param id 字典主键
-     * @return {@link Page<DictContentSys>}
+     * @return {@link List<DictContentSys>}
      */
-    @GetMapping("pageContentById/{id}")
+    @GetMapping("listContentById/{id}")
     @Operation(description="查询所有字典值(主键)")
-    public Page<DictContentSys> pageContentByMark(PageVO vo, @PathVariable @Schema(description = "字典类型主键") String id){
+    public List<DictContentSys> pageContentByMark(@PathVariable @Schema(description = "字典类型主键") String id){
         final DictSys dictSys = CheckUtil.checkNotNull(dictSysService.getById(id), "未找到当前字典");
-        return dictContentSysService.pageByType(vo,dictSys.getType());
+        return dictContentSysService.listByType(dictSys.getType());
     }
 
 
     /**
-     * 根据字典主键分页查询字典内容
+     * 根据字典主键查询字典内容
      * @param type 字典类型
-     * @return {@link Page<DictContentSys>}
+     * @return {@link List<DictContentSys>}
      */
-    @GetMapping("pageContentByType/{type}")
+    @GetMapping("listContentByType/{type}")
     @Operation(description="查询所有字典值")
-    public Page<DictContentSys> pageContentByType(PageVO vo, @PathVariable @Schema(description = "字典类型类型") String type){
+    public List<DictContentSys> pageContentByType(@PathVariable @Schema(description = "字典类型类型") String type){
         CheckUtil.checkNotNull(dictSysService.getOne(QueryWrapper.create().and(DICT_SYS.TYPE.eq(type))),"未找到当前字典");
-        return dictContentSysService.pageByType(vo, type);
+        return dictContentSysService.listByType(type);
     }
 
     /**

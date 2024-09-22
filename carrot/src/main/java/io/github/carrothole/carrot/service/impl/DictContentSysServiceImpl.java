@@ -9,6 +9,8 @@ import io.github.carrothole.carrot.mapper.DictContentSysMapper;
 import io.github.carrothole.carrot.service.DictContentSysService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 import static io.github.carrothole.carrot.entity.table.DictContentSysTableDef.DICT_CONTENT_SYS;
 
 /**
@@ -20,16 +22,13 @@ import static io.github.carrothole.carrot.entity.table.DictContentSysTableDef.DI
 @Service
 public class DictContentSysServiceImpl extends ServiceImpl<DictContentSysMapper, DictContentSys> implements DictContentSysService {
 
-    @Override
-    public Page<DictContentSys> pageByType(PageVO vo, String type) {
-        return super.page(vo.buildPage(),
-                vo.appendOrderBy(
-                        QueryWrapper.create()
-                                .and(DICT_CONTENT_SYS.TYPE.eq(type))
-                        , DICT_CONTENT_SYS.SORT.desc()
-                        , DICT_CONTENT_SYS.MARK.asc()
-                )
 
+    @Override
+    public List<DictContentSys> listByType(String type) {
+        return super.list(
+                QueryWrapper.create()
+                        .and(DICT_CONTENT_SYS.TYPE.eq(type))
+                        .orderBy(DICT_CONTENT_SYS.SORT.desc(),DICT_CONTENT_SYS.MARK.asc())
         );
     }
 }
