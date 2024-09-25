@@ -8,6 +8,7 @@ import io.github.carrothole.carrot.entity.vo.PageVO;
 import io.github.carrothole.carrot.service.DictContentSysService;
 import io.github.carrothole.carrot.util.CheckUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -52,6 +53,9 @@ public class DictSysController {
     @PostMapping("save")
     @Operation(description="保存字典类型")
     public boolean save(@RequestBody @Parameter(description="保存")DictSys dictSys) {
+        if (dictSysService.exists(QueryWrapper.create().and(DICT_SYS.TYPE.eq(dictSys.getType())))){
+            throw new UnsupportedOperationException("字典类型已存在");
+        }
         return dictSysService.save(dictSys);
     }
 
@@ -63,19 +67,25 @@ public class DictSysController {
      */
     @DeleteMapping("remove/{id}")
     @Operation(description="根据主键删除字典类型")
+    @Transactional
     public boolean remove(@PathVariable @Parameter(description="主键")String id) {
+        final DictSys dictSys = CheckUtil.checkNotNull(dictSysService.getById(id), "未找到当前字典");
+        dictContentSysService.removeByType(dictSys.getType());
         return dictSysService.removeById(id);
     }
 
     /**
      * 根据主键更新字典类型。
      *
-     * @param dictSys 
+     * @param dictSys  {@link DictSys}
      * @return {@code true} 更新成功，{@code false} 更新失败
      */
     @PutMapping("update")
     @Operation(description="根据主键更新字典类型")
     public boolean update(@RequestBody @Parameter(description="主键")DictSys dictSys) {
+        if (dictSysService.exists(QueryWrapper.create().and(DICT_SYS.TYPE.eq(dictSys.getType())).and(DICT_SYS.ID.ne(dictSys.getId())))){
+            throw new UnsupportedOperationException("字典类型已存在");
+        }
         return dictSysService.updateById(dictSys);
     }
 
@@ -124,13 +134,24 @@ public class DictSysController {
 
     /**
      * 新增字典内容
-     * @param dictContentSys DictContentSys
+     * @param dictContentSys {@link DictContentSys}
      * @return boolean
      */
     @PostMapping("saveContent")
     @Operation(description="新增字典内容")
     public boolean saveContent(@RequestBody DictContentSys dictContentSys){
         return dictContentSysService.save(dictContentSys);
+    }
+
+    /**
+     * 更新字典内容
+     * @param dictContentSys {@link DictContentSys}
+     * @return boolean
+     */
+    @PutMapping("updateContent")
+    @Operation(description="更新字典内容")
+    public boolean updateContent(@RequestBody DictContentSys dictContentSys){
+        return dictContentSysService.updateById(dictContentSys);
     }
 
     /**

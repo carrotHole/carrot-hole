@@ -31,4 +31,9 @@ public class DictContentSysServiceImpl extends ServiceImpl<DictContentSysMapper,
                         .orderBy(DICT_CONTENT_SYS.SORT.desc(),DICT_CONTENT_SYS.MARK.asc())
         );
     }
+
+    @Override
+    public boolean removeByType(String type) {
+        return super.remove(QueryWrapper.create().and(DICT_CONTENT_SYS.TYPE.eq(type)));
+    }
 }

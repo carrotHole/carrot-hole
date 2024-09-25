@@ -21,4 +21,11 @@ public interface DictContentSysService extends IService<DictContentSys> {
      * @return {@link List<DictContentSys>}
      */
     List<DictContentSys> listByType(String type);
+
+    /**
+     * 根据字典类型删除字典内容
+     * @param type 字典类型
+     * @return boolean
+     */
+    boolean removeByType(String type);
 }
