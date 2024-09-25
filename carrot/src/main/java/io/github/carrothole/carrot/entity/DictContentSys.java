@@ -1,12 +1,14 @@
 package io.github.carrothole.carrot.entity;
 
 import com.mybatisflex.annotation.Id;
+import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
 import java.io.Serial;
 
+import io.github.carrothole.carrot.config.mf.MfConstant;
 import io.github.carrothole.carrot.config.mf.MfDefaultInsertListener;
 import io.github.carrothole.carrot.config.mf.MfDefaultUpdateListener;
 import io.github.carrothole.processor.generateo.anno.GenVO;
@@ -30,13 +32,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Schema(description = "")
 @Table(value = "dict_content_sys", onInsert = MfDefaultInsertListener.class, onUpdate = MfDefaultUpdateListener.class)
-@GenVO(ignore = true, describe = "字典值",type = {VOTypeEnum.QUERY, VOTypeEnum.RESULT})
+//@GenVO(ignore = true, describe = "字典值",type = {VOTypeEnum.QUERY, VOTypeEnum.RESULT})
 public class DictContentSys extends BaseTenant {
 
     /**
      * 主键
      */
-    @Id
+    @Id(keyType = KeyType.Generator, value = MfConstant.ID_GENERATOR)
     @Schema(description = "主键")
     @GenVOField(describe = "主键", type = VOTypeEnum.RESULT)
     private String id;
@@ -69,12 +71,6 @@ public class DictContentSys extends BaseTenant {
     @GenVOField(describe = "备注")
     private String remark;
 
-    /**
-     * 租户主键
-     */
-    @Schema(description = "租户主键")
-    @GenVOField(describe = "租户主键")
-    private String tenantId;
 
     /**
      * 排序

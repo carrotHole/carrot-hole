@@ -1,12 +1,14 @@
 package io.github.carrothole.carrot.entity;
 
 import com.mybatisflex.annotation.Id;
+import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
 import java.io.Serial;
 
+import io.github.carrothole.carrot.config.mf.MfConstant;
 import io.github.carrothole.carrot.config.mf.MfDefaultInsertListener;
 import io.github.carrothole.carrot.config.mf.MfDefaultUpdateListener;
 import io.github.carrothole.processor.generateo.anno.AppendField;
@@ -37,7 +39,7 @@ public class DictSys extends BaseUserTimeTenant {
     /**
      * 主键
      */
-    @Id
+    @Id(keyType = KeyType.Generator, value = MfConstant.ID_GENERATOR)
     @Schema(description = "主键")
     @GenVOField(describe = "主键", type = VOTypeEnum.RESULT)
     private String id;
