@@ -38,12 +38,13 @@ import io.swagger.v3.oas.annotations.Parameter;
 
 
 import io.github.carrothole.carrot.entity.qo.AuRoleQueryVO;
+
 import java.util.List;
 
 import static io.github.carrothole.carrot.entity.table.AuUserTableDef.AU_USER;
 
 /**
- *  控制层。
+ * 控制层。
  *
  * @author Administrator
  * @since 0.0.1
@@ -58,6 +59,7 @@ public class AuUserController {
 
     @Autowired
     private AuUserRoleService auUserRoleService;
+
     /**
      * 添加。
      *
@@ -65,16 +67,16 @@ public class AuUserController {
      * @return {@code true} 添加成功，{@code false} 添加失败
      */
     @PostMapping("save")
-    @Operation(description="保存")
+    @Operation(description = "保存")
     @PreAuthorize(menu = {"au:user:save"}, user = "carrot")
-    public boolean save(@RequestBody @Parameter(description="新增对象")@Valid @Validated(value = {ValidateGroup.Save.class}) AuUser auUser) {
+    public boolean save(@RequestBody @Parameter(description = "新增对象") @Valid @Validated(value = {ValidateGroup.Save.class}) AuUser auUser) {
 
-        if (BoolUtil.isTrue(auUser.getRealUser())){
+        if (BoolUtil.isTrue(auUser.getRealUser())) {
             // 校验用户是否存在
             if (auUserService.exists(QueryWrapper.create().and(AU_USER.USERNAME.eq(auUser.getUsername())))) {
                 throw new UnSupportOperationException("用户已存在");
             }
-        }else{
+        } else {
             // 校验当前部门下是否用户名重复
             checkDeptUser(auUser);
         }
@@ -88,16 +90,16 @@ public class AuUserController {
      * @return {@code true} 删除成功，{@code false} 删除失败
      */
     @DeleteMapping("remove/{id}")
-    @Operation(description="根据主键")
+    @Operation(description = "根据主键")
     @PreAuthorize(menu = {"au:user:remove"}, user = "carrot")
-    public boolean remove(@PathVariable @Parameter(description="主键")String id) {
+    public boolean remove(@PathVariable @Parameter(description = "主键") String id) {
         AuUser auUser = CheckUtil.checkNotNull(auUserService.getById(id), "用户不存在");
-        if (CarrotConst.ADMIN_USERNAME.contains(auUser.getUsername())){
+        if (CarrotConst.ADMIN_USERNAME.contains(auUser.getUsername())) {
             throw new UnSupportOperationException("管理员用户不能删除");
         }
         // 如果删除的是真实用户，则校验是否有虚拟用户,如果存在虚拟用户则不能删除
-        if (BoolUtil.isTrue(auUser.getRealUser())){
-            if (auUserService.exists(QueryWrapper.create().and(AU_USER.USERNAME.eq(auUser.getRealUser())).and(AU_USER.REAL_USER.eq(BoolUtil.falseInt)))){
+        if (BoolUtil.isTrue(auUser.getRealUser())) {
+            if (auUserService.exists(QueryWrapper.create().and(AU_USER.USERNAME.eq(auUser.getRealUser())).and(AU_USER.REAL_USER.eq(BoolUtil.falseInt)))) {
                 throw new UnSupportOperationException("存在虚拟用户，不能删除真实用户");
             }
         }
@@ -111,11 +113,11 @@ public class AuUserController {
      * @return {@code true} 更新成功，{@code false} 更新失败
      */
     @PutMapping("update")
-    @Operation(description="根据主键更新")
+    @Operation(description = "根据主键更新")
     @PreAuthorize(menu = {"au:user:update"}, user = "carrot")
-    public boolean update(@RequestBody @Parameter(description="更新对象") @Valid @Validated(value = {ValidateGroup.Update.class}) AuUser auUser) {
+    public boolean update(@RequestBody @Parameter(description = "更新对象") @Valid @Validated(value = {ValidateGroup.Update.class}) AuUser auUser) {
         AuUser auUserDb = CheckUtil.checkNotNull(auUserService.getById(auUser.getId()), "用户不存在");
-        if (CarrotConst.ADMIN_USERNAME.contains(auUserDb.getUsername())){
+        if (CarrotConst.ADMIN_USERNAME.contains(auUserDb.getUsername())) {
             throw new UnSupportOperationException("管理员用户不能删除");
         }
         // 校验当前部门下是否用户名重复
@@ -129,7 +131,7 @@ public class AuUserController {
      * @return 详情
      */
     @GetMapping("getInfo/{id}")
-    @Operation(description="根据主键获取")
+    @Operation(description = "根据主键获取")
     @PreAuthorize(menu = {"au:user:getInfo"}, user = "carrot")
     public AuUser getInfo(@PathVariable String id) {
         return auUserService.getById(id);
@@ -142,19 +144,36 @@ public class AuUserController {
      * @return 分页对象
      */
     @GetMapping("page")
-    @Operation(description="分页查询")
+    @Operation(description = "分页查询")
     @PreAuthorize(menu = {"au:user:page"}, user = "carrot")
-    public Page<AuUserResultVO> page(@Parameter(description="分页信息") PageVO page, AuUserQueryVO queryVO) {
-        return auUserService.page(page,queryVO);
+    public Page<AuUserResultVO> page(@Parameter(description = "分页信息") PageVO page, AuUserQueryVO queryVO) {
+        return auUserService.pageAs(
+                page.buildPage(),
+                page.appendOrderBy(
+                        QueryWrapper.create()
+                                .and(AU_USER.STATUS.eq(queryVO.getStatus(), queryVO.getStatus() != null))
+                                .and(AU_USER.REAL_USER.eq(queryVO.getRealUser(), queryVO.getRealUser() != null))
+                                .and(AU_USER.DEPT_ID.eq(queryVO.getDeptId(), StrUtil.isNotBlank(queryVO.getDeptId())))
+                                .and(AU_USER.CREATED_TIME.le(queryVO.getCreatedTimeEnd(), queryVO.getCreatedTimeEnd() != null))
+                                .and(AU_USER.CREATED_TIME.ge(queryVO.getCreatedTimeBegin(), queryVO.getCreatedTimeBegin() != null))
+                                .and(AU_USER.CREATED_TYPE.eq(queryVO.getCreatedType(), queryVO.getCreatedType() != null))
+
+                                .and(AU_USER.NICKNAME.like(queryVO.getNickname(), StrUtil.isNotBlank(queryVO.getNickname())))
+                                .and(AU_USER.USERNAME.like(queryVO.getUsername(), StrUtil.isNotBlank(queryVO.getUsername())))
+                        ,AU_USER.SORT.desc(), AU_USER.USERNAME.asc()
+                )
+                , AuUserResultVO.class
+        );
     }
 
     /**
      * 绑定角色
+     *
      * @param vo {@link UserRoleVO}
      * @return boolean
      */
     @PutMapping("bindRole")
-    @Operation(description="绑定角色")
+    @Operation(description = "绑定角色")
     @PreAuthorize(menu = {"au:user:bindRole"}, user = "carrot")
     public boolean bindRole(@RequestBody @Valid UserRoleVO vo) {
         return auUserRoleService.bindRole(vo);
@@ -162,11 +181,12 @@ public class AuUserController {
 
     /**
      * 解绑角色
+     *
      * @param vo {@link UserRoleVO}
      * @return boolean
      */
     @PutMapping("unbindRole")
-    @Operation(description="解绑角色")
+    @Operation(description = "解绑角色")
     @PreAuthorize(menu = {"au:user:unbindRole"}, user = "carrot")
     public boolean unbindRole(@RequestBody @Valid UserRoleVO vo) {
         return auUserRoleService.unbindRole(vo);
@@ -174,9 +194,9 @@ public class AuUserController {
 
     // 获取用户下角色
     @GetMapping("getRole/{id}")
-    @Operation(description="获取用户下角色")
+    @Operation(description = "获取用户下角色")
     @PreAuthorize(menu = {"au:user:getRole"}, user = "carrot")
-    public List<AuRoleResultVO> getRole(@PathVariable @Schema(description = "用户主键") @Valid @NotBlank(message = "用户主键不能为空")  String id, @Schema(description = "角色查询条件") AuRoleQueryVO vo) {
+    public List<AuRoleResultVO> getRole(@PathVariable @Schema(description = "用户主键") @Valid @NotBlank(message = "用户主键不能为空") String id, @Schema(description = "角色查询条件") AuRoleQueryVO vo) {
         return auUserRoleService.listRoleByUserId(id, vo);
     }
 
@@ -184,15 +204,16 @@ public class AuUserController {
     /**
      * 修改密码。<br/>
      * 注意修改密码是根据username进行的,会将真实用户和虚拟用户密码同时修改
+     *
      * @param vo {@link ChangePasswordVO}
      * @return 结果
      */
     @PutMapping("updatePassword")
-    @Operation(description="修改密码")
+    @Operation(description = "修改密码")
     @PreAuthorize(menu = {"au:user:updatePassword"}, user = "carrot")
     public boolean updatePassword(@RequestBody @Valid ChangePasswordVO vo) {
         // todo 校验码 验证旧密码
-        if (StrUtil.isBlank(vo.getNewPassword()) && StrUtil.isBlank(vo.getOldPasswordEnc())){
+        if (StrUtil.isBlank(vo.getNewPassword()) && StrUtil.isBlank(vo.getOldPasswordEnc())) {
             throw new UnSupportOperationException("密码不能为空");
         }
         return auUserService.updatePassword(vo);
@@ -200,13 +221,14 @@ public class AuUserController {
 
     /**
      * 修改状态。
+     *
      * @param vo {@link ChangeStatusVO}
      * @return boolean
      */
     @PutMapping("updateStatus")
-    @Operation(description="修改状态")
+    @Operation(description = "修改状态")
     @PreAuthorize(menu = {"au:user:updateStatus"}, user = "carrot")
-    public boolean updateStatus(@RequestBody @Valid  ChangeStatusVO vo) {
+    public boolean updateStatus(@RequestBody @Valid ChangeStatusVO vo) {
         return auUserService.updateStatus(vo);
     }
 
