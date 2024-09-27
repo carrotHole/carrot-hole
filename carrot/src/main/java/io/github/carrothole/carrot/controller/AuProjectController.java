@@ -1,6 +1,10 @@
 package io.github.carrothole.carrot.controller;
 
+import cn.hutool.core.util.StrUtil;
 import com.mybatisflex.core.paginate.Page;
+import com.mybatisflex.core.query.QueryWrapper;
+import io.github.carrothole.carrot.authorization.PreAuthorize;
+import io.github.carrothole.carrot.entity.vo.PageVO;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,10 +19,13 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import java.util.List;
+import io.github.carrothole.carrot.entity.qo.AuProjectQueryVO;
+import io.github.carrothole.carrot.entity.ro.AuProjectResultVO;
+
+import static io.github.carrothole.carrot.entity.table.AuProjectTableDef.AU_PROJECT;
 
 /**
- *  控制层。
+ * 控制层。
  *
  * @author Administrator
  * @since 0.0.1
@@ -34,12 +41,13 @@ public class AuProjectController {
     /**
      * 添加。
      *
-     * @param auProject 
+     * @param auProject
      * @return {@code true} 添加成功，{@code false} 添加失败
      */
     @PostMapping("save")
-    @Operation(description="保存")
-    public boolean save(@RequestBody @Parameter(description="")AuProject auProject) {
+    @Operation(description = "保存")
+    @PreAuthorize(menu = {"au:project:save"}, user = {"carrot","superman"})
+    public boolean save(@RequestBody @Parameter(description = "") AuProject auProject) {
         return auProjectService.save(auProject);
     }
 
@@ -50,33 +58,25 @@ public class AuProjectController {
      * @return {@code true} 删除成功，{@code false} 删除失败
      */
     @DeleteMapping("remove/{id}")
-    @Operation(description="根据主键")
-    public boolean remove(@PathVariable @Parameter(description="主键")String id) {
+    @Operation(description = "根据主键")
+    @PreAuthorize(menu = {"au:project:remove"}, user = {"carrot","superman"})
+    public boolean remove(@PathVariable @Parameter(description = "主键") String id) {
         return auProjectService.removeById(id);
     }
 
     /**
      * 根据主键更新。
      *
-     * @param auProject 
+     * @param auProject
      * @return {@code true} 更新成功，{@code false} 更新失败
      */
     @PutMapping("update")
-    @Operation(description="根据主键更新")
-    public boolean update(@RequestBody @Parameter(description="主键")AuProject auProject) {
+    @Operation(description = "根据主键更新")
+    @PreAuthorize(menu = {"au:project:update"}, user = {"carrot","superman"})
+    public boolean update(@RequestBody @Parameter(description = "主键") AuProject auProject) {
         return auProjectService.updateById(auProject);
     }
 
-    /**
-     * 查询所有。
-     *
-     * @return 所有数据
-     */
-    @GetMapping("list")
-    @Operation(description="查询所有")
-    public List<AuProject> list() {
-        return auProjectService.list();
-    }
 
     /**
      * 根据主键获取详细信息。
@@ -85,7 +85,8 @@ public class AuProjectController {
      * @return 详情
      */
     @GetMapping("getInfo/{id}")
-    @Operation(description="根据主键获取")
+    @Operation(description = "根据主键获取")
+    @PreAuthorize(menu = {"au:project:getInfo"}, user = {"carrot","superman"})
     public AuProject getInfo(@PathVariable String id) {
         return auProjectService.getById(id);
     }
@@ -97,9 +98,21 @@ public class AuProjectController {
      * @return 分页对象
      */
     @GetMapping("page")
-    @Operation(description="分页查询")
-    public Page<AuProject> page(@Parameter(description="分页信息")Page<AuProject> page) {
-        return auProjectService.page(page);
+    @Operation(description = "分页查询")
+    @PreAuthorize(menu = {"au:project:page"}, user = {"carrot","superman"})
+    public Page<AuProjectResultVO> page(@Parameter(description = "分页信息") PageVO page, AuProjectQueryVO vo) {
+        return auProjectService.pageAs(
+                page.buildPage(),
+                page.appendOrderBy(
+                        QueryWrapper.create()
+                                .and(AU_PROJECT.STATUS.eq(vo.getStatus(), vo.getStatus() != null))
+                                .and(AU_PROJECT.CREATED_TIME.le(vo.getCreatedTimeEnd(), vo.getCreatedTimeEnd() != null))
+                                .and(AU_PROJECT.CREATED_TIME.ge(vo.getCreatedTimeBegin(), vo.getCreatedTimeBegin() != null))
+                                .and(AU_PROJECT.PROJECT_NAME.like(vo.getProjectName(), StrUtil.isNotBlank(vo.getProjectName())))
+                        , AU_PROJECT.SORT.desc(), AU_PROJECT.CREATED_TIME.desc()
+                )
+                , AuProjectResultVO.class
+        );
     }
 
 }
