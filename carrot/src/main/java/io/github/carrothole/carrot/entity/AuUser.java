@@ -29,7 +29,7 @@ import lombok.*;
 @AllArgsConstructor
 @Schema(description = "用户")
 @Table(value = "au_user", onInsert = MfDefaultInsertListener.class, onUpdate = MfDefaultUpdateListener.class)
-@GenVO(describe = "用户返回对象",
+@GenVO(describe = "用户",
         append = {
             @AppendField(name = "statusValue", typeName = "java.lang.String", describe = "状态值", type = VOTypeEnum.RESULT),
             @AppendField(name = "realUserValue", typeName = "java.lang.String", describe = "是否真实用户值", type = VOTypeEnum.RESULT),

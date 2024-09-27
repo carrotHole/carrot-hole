@@ -24,9 +24,9 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "")
+@Schema(description = "菜单")
 @Table(value = "au_menu",  onInsert = MfDefaultInsertListener.class, onUpdate = MfDefaultUpdateListener.class)
-@GenVO(describe = "菜单返回对象",
+@GenVO(describe = "菜单",
     append = {
             @AppendField(name = "statusValue", typeName = "java.lang.String", describe = "状态值", type = VOTypeEnum.RESULT),
             @AppendField(name = "menuTypeValue", typeName = "java.lang.String", describe = "菜单类型值", type = VOTypeEnum.RESULT),

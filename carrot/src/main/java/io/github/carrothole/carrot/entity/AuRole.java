@@ -28,7 +28,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Schema(description = "角色")
 @Table("au_role")
-@GenVO(describe = "角色返回对象",
+@GenVO(describe = "角色",
         append = {
                 @AppendField(name = "statusValue", typeName = "java.lang.String", describe = "状态值", type = VOTypeEnum.RESULT),
                 @AppendField(name = "roleTypeValue", typeName = "java.lang.String", describe = "角色类型值", type = VOTypeEnum.RESULT)
