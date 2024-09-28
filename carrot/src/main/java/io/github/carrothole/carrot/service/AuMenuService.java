@@ -20,4 +20,12 @@ public interface AuMenuService extends IService<AuMenu> {
      * @return {@link List<AuMenuResultVO>}
      */
     List<AuMenuResultVO> listByProjectId(String projectId);
+
+    /**
+     * 获取所有菜单树
+     *
+     * @param projectId 项目id
+     * @return
+     */
+    List<AuMenuResultVO> getTree(String projectId);
 }

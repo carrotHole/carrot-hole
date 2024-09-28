@@ -1,6 +1,7 @@
 package io.github.carrothole.carrot.controller;
 
-import com.mybatisflex.core.paginate.Page;
+import io.github.carrothole.carrot.authorization.PreAuthorize;
+import io.github.carrothole.carrot.entity.ro.AuMenuResultVO;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +17,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import java.util.List;
+
 
 /**
  *  控制层。
@@ -39,7 +41,8 @@ public class AuMenuController {
      */
     @PostMapping("save")
     @Operation(description="保存")
-    public boolean save(@RequestBody @Parameter(description="")AuMenu auMenu) {
+    @PreAuthorize(menu = {"au:menu:save"}, user = {"carrot","superman"})
+    public boolean save(@RequestBody @Parameter(description="保存")AuMenu auMenu) {
         return auMenuService.save(auMenu);
     }
 
@@ -51,6 +54,7 @@ public class AuMenuController {
      */
     @DeleteMapping("remove/{id}")
     @Operation(description="根据主键")
+    @PreAuthorize(menu = {"au:menu:remove"}, user = {"carrot","superman"})
     public boolean remove(@PathVariable @Parameter(description="主键")String id) {
         return auMenuService.removeById(id);
     }
@@ -63,6 +67,7 @@ public class AuMenuController {
      */
     @PutMapping("update")
     @Operation(description="根据主键更新")
+    @PreAuthorize(menu = {"au:menu:update"}, user = {"carrot","superman"})
     public boolean update(@RequestBody @Parameter(description="主键")AuMenu auMenu) {
         return auMenuService.updateById(auMenu);
     }
@@ -72,10 +77,11 @@ public class AuMenuController {
      *
      * @return 所有数据
      */
-    @GetMapping("list")
+    @GetMapping("list/{projectId}")
     @Operation(description="查询所有")
-    public List<AuMenu> list() {
-        return auMenuService.list();
+    @PreAuthorize(menu = {"au:menu:list"}, user = {"carrot","superman"})
+    public List<AuMenuResultVO> list(@PathVariable String projectId) {
+        return auMenuService.listByProjectId(projectId);
     }
 
     /**
@@ -91,15 +97,16 @@ public class AuMenuController {
     }
 
     /**
-     * 分页查询。
-     *
-     * @param page 分页对象
-     * @return 分页对象
+     * 获取菜单树(所有菜单)
+     * @param projectId 项目主键
+     * @return
      */
-    @GetMapping("page")
-    @Operation(description="分页查询")
-    public Page<AuMenu> page(@Parameter(description="分页信息")Page<AuMenu> page) {
-        return auMenuService.page(page);
+    @GetMapping("getTree/{projectId}")
+    @Operation(description="根据项目主键获取树形菜单")
+    @PreAuthorize(menu = {"au:menu:getTree"}, user = {"carrot","superman"})
+    public List<AuMenuResultVO> getTree(@PathVariable String projectId){
+       return auMenuService.getTree(projectId);
     }
+
 
 }

@@ -15,4 +15,8 @@ public interface CarrotConst {
 
     List<String> ADMIN_USERNAME = Arrays.asList("admin", "superman");
 
+    /**
+     * 菜单祖先主键
+     */
+    String MENU_ROOT_ID = "0";
 }

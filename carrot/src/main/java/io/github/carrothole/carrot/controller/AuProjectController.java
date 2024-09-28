@@ -22,6 +22,8 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.github.carrothole.carrot.entity.qo.AuProjectQueryVO;
 import io.github.carrothole.carrot.entity.ro.AuProjectResultVO;
 
+import java.util.List;
+
 import static io.github.carrothole.carrot.entity.table.AuProjectTableDef.AU_PROJECT;
 
 /**
@@ -89,6 +91,16 @@ public class AuProjectController {
     @PreAuthorize(menu = {"au:project:getInfo"}, user = {"carrot","superman"})
     public AuProject getInfo(@PathVariable String id) {
         return auProjectService.getById(id);
+    }
+
+    /**
+     * 获取全部应用列表
+     */
+    @GetMapping("list")
+    @Operation(description = "查询所有")
+    @PreAuthorize(menu = {"au:project:list"}, user = {"carrot","superman"})
+    public List<AuProjectResultVO> list() {
+        return auProjectService.listAs(QueryWrapper.create(), AuProjectResultVO.class);
     }
 
     /**
