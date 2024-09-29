@@ -10,9 +10,7 @@ import io.github.carrothole.carrot.mapper.AuMenuMapper;
 import io.github.carrothole.carrot.service.AuMenuService;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import static io.github.carrothole.carrot.entity.table.AuMenuTableDef.AU_MENU;
 
@@ -25,6 +23,13 @@ import static io.github.carrothole.carrot.entity.table.AuMenuTableDef.AU_MENU;
 @Service
 public class AuMenuServiceImpl extends ServiceImpl<AuMenuMapper, AuMenu> implements AuMenuService {
 
+    @Override
+    public boolean save(AuMenu auMenu){
+        if (auMenu.getParentId() == null){
+            auMenu.setParentId(CarrotConst.MENU_ROOT_ID);
+        }
+        return super.save(auMenu);
+    }
     @Override
     public List<AuMenuResultVO> listByProjectId(String projectId) {
         return super.listAs(
@@ -39,20 +44,44 @@ public class AuMenuServiceImpl extends ServiceImpl<AuMenuMapper, AuMenu> impleme
     @Override
     public List<AuMenuResultVO> getTree(String projectId) {
         final List<AuMenuResultVO> auMenuResultVOList = this.listByProjectId(projectId);
-        return formatTree(auMenuResultVOList, CarrotConst.MENU_ROOT_ID);
+        return formatTree(auMenuResultVOList);
     }
 
-    public List<AuMenuResultVO> formatTree(List<AuMenuResultVO> auMenuResultVOList, String parentId ){
+    public List<AuMenuResultVO> formatTree(List<AuMenuResultVO> auMenuResultVOList){
+        if (auMenuResultVOList.isEmpty()) return null;
         final ArrayList<AuMenuResultVO> resultList = new ArrayList<>();
-        for (int i = auMenuResultVOList.size() - 1; i >= 0; i--) {
-            final AuMenuResultVO menuResultVO = auMenuResultVOList.get(i);
-            if (Objects.equals(menuResultVO.getParentId(), parentId)){
-                auMenuResultVOList.remove(i);
-                final AuMenuResultVO treeResultVO = BeanUtil.copyProperties(menuResultVO, AuMenuResultVO.class);
-                treeResultVO.setChildren(formatTree(auMenuResultVOList, treeResultVO.getId()));
+
+        // 映射
+        Map<String, AuMenuResultVO> map = new HashMap<>();
+        auMenuResultVOList.forEach(auMenuResultVO -> map.put(auMenuResultVO.getId(), auMenuResultVO));
+
+        // 遍历
+        auMenuResultVOList.forEach(auMenuResultVO -> {
+            if (auMenuResultVO.getParentId().equals(CarrotConst.MENU_ROOT_ID)){
+                resultList.add(auMenuResultVO);
+            }else {
+                AuMenuResultVO parent = map.get(auMenuResultVO.getParentId());
+                List<AuMenuResultVO> children = parent.getChildren();
+                if (children == null){
+                    children = new ArrayList<>();
+                    parent.setChildren(children);
+                }
+                children.add(auMenuResultVO);
             }
-        }
+        });
+
+        treeSort(resultList);
+
         return resultList;
+    }
+
+    private void treeSort(List<AuMenuResultVO> resultList) {
+        resultList.sort(Comparator.comparing(AuMenuResultVO::getSort));
+        resultList.forEach(auMenuResultVO -> {
+            if (auMenuResultVO.getChildren() != null){
+                treeSort(auMenuResultVO.getChildren());
+            }
+        });
     }
 
 }

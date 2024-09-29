@@ -1,7 +1,11 @@
 package io.github.carrothole.carrot.controller;
 
+import cn.hutool.core.util.ObjectUtil;
+import com.mybatisflex.core.query.QueryWrapper;
 import io.github.carrothole.carrot.authorization.PreAuthorize;
 import io.github.carrothole.carrot.entity.ro.AuMenuResultVO;
+import io.github.carrothole.carrot.exception.UnSupportOperationException;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +21,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import java.util.List;
+
+import static io.github.carrothole.carrot.entity.table.AuMenuTableDef.AU_MENU;
 
 
 /**
@@ -42,7 +48,11 @@ public class AuMenuController {
     @PostMapping("save")
     @Operation(description="保存")
     @PreAuthorize(menu = {"au:menu:save"}, user = {"carrot","superman"})
-    public boolean save(@RequestBody @Parameter(description="保存")AuMenu auMenu) {
+    public boolean save(@RequestBody @Parameter(description="保存") @Valid AuMenu auMenu) {
+        // 校验统一应用下是否有同路径和权限的菜单
+        if (ObjectUtil.equals(auMenu.getMenuType(),"1") && auMenuService.exists(QueryWrapper.create().and(AU_MENU.MENU_URL.eq(auMenu.getMenuUrl())))) {
+            throw new UnSupportOperationException("已存在相同路的菜单");
+        }
         return auMenuService.save(auMenu);
     }
 
