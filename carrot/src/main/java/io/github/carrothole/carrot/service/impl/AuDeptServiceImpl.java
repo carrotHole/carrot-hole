@@ -2,6 +2,8 @@ package io.github.carrothole.carrot.service.impl;
 
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
+import io.github.carrothole.carrot.constant.CarrotConst;
+import io.github.carrothole.carrot.entity.vo.AuDeptTreeResultVO;
 import io.github.carrothole.carrot.entity.vo.PageVO;
 import io.github.carrothole.carrot.exception.ParamException;
 import io.github.carrothole.carrot.exception.UnSupportOperationException;
@@ -12,14 +14,13 @@ import com.mybatisflex.spring.service.impl.ServiceImpl;
 import io.github.carrothole.carrot.entity.AuDept;
 import io.github.carrothole.carrot.mapper.AuDeptMapper;
 import io.github.carrothole.carrot.service.AuDeptService;
+import io.github.carrothole.carrot.util.TreeUtil;
 import org.springframework.stereotype.Service;
 import io.github.carrothole.carrot.entity.qo.AuDeptQueryVO;
 import io.github.carrothole.carrot.entity.ro.AuDeptResultVO;
 
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static com.mybatisflex.core.tenant.TenantManager.ignoreTenantCondition;
 import static com.mybatisflex.core.tenant.TenantManager.restoreTenantCondition;
@@ -116,6 +117,13 @@ public class AuDeptServiceImpl extends ServiceImpl<AuDeptMapper, AuDept> impleme
         }finally {
             restoreTenantCondition();
         }
+    }
+
+    @Override
+    public List<AuDeptTreeResultVO> tree() {
+        // todo 缓存
+        List<AuDeptTreeResultVO> list = this.listAs(QueryWrapper.create(),AuDeptTreeResultVO.class);
+        return TreeUtil.formatTree(CarrotConst.DEPT_ROOT_ID,list,AuDeptTreeResultVO::getId,AuDeptTreeResultVO::getParentId, AuDeptTreeResultVO::getChildren,AuDeptTreeResultVO::setChildren, AuDeptTreeResultVO::getSort);
     }
 
 }

@@ -72,7 +72,7 @@ public class AuDept extends BaseUserTimeTenant {
     @Schema(description = "部门类型")
     @NotBlank(message = "部门类型不能为空", groups = {ValidateGroup.Update.class, ValidateGroup.Save.class})
     @GenVOField(describe = "部门类型")
-    private Integer deptType;
+    private String deptType;
 
     /**
      * 状态

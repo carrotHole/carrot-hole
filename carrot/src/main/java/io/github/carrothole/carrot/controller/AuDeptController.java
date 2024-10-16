@@ -2,6 +2,7 @@ package io.github.carrothole.carrot.controller;
 
 import io.github.carrothole.carrot.authorization.PreAuthorize;
 import io.github.carrothole.carrot.config.ValidateGroup;
+import io.github.carrothole.carrot.entity.vo.AuDeptTreeResultVO;
 import io.github.carrothole.carrot.entity.vo.PageVO;
 import io.github.carrothole.carrot.exception.ParamException;
 import io.github.carrothole.carrot.exception.UnSupportOperationException;
@@ -138,6 +139,13 @@ public class AuDeptController {
     @PreAuthorize(menu = {"au:dept:page"}, user = "carrot")
     public Page<io.github.carrothole.carrot.entity.ro.AuDeptResultVO> page(@Parameter(description="分页信息") PageVO vo, @Parameter(description="条件查询对象") AuDeptQueryVO auDept) {
         return auDeptService.page(vo,auDept);
+    }
+
+    @GetMapping("/getTree")
+    @Operation(description="获取部门树")
+    @PreAuthorize(menu = {"au:dept:tree"}, user = "carrot")
+    public List<AuDeptTreeResultVO> tree(){
+        return auDeptService.tree();
     }
 
 }
