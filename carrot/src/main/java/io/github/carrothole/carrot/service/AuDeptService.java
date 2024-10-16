@@ -1,5 +1,6 @@
 package io.github.carrothole.carrot.service;
 
+import io.github.carrothole.carrot.entity.vo.AuDeptTreeResultVO;
 import io.github.carrothole.carrot.entity.vo.PageVO;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.service.IService;
@@ -28,4 +29,6 @@ public interface AuDeptService extends IService<AuDept> {
     Page<AuDeptResultVO> page(PageVO vo, AuDeptQueryVO auDept);
 
     List<AuDept> listByIds(Collection<? extends Serializable> ids, String tenantId);
+
+    List<AuDeptTreeResultVO> tree();
 }

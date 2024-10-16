@@ -19,4 +19,5 @@ public interface CarrotConst {
      * 菜单祖先主键
      */
     String MENU_ROOT_ID = "0";
+    String DEPT_ROOT_ID = "0";
 }
