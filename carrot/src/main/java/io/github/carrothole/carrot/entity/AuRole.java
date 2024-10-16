@@ -31,7 +31,8 @@ import lombok.NoArgsConstructor;
 @GenVO(describe = "角色",
         append = {
                 @AppendField(name = "statusValue", typeName = "java.lang.String", describe = "状态值", type = VOTypeEnum.RESULT),
-                @AppendField(name = "roleTypeValue", typeName = "java.lang.String", describe = "角色类型值", type = VOTypeEnum.RESULT)
+                @AppendField(name = "roleTypeValue", typeName = "java.lang.String", describe = "角色类型值", type = VOTypeEnum.RESULT),
+                @AppendField(name = "menuRangeValue", typeName = "java.lang.String", describe = "菜单范围值", type = VOTypeEnum.RESULT)
         },
         type = {VOTypeEnum.QUERY, VOTypeEnum.RESULT})
 public class AuRole extends BaseUserTimeTenant {
@@ -79,14 +80,6 @@ public class AuRole extends BaseUserTimeTenant {
     private String deptId;
 
     /**
-     * 级别
-     */
-    @Schema(description = "级别")
-    @GenVOField(describe = "级别")
-    @NotNull(message = "级别不能为空", groups = {ValidateGroup.Update.class, ValidateGroup.Save.class})
-    private Integer level;
-
-    /**
      * 状态
      */
     @Schema(description = "状态")
@@ -102,7 +95,7 @@ public class AuRole extends BaseUserTimeTenant {
     private String remark;
 
     /**
-     * 菜单范围
+     * 菜单范围(全部菜单下全部部门,自定义菜单部门)
      */
     @Schema(description = "菜单范围")
     @GenVOField(describe = "菜单范围")

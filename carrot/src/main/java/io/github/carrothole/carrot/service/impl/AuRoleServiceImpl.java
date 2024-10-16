@@ -34,7 +34,6 @@ public class AuRoleServiceImpl extends ServiceImpl<AuRoleMapper, AuRole> impleme
                                 .and(AU_ROLE.DEPT_ID.eq(vo.getDeptId(), StrUtil.isNotBlank(vo.getDeptId())))
                                 .and(AU_ROLE.PROJECT_ID.eq(vo.getProjectId(), StrUtil.isNotBlank(vo.getProjectId())))
                                 .and(AU_ROLE.STATUS.eq(vo.getStatus(), vo.getStatus() != null))
-                                .and(AU_ROLE.LEVEL.eq(vo.getLevel(), vo.getLevel() != null))
 
                                 .and(AU_ROLE.CREATED_TIME.le(vo.getCreatedTimeEnd(), vo.getCreatedTimeEnd() != null))
                                 .and(AU_ROLE.CREATED_TIME.ge(vo.getCreatedTimeBegin(), vo.getCreatedTimeBegin() != null))

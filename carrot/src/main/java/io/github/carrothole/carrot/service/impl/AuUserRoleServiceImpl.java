@@ -75,7 +75,6 @@ public class AuUserRoleServiceImpl extends ServiceImpl<AuUserRoleMapper, AuUserR
                                 .and(AU_ROLE.STATUS.eq(vo.getStatus(), vo.getStatus() != null))
                                 .and(AU_ROLE.ROLE_TYPE.eq(vo.getRoleType(), StrUtil.isNotBlank(vo.getRoleType())))
                                 .and(AU_ROLE.TENANT_ID.eq(vo.getTenantId(), StrUtil.isNotBlank(vo.getTenantId())))
-                                .and(AU_ROLE.LEVEL.eq(vo.getLevel(), vo.getLevel() != null))
 
                                 .and(AU_ROLE.REMARK.like(vo.getRemark(), StrUtil.isNotBlank(vo.getRemark())))
                                 .and(AU_ROLE.ROLE_NAME.like(vo.getRoleName(), StrUtil.isNotBlank(vo.getRoleName())))
