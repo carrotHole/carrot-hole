@@ -40,7 +40,6 @@ public class AuRoleServiceImpl extends ServiceImpl<AuRoleMapper, AuRole> impleme
 
                                 .and(AU_ROLE.REMARK.like(vo.getRemark(), StrUtil.isNotBlank(vo.getRemark())))
                                 .and(AU_ROLE.ROLE_NAME.like(vo.getRoleName(), StrUtil.isNotBlank(vo.getRoleName())))
-                                .and(AU_ROLE.ROLE_TYPE.like(vo.getRoleType(), vo.getRoleType() != null))
                 ),
                 AuRoleResultVO.class
         );

@@ -83,7 +83,7 @@ public class AuDeptServiceImpl extends ServiceImpl<AuDeptMapper, AuDept> impleme
      * @return 父部门主键集合
      */
     public List<String> queryParentIds(String id){
-        String parentIdsStr = this.getOneAs(QueryWrapper.create().select(AU_DEPT.PARENT_IDS).and(AU_DEPT.PARENT_ID.eq(id)), String.class);
+        String parentIdsStr = this.getOneAs(QueryWrapper.create().select(AU_DEPT.PARENT_IDS).and(AU_DEPT.ID.eq(id)), String.class);
         if (StrUtil.isBlank(parentIdsStr)){
             throw new ParamException("部门不存在或上级部门主键不存在");
         }

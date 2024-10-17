@@ -31,7 +31,6 @@ import lombok.NoArgsConstructor;
 @GenVO(describe = "角色",
         append = {
                 @AppendField(name = "statusValue", typeName = "java.lang.String", describe = "状态值", type = VOTypeEnum.RESULT),
-                @AppendField(name = "roleTypeValue", typeName = "java.lang.String", describe = "角色类型值", type = VOTypeEnum.RESULT),
                 @AppendField(name = "menuRangeValue", typeName = "java.lang.String", describe = "菜单范围值", type = VOTypeEnum.RESULT)
         },
         type = {VOTypeEnum.QUERY, VOTypeEnum.RESULT})
@@ -54,14 +53,6 @@ public class AuRole extends BaseUserTimeTenant {
     @GenVOField(describe = "角色名")
     @NotBlank(message = "角色名不能为空", groups = {ValidateGroup.Update.class, ValidateGroup.Save.class})
     private String roleName;
-
-    /**
-     * 角色类型
-     */
-    @Schema(description = "角色类型")
-    @GenVOField(describe = "角色类型")
-    @NotBlank(message = "角色类型不能为空", groups = {ValidateGroup.Update.class, ValidateGroup.Save.class})
-    private String roleType;
 
     /**
      * 应用主键

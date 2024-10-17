@@ -91,7 +91,6 @@ DROP TABLE IF EXISTS `au_role`;
 CREATE TABLE `au_role` (
                            `id` varchar(255) CHARACTER SET utf8mb4 NOT NULL COMMENT '主键',
                            `role_name` varchar(255) CHARACTER SET utf8mb4 NOT NULL COMMENT '角色名',
-                           `role_type` varchar(255) CHARACTER SET utf8mb4 NOT NULL COMMENT '角色类型',
                            `project_id` varchar(255) CHARACTER SET utf8mb4 NOT NULL COMMENT '应用主键',
                            `dept_id` varchar(255) CHARACTER SET utf8mb4 NOT NULL COMMENT '部门主键',
                            `level` int(11) NOT NULL COMMENT '级别',

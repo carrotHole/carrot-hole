@@ -11,6 +11,7 @@ import io.github.carrothole.carrot.entity.vo.PageVO;
 import io.github.carrothole.carrot.entity.vo.RoleMenuRangeVO;
 import io.github.carrothole.carrot.service.AuRoleMenuRangeService;
 import io.github.carrothole.carrot.service.AuRoleMenuService;
+import io.github.carrothole.carrot.util.SecurityUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -61,6 +62,7 @@ public class AuRoleController {
     @Operation(description="保存")
     @PreAuthorize(menu = {"au:role:save"}, user = {"carrot"})
     public boolean save(@RequestBody @Parameter(description="角色对象") @Valid @Validated(value = {ValidateGroup.Save.class}) AuRole auRole) {
+        auRole.setDeptId(SecurityUtil.getUser().getDeptId());
         return auRoleService.save(auRole);
     }
 
