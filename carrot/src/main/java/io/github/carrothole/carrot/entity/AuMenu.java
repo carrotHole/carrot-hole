@@ -117,6 +117,7 @@ public class AuMenu extends BaseUserTimeTenant {
 
     /**
      * 级别
+     * 1-超级,2-管理级,3-普通级
      */
     @Schema(description = "级别")
     @GenVOField(describe = "级别")
