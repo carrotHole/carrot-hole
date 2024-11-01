@@ -16,6 +16,9 @@ public class BoolUtil {
         return i == trueInt;
     }
 
+    public static boolean isFalse(Integer i){
+        return i == falseInt;
+    }
     public static boolean isTrue(String s){
         return trueIntStr.equals(s);
     }

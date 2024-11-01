@@ -3,19 +3,17 @@ package io.github.carrothole.carrot.controller;
 import com.mybatisflex.core.paginate.Page;
 import io.github.carrothole.carrot.authorization.PreAuthorize;
 import io.github.carrothole.carrot.config.ValidateGroup;
-import io.github.carrothole.carrot.entity.AuRoleMenu;
-import io.github.carrothole.carrot.entity.AuRoleMenuRange;
 import io.github.carrothole.carrot.entity.qo.AuRoleQueryVO;
 import io.github.carrothole.carrot.entity.ro.AuRoleResultVO;
+import io.github.carrothole.carrot.entity.vo.AuRoleAuthorityResultVO;
+import io.github.carrothole.carrot.entity.vo.AuRoleAuthorityVO;
+import io.github.carrothole.carrot.entity.vo.AuRoleMenuAuthorityVO;
 import io.github.carrothole.carrot.entity.vo.PageVO;
-import io.github.carrothole.carrot.entity.vo.RoleMenuRangeVO;
-import io.github.carrothole.carrot.service.AuRoleMenuRangeService;
-import io.github.carrothole.carrot.service.AuRoleMenuService;
+import io.github.carrothole.carrot.service.AuRoleMenuAuthorityRangeService;
+import io.github.carrothole.carrot.service.AuRoleMenuAuthorityService;
 import io.github.carrothole.carrot.util.SecurityUtil;
-import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,7 +29,6 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import java.util.List;
 
 /**
  *  控制层。
@@ -48,10 +45,10 @@ public class AuRoleController {
     private AuRoleService auRoleService;
 
     @Autowired
-    private AuRoleMenuService auRoleMenuService;
+    private AuRoleMenuAuthorityService auRoleMenuService;
 
     @Autowired
-    private AuRoleMenuRangeService auRoleMenuRangeService;
+    private AuRoleMenuAuthorityRangeService auRoleMenuRangeService;
     /**
      * 添加。
      *
@@ -118,52 +115,79 @@ public class AuRoleController {
         return auRoleService.page(page,vo);
     }
 
+    // ------------权限相关----------------
 
     /**
-     * 绑定菜单。
-     * @param roleMenu 角色菜单对象
-     * @return boolean
+     * 获取授权信息
      */
-    @PostMapping("bindMenu")
-    @Operation(description="绑定菜单")
-    @PreAuthorize(menu = {"au:role:bindMenu"}, user = {"carrot"})
-    public AuRoleMenu bindMenu(@RequestBody @Schema(description="角色菜单对象") @Valid AuRoleMenu roleMenu) {
-        return auRoleMenuService.bindMenu(roleMenu);
+    @GetMapping("getAuthority/{id}")
+    @Operation(description="获取授权信息")
+    @PreAuthorize(menu = {"au:role:getAuthority"}, user = {"carrot"})
+    public AuRoleAuthorityResultVO getAuthority(@PathVariable @Valid @NotBlank(message = "主键不能为空") String id) {
+        return auRoleService.getAuthority(id);
     }
 
     /**
-     * 解绑菜单。
-     * @param roleMenuId 角色菜单主键
+     * 角色新增授权。
+     *
+     * @param vo {@link AuRoleAuthorityVO}
      * @return boolean
      */
-    @DeleteMapping("unbindMenu/{roleMenuId}")
-    @Operation(description="解绑菜单")
-    @PreAuthorize(menu = {"au:role:unbindMenu"}, user = {"carrot"})
-    public boolean unbindMenu(@PathVariable @Schema(description="角色菜单主键") @Valid String roleMenuId) {
-        return auRoleMenuService.unbindMenu(roleMenuId);
+    @PostMapping("saveAuthority")
+    @Operation(description="角色新增授权")
+    @PreAuthorize(menu = {"au:role:saveAuthority"}, user = {"carrot"})
+    public boolean saveAuthority(@RequestBody AuRoleAuthorityVO vo) {
+        return auRoleService.saveAuthority(vo);
     }
 
     /**
-     * 缩小权限范围。
-     * @param roleMenuRangeId 权限范围主键
+     * 角色更新授权。
+     *
+     * @param vo {@link AuRoleAuthorityVO}
      * @return boolean
      */
-    @DeleteMapping("rangeReduce/{roleMenuRangeId}")
-    @Operation(description="缩小权限范围")
-    @PreAuthorize(menu = {"au:role:rangeReduce"}, user = {"carrot"})
-    public boolean rangeReduce(@PathVariable @Schema(description="权限范围主键") @Valid @NotBlank(message = "主键不能为空") String roleMenuRangeId) {
-        return auRoleMenuRangeService.rangeReduce(roleMenuRangeId);
+    @PutMapping("updateAuthority")
+    @Operation(description="角色更新授权")
+    @PreAuthorize(menu = {"au:role:updateAuthority"}, user = {"carrot"})
+    public boolean updateAuthority(@RequestBody AuRoleAuthorityVO vo) {
+        return auRoleService.updateAuthority(vo);
     }
 
     /**
-     * 扩展权限部门。
-     * @param vo 扩展对象
+     * 角色菜单新增授权。
+     *
+     * @param vo {@link AuRoleAuthorityVO}
      * @return boolean
      */
-    @PostMapping("rangeExpand")
-    @Operation(description="扩展权限范围")
-    @PreAuthorize(menu = {"au:role:rangeExpand"}, user = {"carrot"})
-    public List<AuRoleMenuRange> rangeExpand(@RequestBody @Schema(description="权限范围扩展对象") @Valid @NotNull(message = "权限范围扩展对象") RoleMenuRangeVO vo) {
-        return auRoleMenuRangeService.rangeExpand(vo);
+    @PostMapping("saveMenuAuthority")
+    @Operation(description="角色菜单新增授权")
+    @PreAuthorize(menu = {"au:role:saveMenuAuthority"}, user = {"carrot"})
+    public boolean saveMenuAuthority(@RequestBody AuRoleMenuAuthorityVO vo) {
+        return auRoleService.saveMenuAuthority(vo);
+    }
+
+    /**
+     * 角色菜单更新授权。
+     *
+     * @param vo {@link AuRoleAuthorityVO}
+     * @return boolean
+     */
+    @PutMapping("updateMenuAuthority")
+    @Operation(description="角色菜单更新授权")
+    @PreAuthorize(menu = {"au:role:updateMenuAuthority"}, user = {"carrot"})
+    public boolean updateMenuAuthority(@RequestBody AuRoleMenuAuthorityVO vo) {
+        return auRoleService.updateMenuAuthority(vo);
+    }
+
+    /**
+     * 角色菜单删除授权
+     * @param id 主键
+     * @return boolean
+     */
+    @DeleteMapping("removeMenuAuthority/{id}")
+    @Operation(description="")
+    @PreAuthorize(menu = {"au:role:removeMenuAuthority"}, user = {"carrot"})
+    public boolean removeMenuAuthority(@PathVariable @Valid @NotBlank(message = "主键不能为空") String id) {
+        return auRoleService.removeMenuAuthority(id);
     }
 }

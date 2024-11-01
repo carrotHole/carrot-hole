@@ -117,10 +117,30 @@ public class AuMenu extends BaseUserTimeTenant {
 
     /**
      * 级别
-     * 1-超级,2-管理级,3-普通级
+     * {@link io.github.carrothole.carrot.entity.AuMenu.MenuLevelEnum}
      */
     @Schema(description = "级别")
     @GenVOField(describe = "级别")
     private Integer level;
 
+    public static enum MenuLevelEnum{
+        SUPER(1,"超级"),
+        MANAGER(2,"管理级"),
+        NORMAL(3,"普通级");
+
+        private final Integer level;
+        private final String name;
+
+        MenuLevelEnum(Integer level, String name){
+            this.level = level;
+            this.name = name;
+        }
+
+        public Integer getLevel(){
+            return level;
+        }
+        public String getName(){
+            return name;
+        }
+    }
 }

@@ -29,4 +29,6 @@ public interface AuMenuService extends IService<AuMenu> {
      * @return
      */
     List<AuMenuResultVO> getTree(String projectId);
+
+    List<AuMenuResultVO> catalogMenuTree(String projectId);
 }

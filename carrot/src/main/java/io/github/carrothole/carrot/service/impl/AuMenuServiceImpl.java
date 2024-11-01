@@ -41,9 +41,16 @@ public class AuMenuServiceImpl extends ServiceImpl<AuMenuMapper, AuMenu> impleme
         );
     }
 
+
     @Override
     public List<AuMenuResultVO> getTree(String projectId) {
         final List<AuMenuResultVO> auMenuResultVOList = this.listByProjectId(projectId);
+        return formatTree(auMenuResultVOList);
+    }
+
+    @Override
+    public List<AuMenuResultVO> catalogMenuTree(String projectId) {
+        final List<AuMenuResultVO> auMenuResultVOList = super.listAs(QueryWrapper.create().and(AU_MENU.PROJECT_ID.eq(projectId)).and(AU_MENU.MENU_TYPE.in("0","1")), AuMenuResultVO.class);
         return formatTree(auMenuResultVOList);
     }
 

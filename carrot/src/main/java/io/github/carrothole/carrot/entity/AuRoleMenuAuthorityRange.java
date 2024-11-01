@@ -18,14 +18,9 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "权限范围")
-@Table("au_role_menu_permission")
-public class AuRoleMenuRange extends BaseTenant {
-
-    public AuRoleMenuRange(String roleMendId, String deptId) {
-        this.roleMendId = roleMendId;
-        this.deptId = deptId;
-    }
+@Schema(description = "角色菜单数据范围")
+@Table("au_role_menu_authority_range")
+public class AuRoleMenuAuthorityRange extends BaseTenant {
 
     /**
      * 主键

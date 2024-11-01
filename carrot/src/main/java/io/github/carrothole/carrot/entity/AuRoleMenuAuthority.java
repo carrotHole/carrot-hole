@@ -23,8 +23,8 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "角色菜单")
-@Table("au_role_menu")
-public class AuRoleMenu extends BaseUserTimeTenant {
+@Table("au_role_menu_authority")
+public class AuRoleMenuAuthority extends BaseUserTimeTenant {
 
     /**
      * 主键
@@ -54,5 +54,12 @@ public class AuRoleMenu extends BaseUserTimeTenant {
     @Schema(description = "权限范围")
     @NotNull(message = "权限范围不能为空", groups = {ValidateGroup.Save.class, ValidateGroup.Update.class})
     private Integer auRange;
+
+    /**
+     * 使用默认配置
+     */
+    @Schema(description = "使用默认配置")
+    @NotNull(message = "使用默认配置", groups = {ValidateGroup.Save.class, ValidateGroup.Update.class})
+    private Integer useDefault;
 
 }

@@ -5,7 +5,7 @@ import io.github.carrothole.carrot.entity.AuRole;
 import io.github.carrothole.carrot.entity.qo.AuRoleQueryVO;
 import io.github.carrothole.carrot.enums.MenuRangeEnum;
 import io.github.carrothole.carrot.service.AuMenuService;
-import io.github.carrothole.carrot.service.AuRoleMenuService;
+import io.github.carrothole.carrot.service.AuRoleMenuAuthorityService;
 import io.github.carrothole.carrot.service.AuUserRoleService;
 import io.github.carrothole.carrot.service.AuUserService;
 import jakarta.annotation.PostConstruct;
@@ -76,18 +76,8 @@ public class SecurityUtil {
 
     public static List<AuMenuResultVO> getMenuList(String project, TokenUtil.TokenPayLoad payLoad){
         // todo 添加缓存
-        List<AuRoleResultVO> roleList = getRoleList(project, payLoad);
-
-        final Set<String> roleIdSet = new HashSet<>();
-        for (AuRoleResultVO auRoleResultVO : roleList) {
-            if (auRoleResultVO.getMenuRange() == MenuRangeEnum.ALL.ordinal()){
-                // 如果有一个角色指定了全部菜单，则直接返回全部菜单
-                return auMenuService.listByProjectId(project);
-            }
-
-            roleIdSet.add(auRoleResultVO.getId());
-        }
-        return auRoleMenuService.listMenuByRoleIds(roleIdSet);
+        // todo 获取菜单列表
+        return null;
     }
 
     public static List<AuMenuResultVO> getMenuList(String project){
@@ -109,7 +99,7 @@ public class SecurityUtil {
         SecurityUtil.request = request_;
         SecurityUtil.auUserService = auUserService_;
         SecurityUtil.auUserRoleService = auUserRoleService_;
-        SecurityUtil.auRoleMenuService = auRoleMenuService_;
+        SecurityUtil.auRoleMenuAuthorityService = AuRoleMenuAuthorityService_;
         SecurityUtil.auMenuService = auMenuService_;
     }
 
@@ -117,7 +107,7 @@ public class SecurityUtil {
     private static HttpServletRequest request;
     private static AuUserService auUserService;
     private static AuUserRoleService auUserRoleService;
-    private static AuRoleMenuService auRoleMenuService;
+    private static AuRoleMenuAuthorityService auRoleMenuAuthorityService;
     private static AuMenuService auMenuService;
 
     @Autowired
@@ -125,7 +115,7 @@ public class SecurityUtil {
     @Autowired
     private AuUserRoleService auUserRoleService_;
     @Autowired
-    private AuRoleMenuService auRoleMenuService_;
+    private AuRoleMenuAuthorityService AuRoleMenuAuthorityService_;
     @Autowired
     private AuMenuService auMenuService_;
     @Autowired

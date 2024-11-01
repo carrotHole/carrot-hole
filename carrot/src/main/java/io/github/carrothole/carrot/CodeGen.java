@@ -14,7 +14,7 @@ import com.zaxxer.hikari.HikariDataSource;
  */
 public class CodeGen {
 
-    private static final String[] DB_NAME_LIST = {"dict_sys", "dict_content_sys"};
+    private static final String[] DB_NAME_LIST = {"au_role_authority_range"};
 
     public static void main(String[] args) {
         //配置数据源

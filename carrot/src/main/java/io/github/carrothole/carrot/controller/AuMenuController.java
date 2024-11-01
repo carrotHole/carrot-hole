@@ -117,6 +117,17 @@ public class AuMenuController {
     public List<AuMenuResultVO> getTree(@PathVariable String projectId){
        return auMenuService.getTree(projectId);
     }
+    /**
+     * 获取菜单树(仅包含目录和菜单)
+     * @param projectId 项目主键
+     * @return
+     */
+    @GetMapping("catalogMenuTree/{projectId}")
+    @Operation(description="根据项目主键获取树形菜单(仅包含目录和菜单)")
+    @PreAuthorize(menu = {"au:menu:catalogMenuTree"}, user = {"carrot","superman"})
+    public List<AuMenuResultVO> catalogMenuTree(@PathVariable String projectId){
+       return auMenuService.catalogMenuTree(projectId);
+    }
 
 
 }

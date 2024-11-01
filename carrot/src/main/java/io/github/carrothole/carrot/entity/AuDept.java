@@ -15,6 +15,7 @@ import io.github.carrothole.processor.generateo.anno.*;
 import io.github.carrothole.processor.generateo.enums.VOTypeEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -78,7 +79,7 @@ public class AuDept extends BaseUserTimeTenant {
      * 状态
      */
     @Schema(description = "状态")
-    @NotBlank(message = "状态不能为空", groups = {ValidateGroup.Update.class, ValidateGroup.Save.class})
+    @NotNull(message = "状态不能为空", groups = {ValidateGroup.Update.class, ValidateGroup.Save.class})
     @GenVOField(describe = "状态")
     private Integer status;
 
